@@ -53,7 +53,7 @@ namespace MSXUtilities
             Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out inputPattern_0, out inputColor_0, out inputPattern_1, out inputColor_1);
 
             //builder.CreateTilesForScrolling_Entering(inputPattern_0, bgPattern);
-            builder.CreateTilesForScrolling_Entering(inputPattern_0, inputPattern_1);
+            builder.CreateTilesForScrolling_Entering(inputPattern_1, inputPattern_0);
 
             #endregion single tile without repetition (2 transitions)
         }
