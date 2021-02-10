@@ -1,0 +1,109 @@
+﻿            //-----------------------
+
+            // Old. Will not be used
+            
+            //#region land patterns (left)
+
+            //// last tile (top)
+            //var input3 = new List<string>();
+            //input3.Add("00010001 b");
+            //input3.Add("00001011 b");
+            //input3.Add("00011111 b");
+            //input3.Add("00001111 b");
+            //input3.Add("01011111 b");
+            //input3.Add("00011111 b");
+            //input3.Add("10111111 b");
+            //input3.Add("00111111 b");
+
+            //var input2 = new List<string>();
+            //input2.Add("00111111 b");
+            //input2.Add("01111111 b");
+            //input2.Add("00111111 b");
+            //input2.Add("10011111 b");
+            //input2.Add("00111111 b");
+            //input2.Add("00111111 b");
+            //input2.Add("01111111 b");
+            //input2.Add("00111111 b");
+
+            //// first tile (bottom)
+            //var input = new List<string>();
+            //input.Add("00111111 b");
+            //input.Add("01111111 b");
+            //input.Add("00111111 b");
+            //input.Add("01011111 b");
+            //input.Add("00011111 b");
+            //input.Add("00111111 b");
+            //input.Add("00011111 b");
+            //input.Add("00100110 b");
+
+            //#endregion land patterns (left)
+
+            //-----------------
+
+            // Will not be used
+            //var input2 = new List<string>();
+            //input2.Add("00001100 b");
+            //input2.Add("00111110 b");
+            //input2.Add("01111110 b");
+            //input2.Add("11111111 b");
+            //input2.Add("01111111 b");
+            //input2.Add("11111111 b");
+            //input2.Add("01111111 b");
+            //input2.Add("11111111 b");
+
+            //var input = new List<string>();
+            //input.Add("11111111 b");
+            //input.Add("11111111 b");
+            //input.Add("11111110 b");
+            //input.Add("11111111 b");
+            //input.Add("01111111 b");
+            //input.Add("11111111 b");
+            //input.Add("01111111 b");
+            //input.Add("00111100 b");
+
+
+            //#region land colors (left)
+
+            //// Colors
+            //var input3Colors = new List<string>();
+            //input3Colors.Add("0xf4");
+            //input3Colors.Add("0xf4");
+            //input3Colors.Add("0xb4");
+            //input3Colors.Add("0xb4");
+            //input3Colors.Add("0xb4");
+            //input3Colors.Add("0xb4");
+            //input3Colors.Add("0xb4");
+            //input3Colors.Add("0xb4");
+
+            //var input2Colors = new List<string>();
+            //input2Colors.Add("0xb4");
+            //input2Colors.Add("0xb4");
+            //input2Colors.Add("0xb4");
+            //input2Colors.Add("0xb4");
+            //input2Colors.Add("0xb4");
+            //input2Colors.Add("0xb4");
+            //input2Colors.Add("0xb4");
+            //input2Colors.Add("0xb4");
+
+            //var inputColors = new List<string>();
+            //inputColors.Add("0xb4");
+            //inputColors.Add("0xb4");
+            //inputColors.Add("0xb4");
+            //inputColors.Add("0xb4");
+            //inputColors.Add("0xb4");
+            //inputColors.Add("0xb4");
+            //inputColors.Add("0xf4");
+            //inputColors.Add("0xf4");
+
+            //#endregion land colors (left)
+
+            // background (land)
+            var bgColors = new List<string>();
+            bgColors.Add("0xbf");
+            bgColors.Add("0xbf");
+            bgColors.Add("0xbe");
+            bgColors.Add("0xbf");
+            bgColors.Add("0xbf");
+            bgColors.Add("0xbe");
+            bgColors.Add("0xbf");
+            bgColors.Add("0xbf");

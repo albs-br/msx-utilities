@@ -3,3 +3,5 @@
 ################################################################################
 
 /MSXUtilities/bin/Debug/netcoreapp3.1
+/MSXUtilities/obj
+/.vs
