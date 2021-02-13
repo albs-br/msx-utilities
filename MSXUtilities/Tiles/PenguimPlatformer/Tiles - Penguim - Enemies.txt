@@ -60,11 +60,11 @@ msx1
 ................
 .........BB.....
 .......BBBBBB...
-.C.C..AAAAAAAA..
+......AAAAAAAA..
 .....AAA....AAA.
-.C...AA.AAAA.AA.
-CCC.AAA....AA.A.
+..FFAAA.AAAA.AA.
+...FAAA....AA.A.
 CCCCAAAAAAAA.AA.
-.CCCCAAA....AAA.
+CCCCCAAA....AAA.
 ..CCCCAAAAAAAAAC
-..CCCCCAAAAAACCC
+...CCCCAAAAAACCC
