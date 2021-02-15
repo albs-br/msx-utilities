@@ -12,10 +12,10 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            //var command = "LDI";
-            ////var number = 22 * 32;
-            //var number = 32;
-            //var unrolledLDIs = MakeUnrolledCommands(command, number);
+            //var command = "OUTI";
+            //var number = 768;
+            //var unrolledCommands = MakeUnrolledCommands(command, number);
+            //return;
 
             //PocMegaROM();
 
