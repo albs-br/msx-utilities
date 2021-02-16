@@ -12,7 +12,7 @@ namespace MSXUtilities
         /// </summary>
         /// <param name="inputEntering">Right tile (entering)</param>
         /// <param name="inputExiting">Left tile (exiting)</param>
-        public void CreateTilesForScrolling_Entering(IList<string> inputEntering, IList<string> inputExiting)
+        public void CreateTilesForScrolling(IList<string> inputEntering, IList<string> inputExiting)
         {
             var startColumn_TileEntering = 7;
             var startColumn_TileExiting = 1;

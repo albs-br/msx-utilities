@@ -31,6 +31,7 @@ namespace MSXUtilities
             CreateTileMapForPenguimPlatformer();
 
             Console.WriteLine("Done.");
+            Console.ReadLine();
         }
 
 
@@ -48,15 +49,17 @@ namespace MSXUtilities
 
 
 
-            #region single tile without repetition (2 transitions)
-
             Tiles.PenguimPlatformer.Bg_Black.Load(out bgPattern, out bgColor);
             Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out inputPattern_0, out inputColor_0, out inputPattern_1, out inputColor_1);
 
-            //builder.CreateTilesForScrolling_Entering(inputPattern_0, bgPattern);
-            builder.CreateTilesForScrolling_Entering(inputPattern_1, inputPattern_0);
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Small brick - top"));
+            builder.CreateTilesForScrolling(inputPattern_0, bgPattern);
 
-            #endregion single tile without repetition (2 transitions)
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - top", "Small brick - top"));
+            builder.CreateTilesForScrolling(inputPattern_1, inputPattern_0);
+
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - top", "Black"));
+            builder.CreateTilesForScrolling(bgPattern, inputPattern_0);
         }
 
         static void CreateTileMapForPenguimPlatformer()
@@ -64,7 +67,10 @@ namespace MSXUtilities
             //var lastLine = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }; // 32 chars
             
             // 128 chars
-            var lastLine = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, };
+            //var lastLine = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, };
+
+            // 128 chars
+            var lastLine = new List<int> { 9, 9, 9, 9, 9, 17, 0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 17, 0, 0, 0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, };
 
             for (int i = 0; i < 8; i++)
             {
@@ -76,7 +82,16 @@ namespace MSXUtilities
                     {
                         Console.Write(", ");
                     }
-                    Console.Write((item + i).ToString());
+
+                    if (item != 0)
+                    {
+                        Console.Write((item + i).ToString());
+                    }
+                    else
+                    {
+                        Console.Write((item).ToString());
+                    }
+
                     first = false;
                 }
                 Console.WriteLine();
