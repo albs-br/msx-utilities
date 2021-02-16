@@ -13,7 +13,7 @@ namespace MSXUtilities
         static void Main(string[] args)
         {
             //var command = "OUTI";
-            //var number = 768;
+            //var number = 128;
             //var unrolledCommands = MakeUnrolledCommands(command, number);
             //return;
 
@@ -27,7 +27,8 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            CreateTilesForPenguimPlatformer();
+            //CreateTilesForPenguimPlatformer();
+            CreateTileMapForPenguimPlatformer();
 
             Console.WriteLine("Done.");
         }
@@ -56,6 +57,30 @@ namespace MSXUtilities
             builder.CreateTilesForScrolling_Entering(inputPattern_1, inputPattern_0);
 
             #endregion single tile without repetition (2 transitions)
+        }
+
+        static void CreateTileMapForPenguimPlatformer()
+        {
+            //var lastLine = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }; // 32 chars
+            
+            // 128 chars
+            var lastLine = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, };
+
+            for (int i = 0; i < 8; i++)
+            {
+                Console.Write("\tdb\t");
+                var first = true;
+                foreach (var item in lastLine)
+                {
+                    if (!first)
+                    {
+                        Console.Write(", ");
+                    }
+                    Console.Write((item + i).ToString());
+                    first = false;
+                }
+                Console.WriteLine();
+            }
         }
 
         static void CreateTilesForPacific2()

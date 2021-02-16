@@ -43,7 +43,7 @@ namespace MSXUtilities
                 startColumn_TileEntering--;
 
                 srcColumn = startColumn_TileExiting;
-                for (var destColumn = 0; destColumn < startColumn_TileEntering; destColumn++)
+                for (var destColumn = 0; destColumn <= startColumn_TileEntering; destColumn++)
                 {
                     for (var lineNumber = 0; lineNumber <= 7; lineNumber++)
                     {

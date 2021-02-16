@@ -22,14 +22,14 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
             bgPattern_0.Add("00000000");
 
             bgColor_0 = new List<string>();
-            bgColor_0.Add("0x00");
-            bgColor_0.Add("0x00");
-            bgColor_0.Add("0x00");
-            bgColor_0.Add("0x00");
-            bgColor_0.Add("0x00");
-            bgColor_0.Add("0x00");
-            bgColor_0.Add("0x00");
-            bgColor_0.Add("0x00");
+            bgColor_0.Add("0x01");
+            bgColor_0.Add("0x01");
+            bgColor_0.Add("0x01");
+            bgColor_0.Add("0x01");
+            bgColor_0.Add("0x01");
+            bgColor_0.Add("0x01");
+            bgColor_0.Add("0x01");
+            bgColor_0.Add("0x01");
         }
     }
 }
