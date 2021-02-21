@@ -40,19 +40,27 @@ namespace MSXUtilities
         static void CreateTilesForPenguimPlatformer()
         {
             IList<string> bgPattern = new List<string>();
+            
             IList<string> inputPattern_0 = new List<string>();
             IList<string> inputPattern_1 = new List<string>();
+            IList<string> inputPattern_2 = new List<string>();
+            IList<string> inputPattern_3 = new List<string>();
 
             IList<string> bgColor = new List<string>();
+            
             IList<string> inputColor_0 = new List<string>();
             IList<string> inputColor_1 = new List<string>();
+            IList<string> inputColor_2 = new List<string>();
+            IList<string> inputColor_3 = new List<string>();
 
             var builder = new TilesForHorizontalScroll();
 
 
 
             Tiles.PenguimPlatformer.Bg_Black.Load(out bgPattern, out bgColor);
-            Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out inputPattern_0, out inputColor_0, out inputPattern_1, out inputColor_1);
+            Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out inputPattern_0, out inputColor_0, out inputPattern_1, out inputColor_1, out inputPattern_2, out inputColor_2, out inputPattern_3, out inputColor_3);
+
+
 
             Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Small brick - top"));
             builder.CreateTilesForScrolling(inputPattern_0, bgPattern);
@@ -62,6 +70,17 @@ namespace MSXUtilities
 
             Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - top", "Black"));
             builder.CreateTilesForScrolling(bgPattern, inputPattern_0);
+
+
+
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Small brick - bottom"));
+            builder.CreateTilesForScrolling(inputPattern_2, bgPattern);
+
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - bottom", "Small brick - bottom"));
+            builder.CreateTilesForScrolling(inputPattern_3, inputPattern_2);
+
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - bottom", "Black"));
+            builder.CreateTilesForScrolling(bgPattern, inputPattern_2);
         }
 
         static void CreateTileMapForPenguimPlatformer()
@@ -95,7 +114,7 @@ namespace MSXUtilities
 
             const int TILEMAP_SIZE_IN_8X8_COLUMNS = 512;
 
-            var tileMap = TileMap_Level_Test.LoadTtileMap();
+            var tileMap = TileMap_Level_Test.LoadTileMap();
 
             for (int line = 0; line < tileMap.Count; line++)
             //for (int line = 0; line < newList.Count; line++)

@@ -11,13 +11,13 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
             out IList<string> bgColor_0,
             
             out IList<string> bgPattern_1,      // top right
-            out IList<string> bgColor_1
+            out IList<string> bgColor_1,
 
-            //out IList<string> bgPattern_2,      // bottom left
-            //out IList<string> bgColor_2,
+            out IList<string> bgPattern_2,      // bottom left
+            out IList<string> bgColor_2,
 
-            //out IList<string> bgPattern_3,      // bottom right
-            //out IList<string> bgColor_3
+            out IList<string> bgPattern_3,      // bottom right
+            out IList<string> bgColor_3
             )
         {
             bgPattern_0 = new List<string>();
@@ -36,9 +36,9 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
             bgColor_0.Add("0x51");
             bgColor_0.Add("0x51");
             bgColor_0.Add("0x01");
+            bgColor_0.Add("0x71");
             bgColor_0.Add("0x51");
-            bgColor_0.Add("0x41");
-            bgColor_0.Add("0x41");
+            bgColor_0.Add("0x51");
 
             bgPattern_1 = new List<string>();
             bgPattern_1.Add("00000000");
@@ -56,9 +56,51 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
             bgColor_1.Add("0x51");
             bgColor_1.Add("0x51");
             bgColor_1.Add("0x01");
+            bgColor_1.Add("0x71");
             bgColor_1.Add("0x51");
-            bgColor_1.Add("0x41");
-            bgColor_1.Add("0x41");
+            bgColor_1.Add("0x51");
+
+
+
+            bgPattern_2 = new List<string>();
+            bgPattern_2.Add("00000000");
+            bgPattern_2.Add("11111110");
+            bgPattern_2.Add("11111110");
+            bgPattern_2.Add("11111110");
+            bgPattern_2.Add("00000000");
+            bgPattern_2.Add("11101111");
+            bgPattern_2.Add("11101111");
+            bgPattern_2.Add("11101111");
+
+            bgColor_2 = new List<string>();
+            bgColor_2.Add("0x01");
+            bgColor_2.Add("0x51");
+            bgColor_2.Add("0x41");
+            bgColor_2.Add("0x41");
+            bgColor_2.Add("0x01");
+            bgColor_2.Add("0x51");
+            bgColor_2.Add("0x41");
+            bgColor_2.Add("0x41");
+
+            bgPattern_3 = new List<string>();
+            bgPattern_3.Add("00000000");
+            bgPattern_3.Add("11111110");
+            bgPattern_3.Add("11111110");
+            bgPattern_3.Add("11111110");
+            bgPattern_3.Add("00000000");
+            bgPattern_3.Add("11101111");
+            bgPattern_3.Add("11101111");
+            bgPattern_3.Add("11101111");
+
+            bgColor_3 = new List<string>();
+            bgColor_3.Add("0x01");
+            bgColor_3.Add("0x51");
+            bgColor_3.Add("0x41");
+            bgColor_3.Add("0x41");
+            bgColor_3.Add("0x01");
+            bgColor_3.Add("0x51");
+            bgColor_3.Add("0x41");
+            bgColor_3.Add("0x41");
         }
     }
 }
