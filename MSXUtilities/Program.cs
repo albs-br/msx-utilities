@@ -114,18 +114,82 @@ namespace MSXUtilities
 
             const int TILEMAP_SIZE_IN_8X8_COLUMNS = 512;
 
-            var tileMap = TileMap_Level_Test.LoadTileMap();
+            var tileMap_16x16_Static = TileMap_Level_Test.LoadTileMap();
 
-            for (int line = 0; line < tileMap.Count; line++)
-            //for (int line = 0; line < newList.Count; line++)
+            // ---- Conversion logic from tilemap 16x16 static to 8x8 animated
+
+            // Loop all tilemap16x16 testing < 256 and filling with zeroes to make = 256
+            for (int line = 0; line < tileMap_16x16_Static.Count; line++)
             {
-                if (tileMap[line].Count != TILEMAP_SIZE_IN_8X8_COLUMNS)
+                if (tileMap_16x16_Static[line].Count > TILEMAP_SIZE_IN_8X8_COLUMNS / 2)
                 {
-                    throw new Exception("; Line # " + line + ", count:" + tileMap[line].Count);
+                    throw new Exception(String.Format("Line {0} with number of columns greater than the maximum allowed ({1})", line, (TILEMAP_SIZE_IN_8X8_COLUMNS / 2)));
                 }
-                //Console.WriteLine("; Line # " + line + ", count:" + tileMap[line].Count);
+                var initialSize = tileMap_16x16_Static[line].Count;
+                for (int i = 0; i < (TILEMAP_SIZE_IN_8X8_COLUMNS / 2) - initialSize; i++)
+                {
+                    tileMap_16x16_Static[line].Add(0);
+                }
+            }
 
-                //TODO: validate position of blocks (only even rows)
+            // Loop all tilemap16x16 converting to 8x8 static
+            //      ex. input:  { 0, 1, 0}
+            //          output: { 0, 0, 9, 9, 0, 0}
+            //                  { 0, 0,33,33, 0, 0}
+            var tileMap_8x8_Animated = new List<List<int>>();
+            for (int line = 0; line < tileMap_16x16_Static.Count; line++)
+            {
+                tileMap_8x8_Animated.Add(new List<int>());
+                tileMap_8x8_Animated.Add(new List<int>());
+
+                for (int column = 0; column < (TILEMAP_SIZE_IN_8X8_COLUMNS / 2); column++)
+                {
+                    if (tileMap_16x16_Static[line][column] == 0)
+                    {
+                        tileMap_8x8_Animated[line * 2].Add(0);
+                        tileMap_8x8_Animated[line * 2].Add(0);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(0);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(0);
+                    }
+                    else if (tileMap_16x16_Static[line][column] == 1)
+                    {
+                        tileMap_8x8_Animated[line * 2].Add(9);
+                        tileMap_8x8_Animated[line * 2].Add(9);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(33);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(33);
+                    }
+                }
+            }
+
+            // loop all tilemap8x8 static converting to 8x8 animated
+            //      ex. input:  { 0, 0, 9, 9, 0, 0}
+            //                  { 0, 0,33,33, 0, 0}
+            //      ex. output: { 0, 1, 9,17, 0, 0}
+            //                  { 0,25,33,41, 0, 0}
+            for (int line = 0; line < tileMap_8x8_Animated.Count - 1; line++)
+            {
+                for (int column = 0; column < TILEMAP_SIZE_IN_8X8_COLUMNS - 1; column++)
+                {
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 9)
+                    {
+                        tileMap_8x8_Animated[line][column] =     1;
+                        tileMap_8x8_Animated[line + 1][column] = 25;
+                    }
+                    else if (tileMap_8x8_Animated[line][column] == 9 && tileMap_8x8_Animated[line][column + 1] == 0)
+                    {
+                        tileMap_8x8_Animated[line][column] = 17;
+                        tileMap_8x8_Animated[line + 1][column] = 41;
+                    }
+
+                }
+            }
+
+            for (int line = 0; line < tileMap_8x8_Animated.Count; line++)
+            {
+                if (tileMap_8x8_Animated[line].Count != TILEMAP_SIZE_IN_8X8_COLUMNS)
+                {
+                    throw new Exception("; Line # " + line + ", count:" + tileMap_8x8_Animated[line].Count);
+                }
 
                 using (StreamWriter sw = new StreamWriter(String.Format(fileName, ((line / 4) + 1)), true))
                 {
@@ -136,8 +200,7 @@ namespace MSXUtilities
                     {
                         sw.Write("\tdb\t");
                         var first = true;
-                        foreach (var item in tileMap[line])
-                        //foreach (var item in newList[line])
+                        foreach (var item in tileMap_8x8_Animated[line])
                         {
                             if (!first)
                             {
