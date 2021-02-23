@@ -240,10 +240,10 @@ namespace MSXUtilities
                     // big bricks
                     else if (tileMap_16x16_Static[line][column] == 2)
                     {
-                        tileMap_8x8_Animated[line * 2].Add(73);
-                        tileMap_8x8_Animated[line * 2].Add(73);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(105);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(105);
+                        tileMap_8x8_Animated[line * 2].Add(57);
+                        tileMap_8x8_Animated[line * 2].Add(65);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(89);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(97);
                     }
                 }
             }
@@ -253,7 +253,7 @@ namespace MSXUtilities
             //                  { 0, 0,33,33, 0, 0}
             //      ex. output: { 0, 1, 9,17, 0, 0}
             //                  { 0,25,33,41, 0, 0}
-            for (int line = 0; line < tileMap_8x8_Animated.Count - 1; line++)
+            for (int line = 0; line < tileMap_8x8_Animated.Count - 1; line += 2)
             {
                 for (int column = 0; column < TILEMAP_SIZE_IN_8X8_COLUMNS - 1; column++)
                 {
@@ -270,17 +270,17 @@ namespace MSXUtilities
                     }
 
                     // Big bricks
-                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 73)
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 57)
                     {
                         tileMap_8x8_Animated[line][column]          = 49;
                         tileMap_8x8_Animated[line][column + 1]      = 57;
                         tileMap_8x8_Animated[line + 1][column]      = 81;
                         tileMap_8x8_Animated[line + 1][column + 1]  = 89;
                     }
-                    else if (tileMap_8x8_Animated[line][column] == 73 && tileMap_8x8_Animated[line][column + 1] == 0)
+                    else if (tileMap_8x8_Animated[line][column] == 65 && tileMap_8x8_Animated[line][column + 1] == 57)
                     {
-                        tileMap_8x8_Animated[line][column] = 65;
-                        tileMap_8x8_Animated[line + 1][column] = 97;
+                        tileMap_8x8_Animated[line][column] = 73;
+                        tileMap_8x8_Animated[line + 1][column] = 105;
                     }
                 }
             }
