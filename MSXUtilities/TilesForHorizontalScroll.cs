@@ -10,9 +10,9 @@ namespace MSXUtilities
         /// Take two inputs and creates 8 tiles for horizontal scrolling effect on MSX1
         /// Entering line
         /// </summary>
-        /// <param name="inputEntering">Right tile (entering)</param>
         /// <param name="inputExiting">Left tile (exiting)</param>
-        public void CreateTilesForScrolling(IList<string> inputEntering, IList<string> inputExiting)
+        /// <param name="inputEntering">Right tile (entering)</param>
+        public void CreateTilesForScrolling(IList<string> inputExiting, IList<string> inputEntering)
         {
             var startColumn_TileEntering = 7;
             var startColumn_TileExiting = 1;

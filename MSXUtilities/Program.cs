@@ -39,48 +39,126 @@ namespace MSXUtilities
 
         static void CreateTilesForPenguimPlatformer()
         {
-            IList<string> bgPattern = new List<string>();
-            
-            IList<string> inputPattern_0 = new List<string>();
-            IList<string> inputPattern_1 = new List<string>();
-            IList<string> inputPattern_2 = new List<string>();
-            IList<string> inputPattern_3 = new List<string>();
-
-            IList<string> bgColor = new List<string>();
-            
-            IList<string> inputColor_0 = new List<string>();
-            IList<string> inputColor_1 = new List<string>();
-            IList<string> inputColor_2 = new List<string>();
-            IList<string> inputColor_3 = new List<string>();
-
             var builder = new TilesForHorizontalScroll();
 
 
+            IList<string> patternBgBlack = new List<string>();
+            IList<string> colorBgBlack = new List<string>();
 
-            Tiles.PenguimPlatformer.Bg_Black.Load(out bgPattern, out bgColor);
-            Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out inputPattern_0, out inputColor_0, out inputPattern_1, out inputColor_1, out inputPattern_2, out inputColor_2, out inputPattern_3, out inputColor_3);
+            IList<string> pattern_SmallBricks_0 = new List<string>();
+            IList<string> pattern_SmallBricks_1 = new List<string>();
+            IList<string> pattern_SmallBricks_2 = new List<string>();
+            IList<string> pattern_SmallBricks_3 = new List<string>();
+            IList<string> color_SmallBricks_0 = new List<string>();
+            IList<string> color_SmallBricks_1 = new List<string>();
+            IList<string> color_SmallBricks_2 = new List<string>();
+            IList<string> color_SmallBricks_3 = new List<string>();
+
+            IList<string> pattern_BigBricks_0 = new List<string>();
+            IList<string> pattern_BigBricks_1 = new List<string>();
+            IList<string> pattern_BigBricks_2 = new List<string>();
+            IList<string> pattern_BigBricks_3 = new List<string>();
+            IList<string> color_BigBricks_0 = new List<string>();
+            IList<string> color_BigBricks_1 = new List<string>();
+            IList<string> color_BigBricks_2 = new List<string>();
+            IList<string> color_BigBricks_3 = new List<string>();
+
+
+            Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
+            Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
+            Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
+
+
+            #region Small bricks
+
+            // Tile pattern # 1
+            //Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Small brick - top"));
+            //builder.CreateTilesForScrolling(patternBgBlack, pattern_SmallBricks_0);
+
+            // Tile pattern # 9
+            //Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - top", "Small brick - top"));
+            //builder.CreateTilesForScrolling(pattern_SmallBricks_0, pattern_SmallBricks_1);
+
+            // Tile pattern # 17
+            //Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - top", "Black"));
+            //builder.CreateTilesForScrolling(pattern_SmallBricks_0, patternBgBlack);
+
+
+            // Tile pattern # 25
+            //Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Small brick - bottom"));
+            //builder.CreateTilesForScrolling(patternBgBlack, pattern_SmallBricks_2);
+
+            // Tile pattern # 33
+            //Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - bottom", "Small brick - bottom"));
+            //builder.CreateTilesForScrolling(pattern_SmallBricks_2, pattern_SmallBricks_3);
+
+            // Tile pattern # 41
+            //Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - bottom", "Black"));
+            //builder.CreateTilesForScrolling(pattern_SmallBricks_2, patternBgBlack);
+
+            #endregion
+
+
+            #region Big bricks
+
+            // Tile pattern # 49
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Big brick - top left"));
+            builder.CreateTilesForScrolling(patternBgBlack, pattern_BigBricks_0);
+
+            // Tile pattern # 57
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top left", "Big brick - top right"));
+            builder.CreateTilesForScrolling(pattern_BigBricks_0, pattern_BigBricks_1);
+
+            // Tile pattern # 65
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top right", "Black"));
+            builder.CreateTilesForScrolling(pattern_BigBricks_1, patternBgBlack);
+
+            // Tile pattern # 73
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top right", "Big brick - top left"));
+            builder.CreateTilesForScrolling(pattern_BigBricks_1, pattern_BigBricks_0);
 
 
 
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Small brick - top"));
-            builder.CreateTilesForScrolling(inputPattern_0, bgPattern);
+            // Tile pattern # 81
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Big brick - bottom left"));
+            builder.CreateTilesForScrolling(patternBgBlack, pattern_BigBricks_2);
 
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - top", "Small brick - top"));
-            builder.CreateTilesForScrolling(inputPattern_1, inputPattern_0);
+            // Tile pattern # 89
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom left", "Big brick - bottom"));
+            builder.CreateTilesForScrolling(pattern_BigBricks_2, pattern_BigBricks_3);
 
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - top", "Black"));
-            builder.CreateTilesForScrolling(bgPattern, inputPattern_0);
+            // Tile pattern # 97
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom right", "Black"));
+            builder.CreateTilesForScrolling(pattern_BigBricks_3, patternBgBlack);
+
+            // Tile pattern # 105
+            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom right", "Big brick - bottom left"));
+            builder.CreateTilesForScrolling(pattern_BigBricks_3, pattern_BigBricks_2);
 
 
 
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Small brick - bottom"));
-            builder.CreateTilesForScrolling(inputPattern_2, bgPattern);
+            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "top left"));
+            //ShowColors(color_BigBricks_0);
 
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - bottom", "Small brick - bottom"));
-            builder.CreateTilesForScrolling(inputPattern_3, inputPattern_2);
+            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "top right"));
+            //ShowColors(color_BigBricks_1);
 
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Small brick - bottom", "Black"));
-            builder.CreateTilesForScrolling(bgPattern, inputPattern_2);
+            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "bottom left"));
+            //ShowColors(color_BigBricks_2);
+
+            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "bottom right"));
+            //ShowColors(color_BigBricks_3);
+
+            #endregion
+        }
+
+        static void ShowColors(IList<string> colors)
+        {
+            foreach (var line in colors)
+            {
+                Console.WriteLine("\tdb  0x" + line);
+            }
+            Console.WriteLine("; -----------------------");
         }
 
         static void CreateTileMapForPenguimPlatformer()
@@ -151,12 +229,21 @@ namespace MSXUtilities
                         tileMap_8x8_Animated[(line * 2) + 1].Add(0);
                         tileMap_8x8_Animated[(line * 2) + 1].Add(0);
                     }
+                    // small bricks
                     else if (tileMap_16x16_Static[line][column] == 1)
                     {
                         tileMap_8x8_Animated[line * 2].Add(9);
                         tileMap_8x8_Animated[line * 2].Add(9);
                         tileMap_8x8_Animated[(line * 2) + 1].Add(33);
                         tileMap_8x8_Animated[(line * 2) + 1].Add(33);
+                    }
+                    // big bricks
+                    else if (tileMap_16x16_Static[line][column] == 2)
+                    {
+                        tileMap_8x8_Animated[line * 2].Add(73);
+                        tileMap_8x8_Animated[line * 2].Add(73);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(105);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(105);
                     }
                 }
             }
@@ -170,6 +257,7 @@ namespace MSXUtilities
             {
                 for (int column = 0; column < TILEMAP_SIZE_IN_8X8_COLUMNS - 1; column++)
                 {
+                    // Small bricks
                     if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 9)
                     {
                         tileMap_8x8_Animated[line][column] =     1;
@@ -181,6 +269,19 @@ namespace MSXUtilities
                         tileMap_8x8_Animated[line + 1][column] = 41;
                     }
 
+                    // Big bricks
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 73)
+                    {
+                        tileMap_8x8_Animated[line][column]          = 49;
+                        tileMap_8x8_Animated[line][column + 1]      = 57;
+                        tileMap_8x8_Animated[line + 1][column]      = 81;
+                        tileMap_8x8_Animated[line + 1][column + 1]  = 89;
+                    }
+                    else if (tileMap_8x8_Animated[line][column] == 73 && tileMap_8x8_Animated[line][column + 1] == 0)
+                    {
+                        tileMap_8x8_Animated[line][column] = 65;
+                        tileMap_8x8_Animated[line + 1][column] = 97;
+                    }
                 }
             }
 
