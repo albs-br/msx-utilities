@@ -63,11 +63,22 @@ namespace MSXUtilities
             IList<string> color_BigBricks_2 = new List<string>();
             IList<string> color_BigBricks_3 = new List<string>();
 
+            IList<string> pattern_Grass_0 = new List<string>();
+            IList<string> pattern_Grass_1 = new List<string>();
+            IList<string> pattern_Grass_2 = new List<string>();
+            IList<string> pattern_Grass_3 = new List<string>();
+            IList<string> color_Grass_0 = new List<string>();
+            IList<string> color_Grass_1 = new List<string>();
+            IList<string> color_Grass_2 = new List<string>();
+            IList<string> color_Grass_3 = new List<string>();
+
 
             Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
             Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
             Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
+            Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
 
+            // TODO: create tile file "Bg_name.s" inside "LoadFromTinySpriteBackup"
 
             #region Small bricks
 
