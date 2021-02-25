@@ -29,8 +29,8 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            //CreateTilesForPenguimPlatformer();
-            CreateTileMapForPenguimPlatformer();
+            CreateTilesForPenguimPlatformer();
+            //CreateTileMapForPenguimPlatformer();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -76,9 +76,11 @@ namespace MSXUtilities
             Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
             Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
             Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
-            Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
+            Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
 
-            // TODO: create tile file "Bg_name.s" inside "LoadFromTinySpriteBackup"
+            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+                pattern_BigBricks_0, pattern_BigBricks_1, pattern_BigBricks_2, pattern_BigBricks_3,
+                "BigBricks.s");
 
             #region Small bricks
 
@@ -110,57 +112,6 @@ namespace MSXUtilities
             #endregion
 
 
-            #region Big bricks
-
-            // Tile pattern # 49
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Big brick - top left"));
-            builder.CreateTilesForScrolling(patternBgBlack, pattern_BigBricks_0);
-
-            // Tile pattern # 57
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top left", "Big brick - top right"));
-            builder.CreateTilesForScrolling(pattern_BigBricks_0, pattern_BigBricks_1);
-
-            // Tile pattern # 65
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top right", "Black"));
-            builder.CreateTilesForScrolling(pattern_BigBricks_1, patternBgBlack);
-
-            // Tile pattern # 73
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top right", "Big brick - top left"));
-            builder.CreateTilesForScrolling(pattern_BigBricks_1, pattern_BigBricks_0);
-
-
-
-            // Tile pattern # 81
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Big brick - bottom left"));
-            builder.CreateTilesForScrolling(patternBgBlack, pattern_BigBricks_2);
-
-            // Tile pattern # 89
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom left", "Big brick - bottom"));
-            builder.CreateTilesForScrolling(pattern_BigBricks_2, pattern_BigBricks_3);
-
-            // Tile pattern # 97
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom right", "Black"));
-            builder.CreateTilesForScrolling(pattern_BigBricks_3, patternBgBlack);
-
-            // Tile pattern # 105
-            Console.WriteLine(String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom right", "Big brick - bottom left"));
-            builder.CreateTilesForScrolling(pattern_BigBricks_3, pattern_BigBricks_2);
-
-
-
-            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "top left"));
-            //ShowColors(color_BigBricks_0);
-
-            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "top right"));
-            //ShowColors(color_BigBricks_1);
-
-            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "bottom left"));
-            //ShowColors(color_BigBricks_2);
-
-            //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "bottom right"));
-            //ShowColors(color_BigBricks_3);
-
-            #endregion
         }
 
         static void ShowColors(IList<string> colors)
@@ -174,22 +125,6 @@ namespace MSXUtilities
 
         static void CreateTileMapForPenguimPlatformer()
         {
-            //var lastLine = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }; // 32 chars
-            
-            // 128 chars
-            //var lastLine = new List<int> { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, };
-
-            // 128 chars
-            //var lastLine = new List<int> { 9, 9, 9, 9, 9, 17, 0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 17, 0, 0, 0, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, };
-
-
-            // take only the first 64 items of each list
-            //var newList = new List<List<int>>();
-            //foreach (var item in all24lines)
-            //{
-            //    newList.Add(item.Take(64).ToList());
-            //}
-
             var fileName = "TileMap_Page_{0}.s";
 
             for (int i = 1; i <= 6; i++)
