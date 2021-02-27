@@ -15,6 +15,8 @@ namespace MSXUtilities
         /// <param name="inputEntering">Right tile (entering)</param>
         public void CreateTilesForScrolling(IList<string> inputExiting, IList<string> inputEntering, string fileName, string description)
         {
+            var extension = ".s";
+            fileName = "Pattern_" + fileName + extension;
             using (StreamWriter sw = new StreamWriter(fileName, true))
             {
                 sw.WriteLine(description);
@@ -85,63 +87,70 @@ namespace MSXUtilities
 
         public void CreateCompleteSetOfTilesForScrolling(
             IList<string> pattern_Bg,
-            IList<string> pattern_0, 
-            IList<string> pattern_1, 
-            IList<string> pattern_2, 
-            IList<string> pattern_3, 
+            IList<string> pattern_0_top_left, // top left
+            IList<string> pattern_1_top_right, // top right
+            IList<string> pattern_2_bottom_left, // bottom left
+            IList<string> pattern_3_bottom_right, // bottom right
+            IList<string> color_0_top_left, // top left
+            IList<string> color_1_top_right, // top right
+            IList<string> color_2_bottom_left, // bottom left
+            IList<string> color_3_bottom_right, // bottom right
             string fileName
             )
         {
+            var description = String.Format("; -------- Tile transitions from {0} to {1}", "Bg", fileName + " - top left");
+            CreateTilesForScrolling(pattern_Bg, pattern_0_top_left, fileName, description);
 
-            // Tile pattern # 49
-            //TODO: fix this text to a more generic text
-            // e.g. var description = String.Format("; -------- Tile transitions from {0} to {1}", "Bg", "top left");
-            var description = String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Big brick - top left");
-            CreateTilesForScrolling(pattern_Bg, pattern_0, fileName, description);
+            description = String.Format("; -------- Tile transitions from {0} to {1}", fileName + " - top left", fileName + " - top right");
+            CreateTilesForScrolling(pattern_0_top_left, pattern_1_top_right, fileName, description);
 
-            // Tile pattern # 57
-            description = String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top left", "Big brick - top right");
-            CreateTilesForScrolling(pattern_0, pattern_1, fileName, description);
+            description = String.Format("; -------- Tile transitions from {0} to {1}", fileName + " - top right", "Bg");
+            CreateTilesForScrolling(pattern_1_top_right, pattern_Bg, fileName, description);
 
-            // Tile pattern # 65
-            description = String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top right", "Black");
-            CreateTilesForScrolling(pattern_1, pattern_Bg, fileName, description);
-
-            // Tile pattern # 73
-            description = String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - top right", "Big brick - top left");
-            CreateTilesForScrolling(pattern_1, pattern_0, fileName, description);
+            description = String.Format("; -------- Tile transitions from {0} to {1}", fileName + " - top right", fileName + " - top left");
+            CreateTilesForScrolling(pattern_1_top_right, pattern_0_top_left, fileName, description);
 
 
 
-            // Tile pattern # 81
-            description = String.Format("; -------- Tile transitions from {0} to {1}", "Black", "Big brick - bottom left");
-            CreateTilesForScrolling(pattern_Bg, pattern_2, fileName, description);
+            description = String.Format("; -------- Tile transitions from {0} to {1}", "Bg", fileName + " - bottom left");
+            CreateTilesForScrolling(pattern_Bg, pattern_2_bottom_left, fileName, description);
 
-            // Tile pattern # 89
-            description = String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom left", "Big brick - bottom");
-            CreateTilesForScrolling(pattern_2, pattern_3, fileName, description);
+            description = String.Format("; -------- Tile transitions from {0} to {1}", fileName + " - bottom left", fileName + " - bottom");
+            CreateTilesForScrolling(pattern_2_bottom_left, pattern_3_bottom_right, fileName, description);
 
-            // Tile pattern # 97
-            description = String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom right", "Black");
-            CreateTilesForScrolling(pattern_3, pattern_Bg, fileName, description);
+            description = String.Format("; -------- Tile transitions from {0} to {1}", fileName + " - bottom right", "Bg");
+            CreateTilesForScrolling(pattern_3_bottom_right, pattern_Bg, fileName, description);
 
-            // Tile pattern # 105
-            description = String.Format("; -------- Tile transitions from {0} to {1}", "Big brick - bottom right", "Big brick - bottom left");
-            CreateTilesForScrolling(pattern_3, pattern_2, fileName, description);
+            description = String.Format("; -------- Tile transitions from {0} to {1}", fileName + " - bottom right", fileName + " - bottom left");
+            CreateTilesForScrolling(pattern_3_bottom_right, pattern_2_bottom_left, fileName, description);
 
 
 
             //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "top left"));
-            //ShowColors(color_BigBricks_0);
+            CreateColorPattern(color_0_top_left, fileName + "_top_left");
 
             //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "top right"));
-            //ShowColors(color_BigBricks_1);
+            CreateColorPattern(color_1_top_right, fileName + "_top_right");
 
             //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "bottom left"));
-            //ShowColors(color_BigBricks_2);
+            CreateColorPattern(color_2_bottom_left, fileName + "_bottom_left");
 
             //Console.WriteLine(String.Format("; -------- Colors for {0} {1}", "Big brick", "bottom right"));
-            //ShowColors(color_BigBricks_3);
+            CreateColorPattern(color_3_bottom_right, fileName + "_bottom_right");
+        }
+
+        static void CreateColorPattern(IList<string> colors, string fileName)
+        {
+            var extension = ".s";
+            fileName = "Color_" + fileName + extension;
+            using (StreamWriter sw = new StreamWriter(fileName, true))
+            {
+                foreach (var line in colors)
+                {
+                    sw.WriteLine("\tdb  0x" + line);
+                }
+                sw.WriteLine("; -----------------------");
+            }
         }
     }
 }

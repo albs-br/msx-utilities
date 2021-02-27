@@ -78,9 +78,18 @@ namespace MSXUtilities
             Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
             Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
 
+            // Tile pattern # 49    bg              --> top left
+            // Tile pattern # 57    top left        --> top right
+            // Tile pattern # 65    top right       --> bg
+            // Tile pattern # 73    top right       --> top left
+            // Tile pattern # 81    bg              --> bottom left
+            // Tile pattern # 89    bottom left     --> bottom right
+            // Tile pattern # 97    bottom right    --> bg
+            // Tile pattern # 105   bottom right    --> bottom left
             builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
                 pattern_BigBricks_0, pattern_BigBricks_1, pattern_BigBricks_2, pattern_BigBricks_3,
-                "BigBricks.s");
+                color_BigBricks_0, color_BigBricks_1, color_BigBricks_2, color_BigBricks_3,
+                "BigBricks");
 
             #region Small bricks
 
@@ -112,15 +121,6 @@ namespace MSXUtilities
             #endregion
 
 
-        }
-
-        static void ShowColors(IList<string> colors)
-        {
-            foreach (var line in colors)
-            {
-                Console.WriteLine("\tdb  0x" + line);
-            }
-            Console.WriteLine("; -----------------------");
         }
 
         static void CreateTileMapForPenguimPlatformer()
