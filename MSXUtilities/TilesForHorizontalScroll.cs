@@ -17,6 +17,7 @@ namespace MSXUtilities
         {
             var extension = ".s";
             fileName = "Pattern_" + fileName + extension;
+
             using (StreamWriter sw = new StreamWriter(fileName, true))
             {
                 sw.WriteLine(description);
@@ -98,6 +99,14 @@ namespace MSXUtilities
             string fileName
             )
         {
+            var extension = ".s";
+            var fileNameToBeDeleted = "Pattern_" + fileName + extension;
+
+            if (File.Exists(fileNameToBeDeleted))
+            {
+                File.Delete(fileNameToBeDeleted);
+            }
+
             var description = String.Format("; -------- Tile transitions from {0} to {1}", "Bg", fileName + " - top left");
             CreateTilesForScrolling(pattern_Bg, pattern_0_top_left, fileName, description);
 
@@ -143,6 +152,12 @@ namespace MSXUtilities
         {
             var extension = ".s";
             fileName = "Color_" + fileName + extension;
+
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
             using (StreamWriter sw = new StreamWriter(fileName, true))
             {
                 foreach (var line in colors)

@@ -65,6 +65,8 @@ namespace MSXUtilities.Tiles
                 throw new Exception("Pattern has more than 2 colors");
             }
 
+            sourcePattern = sourcePattern.Replace(".", "1").Replace("0", "1");
+
             // TIL: color vs colour (American vs British spelling)
             var colourOf1stBit = Char.Parse(sourcePattern.Substring(0, 1));
 
@@ -76,15 +78,10 @@ namespace MSXUtilities.Tiles
                 {
                     fgColor = colourOf1stBit;
                 }
-                else
-                {
-                    fgColor = '1';
-                }
             }
             else if (!sourcePattern.Contains("1"))
             {
-                bgColor = colourOf1stBit;
-                //throw new Exception("Error");
+                throw new Exception("2 colour pattern must contain the color black");
             }
 
             var destinyPattern = "";

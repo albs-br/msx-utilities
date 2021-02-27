@@ -29,8 +29,8 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            //CreateTilesForPenguimPlatformer();
-            CreateTileMapForPenguimPlatformer();
+            CreateTilesForPenguimPlatformer();
+            //CreateTileMapForPenguimPlatformer();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -74,9 +74,9 @@ namespace MSXUtilities
 
             // old code:
             Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
-            Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
+            //Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
             
-            Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
+            //Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
             Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
 
             // Tile pattern # 49    bg              --> top left
@@ -87,10 +87,10 @@ namespace MSXUtilities
             // Tile pattern # 89    bottom left     --> bottom right
             // Tile pattern # 97    bottom right    --> bg
             // Tile pattern # 105   bottom right    --> bottom left
-            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
-                pattern_BigBricks_0, pattern_BigBricks_1, pattern_BigBricks_2, pattern_BigBricks_3,
-                color_BigBricks_0, color_BigBricks_1, color_BigBricks_2, color_BigBricks_3,
-                "BigBricks");
+            //builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+            //    pattern_BigBricks_0, pattern_BigBricks_1, pattern_BigBricks_2, pattern_BigBricks_3,
+            //    color_BigBricks_0, color_BigBricks_1, color_BigBricks_2, color_BigBricks_3,
+            //    "BigBricks");
 
             // Tile pattern # 113   bg              --> top left
             // Tile pattern # 121   top left        --> top right

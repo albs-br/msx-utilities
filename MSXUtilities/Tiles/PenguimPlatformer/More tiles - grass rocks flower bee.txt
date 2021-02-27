@@ -2,7 +2,7 @@
 msx1
 #Slot 0
 ..CCC..CC...CCC.
-CC333CC33CCC333C
+CCCCCCCCCCCCCCCC
 3333333333333333
 3.3..3.3..3.3.3.
 ................
@@ -10,8 +10,8 @@ CC333CC33CCC333C
 99..999.99.9999.
 666.66..66.6666.
 66..66.6...6666.
-.........6..66..
-.99.99..999.....
+6........6..66..
+..9.99..999.....
 666.66.66666...6
 66..6...666..6.6
 ......9.....99..
@@ -26,13 +26,13 @@ CC333CC33CCC333C
 ..E.E.E...EE....
 ...EEE..F....F..
 .......FFF..FFF.
-FFFF..EE.E.EEEE.
-FFFFF..EE..EEEE.
+FFFF..FF.F.FFFF.
+EEEEE..EE..EEEE.
 EEEEE......E.EE.
-EEEEE..FF...E.E.
-EEE.E.FFFF..EE..
+EEEEE..EE...E.E.
+EEE.E.EEEE..EE..
 E.EEE.EEEEE.....
-EEEE...E.EE..FF.
+EEEE...E.EE..EE.
 .EE.....EE...EE.
 #Slot 2
 ................
