@@ -29,8 +29,8 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            CreateTilesForPenguimPlatformer();
-            //CreateTileMapForPenguimPlatformer();
+            //CreateTilesForPenguimPlatformer();
+            CreateTileMapForPenguimPlatformer();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -72,9 +72,10 @@ namespace MSXUtilities
             IList<string> color_Grass_2 = new List<string>();
             IList<string> color_Grass_3 = new List<string>();
 
-
+            // old code:
             Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
             Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
+            
             Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
             Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
 
@@ -91,6 +92,21 @@ namespace MSXUtilities
                 color_BigBricks_0, color_BigBricks_1, color_BigBricks_2, color_BigBricks_3,
                 "BigBricks");
 
+            // Tile pattern # 113   bg              --> top left
+            // Tile pattern # 121   top left        --> top right
+            // Tile pattern # 129   top right       --> bg
+            // Tile pattern # 137   top right       --> top left
+            // Tile pattern # 145   bg              --> bottom left
+            // Tile pattern # 153   bottom left     --> bottom right
+            // Tile pattern # 161   bottom right    --> bg
+            // Tile pattern # 169   bottom right    --> bottom left
+            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+                pattern_Grass_0, pattern_Grass_1, pattern_Grass_2, pattern_Grass_3,
+                color_Grass_0, color_Grass_1, color_Grass_2, color_Grass_3,
+                "Grass");
+
+
+            // old code:
             #region Small bricks
 
             // Tile pattern # 1
@@ -142,7 +158,7 @@ namespace MSXUtilities
 
             // ---- Conversion logic from tilemap 16x16 static to 8x8 animated
 
-            // Loop all tilemap16x16 testing < 256 and filling with zeroes to make = 256
+            // 1st step: Loop all tilemap16x16 testing < 256 and filling with zeroes to make = 256
             for (int line = 0; line < tileMap_16x16_Static.Count; line++)
             {
                 if (tileMap_16x16_Static[line].Count > TILEMAP_SIZE_IN_8X8_COLUMNS / 2)
@@ -156,7 +172,7 @@ namespace MSXUtilities
                 }
             }
 
-            // Loop all tilemap16x16 converting to 8x8 static
+            // 2nd step: Loop all tilemap16x16 converting to 8x8 static
             //      ex. input:  { 0, 1, 0}
             //          output: { 0, 0, 9, 9, 0, 0}
             //                  { 0, 0,33,33, 0, 0}
@@ -175,7 +191,7 @@ namespace MSXUtilities
                         tileMap_8x8_Animated[(line * 2) + 1].Add(0);
                         tileMap_8x8_Animated[(line * 2) + 1].Add(0);
                     }
-                    // small bricks
+                    // Small Bricks
                     else if (tileMap_16x16_Static[line][column] == 1)
                     {
                         tileMap_8x8_Animated[line * 2].Add(9);
@@ -183,7 +199,7 @@ namespace MSXUtilities
                         tileMap_8x8_Animated[(line * 2) + 1].Add(33);
                         tileMap_8x8_Animated[(line * 2) + 1].Add(33);
                     }
-                    // big bricks
+                    // Big Bricks
                     else if (tileMap_16x16_Static[line][column] == 2)
                     {
                         tileMap_8x8_Animated[line * 2].Add(57);
@@ -191,10 +207,18 @@ namespace MSXUtilities
                         tileMap_8x8_Animated[(line * 2) + 1].Add(89);
                         tileMap_8x8_Animated[(line * 2) + 1].Add(97);
                     }
+                    // Grass
+                    else if (tileMap_16x16_Static[line][column] == 3)
+                    {
+                        tileMap_8x8_Animated[line * 2].Add(57 + 64);
+                        tileMap_8x8_Animated[line * 2].Add(65 + 64);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(89 + 64);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(97 + 64);
+                    }
                 }
             }
 
-            // loop all tilemap8x8 static converting to 8x8 animated
+            // 3rd step: loop all tilemap8x8 static converting to 8x8 animated
             //      ex. input:  { 0, 0, 9, 9, 0, 0}
             //                  { 0, 0,33,33, 0, 0}
             //      ex. output: { 0, 1, 9,17, 0, 0}
@@ -227,6 +251,20 @@ namespace MSXUtilities
                     {
                         tileMap_8x8_Animated[line][column] = 73;
                         tileMap_8x8_Animated[line + 1][column] = 105;
+                    }
+
+                    // Grass
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 121)
+                    {
+                        tileMap_8x8_Animated[line][column] = 113;
+                        tileMap_8x8_Animated[line][column + 1] = 121;
+                        tileMap_8x8_Animated[line + 1][column] = 145;
+                        tileMap_8x8_Animated[line + 1][column + 1] = 153;
+                    }
+                    else if (tileMap_8x8_Animated[line][column] == 129 && tileMap_8x8_Animated[line][column + 1] == 121)
+                    {
+                        tileMap_8x8_Animated[line][column] = 137;
+                        tileMap_8x8_Animated[line + 1][column] = 169;
                     }
                 }
             }
