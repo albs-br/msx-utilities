@@ -29,8 +29,8 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            CreateTilesForPenguimPlatformer();
-            //CreateTileMapForPenguimPlatformer();
+            //CreateTilesForPenguimPlatformer();
+            CreateTileMapForPenguimPlatformer();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -72,12 +72,22 @@ namespace MSXUtilities
             IList<string> color_Grass_2 = new List<string>();
             IList<string> color_Grass_3 = new List<string>();
 
+            IList<string> pattern_Rocks_0 = new List<string>();
+            IList<string> pattern_Rocks_1 = new List<string>();
+            IList<string> pattern_Rocks_2 = new List<string>();
+            IList<string> pattern_Rocks_3 = new List<string>();
+            IList<string> color_Rocks_0 = new List<string>();
+            IList<string> color_Rocks_1 = new List<string>();
+            IList<string> color_Rocks_2 = new List<string>();
+            IList<string> color_Rocks_3 = new List<string>();
+
             // old code:
             Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
             //Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
             
             //Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
             Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
+            Tiles.PenguimPlatformer.Bg_Rocks.LoadFromTinySpriteBackup(out pattern_Rocks_0, out color_Rocks_0, out pattern_Rocks_1, out color_Rocks_1, out pattern_Rocks_2, out color_Rocks_2, out pattern_Rocks_3, out color_Rocks_3);
 
             // Tile pattern # 49    bg              --> top left
             // Tile pattern # 57    top left        --> top right
@@ -105,6 +115,18 @@ namespace MSXUtilities
                 color_Grass_0, color_Grass_1, color_Grass_2, color_Grass_3,
                 "Grass");
 
+            // Tile pattern # 177   bg              --> top left
+            // Tile pattern # 185   top left        --> top right
+            // Tile pattern # 193   top right       --> bg
+            // Tile pattern # 201   top right       --> top left
+            // Tile pattern # 209   bg              --> bottom left
+            // Tile pattern # 217   bottom left     --> bottom right
+            // Tile pattern # 225   bottom right    --> bg
+            // Tile pattern # 233   bottom right    --> bottom left
+            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+                pattern_Rocks_0, pattern_Rocks_1, pattern_Rocks_2, pattern_Rocks_3,
+                color_Rocks_0, color_Rocks_1, color_Rocks_2, color_Rocks_3,
+                "Rocks");
 
             // old code:
             #region Small bricks
@@ -215,6 +237,14 @@ namespace MSXUtilities
                         tileMap_8x8_Animated[(line * 2) + 1].Add(89 + 64);
                         tileMap_8x8_Animated[(line * 2) + 1].Add(97 + 64);
                     }
+                    // Rocks
+                    else if (tileMap_16x16_Static[line][column] == 4)
+                    {
+                        tileMap_8x8_Animated[line * 2].Add(57 + 128);
+                        tileMap_8x8_Animated[line * 2].Add(65 + 128);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(89 + 128);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(97 + 128);
+                    }
                 }
             }
 
@@ -266,9 +296,24 @@ namespace MSXUtilities
                         tileMap_8x8_Animated[line][column] = 137;
                         tileMap_8x8_Animated[line + 1][column] = 169;
                     }
+
+                    // Rocks
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 121 + 64)
+                    {
+                        tileMap_8x8_Animated[line][column] = 113 + 64;
+                        tileMap_8x8_Animated[line][column + 1] = 121 + 64;
+                        tileMap_8x8_Animated[line + 1][column] = 145 + 64;
+                        tileMap_8x8_Animated[line + 1][column + 1] = 153 + 64;
+                    }
+                    else if (tileMap_8x8_Animated[line][column] == 129 + 64 && tileMap_8x8_Animated[line][column + 1] == 121 + 64)
+                    {
+                        tileMap_8x8_Animated[line][column] = 137 + 64;
+                        tileMap_8x8_Animated[line + 1][column] = 169 + 64;
+                    }
                 }
             }
 
+            // Save output file
             for (int line = 0; line < tileMap_8x8_Animated.Count; line++)
             {
                 if (tileMap_8x8_Animated[line].Count != TILEMAP_SIZE_IN_8X8_COLUMNS)
