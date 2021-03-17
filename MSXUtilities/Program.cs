@@ -29,8 +29,8 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            //CreateTilesForPenguimPlatformer();
-            CreateTileMapForPenguimPlatformer();
+            CreateTilesForPenguimPlatformer();
+            //CreateTileMapForPenguimPlatformer();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -81,6 +81,15 @@ namespace MSXUtilities
             IList<string> color_Rocks_2 = new List<string>();
             IList<string> color_Rocks_3 = new List<string>();
 
+            IList<string> pattern_Diamond_0 = new List<string>();
+            IList<string> pattern_Diamond_1 = new List<string>();
+            IList<string> pattern_Diamond_2 = new List<string>();
+            IList<string> pattern_Diamond_3 = new List<string>();
+            IList<string> color_Diamond_0 = new List<string>();
+            IList<string> color_Diamond_1 = new List<string>();
+            IList<string> color_Diamond_2 = new List<string>();
+            IList<string> color_Diamond_3 = new List<string>();
+
             // old code:
             Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
             //Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
@@ -88,6 +97,7 @@ namespace MSXUtilities
             //Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
             Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
             Tiles.PenguimPlatformer.Bg_Rocks.LoadFromTinySpriteBackup(out pattern_Rocks_0, out color_Rocks_0, out pattern_Rocks_1, out color_Rocks_1, out pattern_Rocks_2, out color_Rocks_2, out pattern_Rocks_3, out color_Rocks_3);
+            Tiles.PenguimPlatformer.Bg_Diamond.LoadFromTinySpriteBackup(out pattern_Diamond_0, out color_Diamond_0, out pattern_Diamond_1, out color_Diamond_1, out pattern_Diamond_2, out color_Diamond_2, out pattern_Diamond_3, out color_Diamond_3);
 
             // Tile pattern # 49    bg              --> top left
             // Tile pattern # 57    top left        --> top right
@@ -127,6 +137,12 @@ namespace MSXUtilities
                 pattern_Rocks_0, pattern_Rocks_1, pattern_Rocks_2, pattern_Rocks_3,
                 color_Rocks_0, color_Rocks_1, color_Rocks_2, color_Rocks_3,
                 "Rocks");
+
+            // TODO: diamond numbers
+            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+                pattern_Diamond_0, pattern_Diamond_1, pattern_Diamond_2, pattern_Diamond_3,
+                color_Diamond_0, color_Diamond_1, color_Diamond_2, color_Diamond_3,
+                "Diamonds");
 
             // old code:
             #region Small bricks
@@ -206,6 +222,7 @@ namespace MSXUtilities
 
                 for (int column = 0; column < (TILEMAP_SIZE_IN_8X8_COLUMNS / 2); column++)
                 {
+                    // Empty (black)
                     if (tileMap_16x16_Static[line][column] == 0)
                     {
                         tileMap_8x8_Animated[line * 2].Add(0);
