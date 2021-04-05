@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace MSXUtilities.Tiles.PenguimPlatformer
+namespace MSXUtilities.Tiles.PenguinPlatformer
 {
     public class Bg_Rocks : TileBase
     {

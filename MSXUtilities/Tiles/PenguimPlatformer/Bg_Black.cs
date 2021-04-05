@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MSXUtilities.Tiles.PenguimPlatformer
+namespace MSXUtilities.Tiles.PenguinPlatformer
 {
     public class Bg_Black
     {

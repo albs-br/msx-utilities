@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MSXUtilities.Tiles.PenguimPlatformer
+namespace MSXUtilities.Tiles.PenguinPlatformer
 {
     public class Bg_Bricks_Small
     {
@@ -36,9 +36,9 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
             bgColor_0.Add("0x51");
             bgColor_0.Add("0x51");
             bgColor_0.Add("0x01");
-            bgColor_0.Add("0x71");
             bgColor_0.Add("0x51");
-            bgColor_0.Add("0x51");
+            bgColor_0.Add("0x41");
+            bgColor_0.Add("0x41");
 
             bgPattern_1 = new List<string>();
             bgPattern_1.Add("00000000");
@@ -56,9 +56,9 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
             bgColor_1.Add("0x51");
             bgColor_1.Add("0x51");
             bgColor_1.Add("0x01");
-            bgColor_1.Add("0x71");
             bgColor_1.Add("0x51");
-            bgColor_1.Add("0x51");
+            bgColor_1.Add("0x41");
+            bgColor_1.Add("0x41");
 
 
 
@@ -74,9 +74,9 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
 
             bgColor_2 = new List<string>();
             bgColor_2.Add("0x01");
+            bgColor_2.Add("0x71");
             bgColor_2.Add("0x51");
-            bgColor_2.Add("0x41");
-            bgColor_2.Add("0x41");
+            bgColor_2.Add("0x51");
             bgColor_2.Add("0x01");
             bgColor_2.Add("0x51");
             bgColor_2.Add("0x41");
@@ -94,9 +94,9 @@ namespace MSXUtilities.Tiles.PenguimPlatformer
 
             bgColor_3 = new List<string>();
             bgColor_3.Add("0x01");
+            bgColor_3.Add("0x71");
             bgColor_3.Add("0x51");
-            bgColor_3.Add("0x41");
-            bgColor_3.Add("0x41");
+            bgColor_3.Add("0x51");
             bgColor_3.Add("0x01");
             bgColor_3.Add("0x51");
             bgColor_3.Add("0x41");

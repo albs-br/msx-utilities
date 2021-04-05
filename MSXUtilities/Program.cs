@@ -1,4 +1,4 @@
-﻿using MSXUtilities.Tiles.PenguimPlatformer.TileMaps;
+﻿using MSXUtilities.Tiles.PenguinPlatformer.TileMaps;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,15 +29,15 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            //CreateTilesForPenguimPlatformer();
-            CreateTileMapForPenguimPlatformer();
+            CreateTilesForPenguinPlatformer();
+            //CreateTileMapForPenguinPlatformer();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
 
 
-        static void CreateTilesForPenguimPlatformer()
+        static void CreateTilesForPenguinPlatformer()
         {
             var builder = new TilesForHorizontalScroll();
 
@@ -100,15 +100,17 @@ namespace MSXUtilities
             IList<string> color_TestSquare_3 = new List<string>();
 
             // old code:
-            Tiles.PenguimPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
-            //Tiles.PenguimPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
+            Tiles.PenguinPlatformer.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
+            //Tiles.PenguinPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
             
-            //Tiles.PenguimPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
-            Tiles.PenguimPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
-            Tiles.PenguimPlatformer.Bg_Rocks.LoadFromTinySpriteBackup(out pattern_Rocks_0, out color_Rocks_0, out pattern_Rocks_1, out color_Rocks_1, out pattern_Rocks_2, out color_Rocks_2, out pattern_Rocks_3, out color_Rocks_3);
-            Tiles.PenguimPlatformer.Bg_Diamond.LoadFromTinySpriteBackup(out pattern_Diamond_0, out color_Diamond_0, out pattern_Diamond_1, out color_Diamond_1, out pattern_Diamond_2, out color_Diamond_2, out pattern_Diamond_3, out color_Diamond_3);
-            Tiles.PenguimPlatformer.Bg_TestSquare.LoadFromTinySpriteBackup(out pattern_TestSquare_0, out color_TestSquare_0, out pattern_TestSquare_1, out color_TestSquare_1, out pattern_TestSquare_2, out color_TestSquare_2, out pattern_TestSquare_3, out color_TestSquare_3);
+            //Tiles.PenguinPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
+            Tiles.PenguinPlatformer.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
+            Tiles.PenguinPlatformer.Bg_Rocks.LoadFromTinySpriteBackup(out pattern_Rocks_0, out color_Rocks_0, out pattern_Rocks_1, out color_Rocks_1, out pattern_Rocks_2, out color_Rocks_2, out pattern_Rocks_3, out color_Rocks_3);
+            Tiles.PenguinPlatformer.Bg_Diamond.LoadFromTinySpriteBackup(out pattern_Diamond_0, out color_Diamond_0, out pattern_Diamond_1, out color_Diamond_1, out pattern_Diamond_2, out color_Diamond_2, out pattern_Diamond_3, out color_Diamond_3);
+            Tiles.PenguinPlatformer.Bg_TestSquare.LoadFromTinySpriteBackup(out pattern_TestSquare_0, out color_TestSquare_0, out pattern_TestSquare_1, out color_TestSquare_1, out pattern_TestSquare_2, out color_TestSquare_2, out pattern_TestSquare_3, out color_TestSquare_3);
 
+            // TODO: Fix these numbers, all of them are worng, as the small bricks now are 24 tiles, not 48
+            
             // Tile pattern # 49    bg              --> top left
             // Tile pattern # 57    top left        --> top right
             // Tile pattern # 65    top right       --> bg
@@ -193,7 +195,7 @@ namespace MSXUtilities
 
         }
 
-        static void CreateTileMapForPenguimPlatformer()
+        static void CreateTileMapForPenguinPlatformer()
         {
             var fileName = "TileMap_Page_{0}.s";
 
@@ -251,32 +253,32 @@ namespace MSXUtilities
                     {
                         tileMap_8x8_Animated[line * 2].Add(9);
                         tileMap_8x8_Animated[line * 2].Add(9);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(33);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(33);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(9);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(9);
                     }
                     // Big Bricks
                     else if (tileMap_16x16_Static[line][column] == 2)
                     {
-                        tileMap_8x8_Animated[line * 2].Add(57);
-                        tileMap_8x8_Animated[line * 2].Add(65);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(89);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(97);
+                        tileMap_8x8_Animated[line * 2].Add(57 - 24);
+                        tileMap_8x8_Animated[line * 2].Add(65 - 24);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(89 - 24);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(97 - 24);
                     }
                     // Grass
                     else if (tileMap_16x16_Static[line][column] == 3)
                     {
-                        tileMap_8x8_Animated[line * 2].Add(57 + 64);
-                        tileMap_8x8_Animated[line * 2].Add(65 + 64);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(89 + 64);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(97 + 64);
+                        tileMap_8x8_Animated[line * 2].Add(57 + 64 - 24);
+                        tileMap_8x8_Animated[line * 2].Add(65 + 64 - 24);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(89 + 64 - 24);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(97 + 64 - 24);
                     }
                     // Rocks
                     else if (tileMap_16x16_Static[line][column] == 4)
                     {
-                        tileMap_8x8_Animated[line * 2].Add(57 + 128);
-                        tileMap_8x8_Animated[line * 2].Add(65 + 128);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(89 + 128);
-                        tileMap_8x8_Animated[(line * 2) + 1].Add(97 + 128);
+                        tileMap_8x8_Animated[line * 2].Add(57 + 128 - 24);
+                        tileMap_8x8_Animated[line * 2].Add(65 + 128 - 24);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(89 + 128 - 24);
+                        tileMap_8x8_Animated[(line * 2) + 1].Add(97 + 128 - 24);
                     }
                 }
             }
@@ -294,54 +296,54 @@ namespace MSXUtilities
                     if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 9)
                     {
                         tileMap_8x8_Animated[line][column] =     1;
-                        tileMap_8x8_Animated[line + 1][column] = 25;
+                        tileMap_8x8_Animated[line + 1][column] = 1;
                     }
                     else if (tileMap_8x8_Animated[line][column] == 9 && tileMap_8x8_Animated[line][column + 1] == 0)
                     {
                         tileMap_8x8_Animated[line][column] = 17;
-                        tileMap_8x8_Animated[line + 1][column] = 41;
+                        tileMap_8x8_Animated[line + 1][column] = 17;
                     }
 
                     // Big bricks
-                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 57)
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 57 - 24)
                     {
-                        tileMap_8x8_Animated[line][column]          = 49;
-                        tileMap_8x8_Animated[line][column + 1]      = 57;
-                        tileMap_8x8_Animated[line + 1][column]      = 81;
-                        tileMap_8x8_Animated[line + 1][column + 1]  = 89;
+                        tileMap_8x8_Animated[line][column]          = 49 - 24;
+                        tileMap_8x8_Animated[line][column + 1]      = 57 - 24;
+                        tileMap_8x8_Animated[line + 1][column]      = 81 - 24;
+                        tileMap_8x8_Animated[line + 1][column + 1]  = 89 - 24;
                     }
-                    else if (tileMap_8x8_Animated[line][column] == 65 && tileMap_8x8_Animated[line][column + 1] == 57)
+                    else if (tileMap_8x8_Animated[line][column] == 65 - 24 && tileMap_8x8_Animated[line][column + 1] == 57 - 24)
                     {
-                        tileMap_8x8_Animated[line][column] = 73;
-                        tileMap_8x8_Animated[line + 1][column] = 105;
+                        tileMap_8x8_Animated[line][column] = 73 - 24;
+                        tileMap_8x8_Animated[line + 1][column] = 105 - 24;
                     }
 
                     // Grass
-                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 121)
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 121 - 24)
                     {
-                        tileMap_8x8_Animated[line][column] = 113;
-                        tileMap_8x8_Animated[line][column + 1] = 121;
-                        tileMap_8x8_Animated[line + 1][column] = 145;
-                        tileMap_8x8_Animated[line + 1][column + 1] = 153;
+                        tileMap_8x8_Animated[line][column] = 113 - 24;
+                        tileMap_8x8_Animated[line][column + 1] = 121 - 24;
+                        tileMap_8x8_Animated[line + 1][column] = 145 - 24;
+                        tileMap_8x8_Animated[line + 1][column + 1] = 153 - 24;
                     }
-                    else if (tileMap_8x8_Animated[line][column] == 129 && tileMap_8x8_Animated[line][column + 1] == 121)
+                    else if (tileMap_8x8_Animated[line][column] == 129 - 24 && tileMap_8x8_Animated[line][column + 1] == 121 - 24)
                     {
-                        tileMap_8x8_Animated[line][column] = 137;
-                        tileMap_8x8_Animated[line + 1][column] = 169;
+                        tileMap_8x8_Animated[line][column] = 137 - 24;
+                        tileMap_8x8_Animated[line + 1][column] = 169 - 24;
                     }
 
                     // Rocks
-                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 121 + 64)
+                    if (tileMap_8x8_Animated[line][column] == 0 && tileMap_8x8_Animated[line][column + 1] == 121 + 64 - 24)
                     {
-                        tileMap_8x8_Animated[line][column] = 113 + 64;
-                        tileMap_8x8_Animated[line][column + 1] = 121 + 64;
-                        tileMap_8x8_Animated[line + 1][column] = 145 + 64;
-                        tileMap_8x8_Animated[line + 1][column + 1] = 153 + 64;
+                        tileMap_8x8_Animated[line][column] = 113 + 64 - 24;
+                        tileMap_8x8_Animated[line][column + 1] = 121 + 64 - 24;
+                        tileMap_8x8_Animated[line + 1][column] = 145 + 64 - 24;
+                        tileMap_8x8_Animated[line + 1][column + 1] = 153 + 64 - 24;
                     }
-                    else if (tileMap_8x8_Animated[line][column] == 129 + 64 && tileMap_8x8_Animated[line][column + 1] == 121 + 64)
+                    else if (tileMap_8x8_Animated[line][column] == 129 + 64 - 24 && tileMap_8x8_Animated[line][column + 1] == 121 + 64 - 24)
                     {
-                        tileMap_8x8_Animated[line][column] = 137 + 64;
-                        tileMap_8x8_Animated[line + 1][column] = 169 + 64;
+                        tileMap_8x8_Animated[line][column] = 137 + 64 - 24;
+                        tileMap_8x8_Animated[line + 1][column] = 169 + 64 - 24;
                     }
                 }
             }
