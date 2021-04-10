@@ -10,6 +10,8 @@ namespace MSXUtilities.Tiles.PenguimPlatformer.TileMaps
     {
         public static void Execute()
         {
+            Console.WriteLine("Creating tilemap for Go Penguin");
+
             var fileName = "TileMap_Page_{0}.s";
 
             for (int i = 1; i <= 6; i++)
