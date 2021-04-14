@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MSXUtilities.Tiles.PenguinPlatformer.TileMaps
+namespace MSXUtilities.GoPenguin.TileMaps
 {
     public static class TileMap_Level_Test
     {

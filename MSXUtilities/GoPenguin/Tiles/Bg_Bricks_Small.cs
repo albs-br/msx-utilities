@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MSXUtilities.Tiles.PenguinPlatformer
+namespace MSXUtilities.GoPenguin.Tiles
 {
     public class Bg_Bricks_Small
     {

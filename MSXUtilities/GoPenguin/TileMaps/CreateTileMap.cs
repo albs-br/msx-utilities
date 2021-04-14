@@ -1,10 +1,9 @@
-﻿using MSXUtilities.Tiles.PenguinPlatformer.TileMaps;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace MSXUtilities.Tiles.PenguimPlatformer.TileMaps
+namespace MSXUtilities.GoPenguin.TileMaps
 {
     public static class CreateTileMap
     {

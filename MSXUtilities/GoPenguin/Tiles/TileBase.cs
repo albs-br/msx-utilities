@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace MSXUtilities.Tiles
+namespace MSXUtilities.GoPenguin.Tiles
 {
     public class TileBase
     {
