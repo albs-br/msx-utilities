@@ -255,8 +255,8 @@ namespace MSXUtilities
 
             #region single tile without repetition (2 transitions)
 
-            Tiles.Pacific2.Bg_Land.Load(out bg, out bgColors);
-            Tiles.Pacific2.Rocks.Load(out input, out inputColors);
+            Pacific2.Tiles.Bg_Land.Load(out bg, out bgColors);
+            Pacific2.Tiles.Rocks.Load(out input, out inputColors);
 
             //builder.CreateTilesForScrolling_Entering(input, bg);
             //builder.CreateTilesForScrolling_Exiting(bg, input);

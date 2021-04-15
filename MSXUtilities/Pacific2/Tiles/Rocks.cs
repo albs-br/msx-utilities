@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MSXUtilities.Tiles.Pacific2
+namespace MSXUtilities.Pacific2.Tiles
 {
     public class Rocks
     {
