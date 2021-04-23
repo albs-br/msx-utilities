@@ -29,7 +29,7 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            //CreateTilesForPenguinPlatformer();
+            //CreateTilesForGoPenguin();
             
             // Create Tilemap for Go Penguin
             GoPenguin.TileMaps.CreateTileMap.Execute();
@@ -39,7 +39,7 @@ namespace MSXUtilities
         }
 
 
-        static void CreateTilesForPenguinPlatformer()
+        static void CreateTilesForGoPenguin()
         {
             var builder = new TilesForHorizontalScroll();
 
@@ -103,9 +103,9 @@ namespace MSXUtilities
 
             // old code:
             GoPenguin.Tiles.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
-            //Tiles.PenguinPlatformer.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
-            
-            //Tiles.PenguinPlatformer.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
+            //GoPenguin.Tiles.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
+
+            //GoPenguin.Tiles.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
             GoPenguin.Tiles.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
             GoPenguin.Tiles.Bg_Rocks.LoadFromTinySpriteBackup(out pattern_Rocks_0, out color_Rocks_0, out pattern_Rocks_1, out color_Rocks_1, out pattern_Rocks_2, out color_Rocks_2, out pattern_Rocks_3, out color_Rocks_3);
             GoPenguin.Tiles.Bg_Diamond.LoadFromTinySpriteBackup(out pattern_Diamond_0, out color_Diamond_0, out pattern_Diamond_1, out color_Diamond_1, out pattern_Diamond_2, out color_Diamond_2, out pattern_Diamond_3, out color_Diamond_3);
