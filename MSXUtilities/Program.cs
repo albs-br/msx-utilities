@@ -110,6 +110,15 @@ namespace MSXUtilities
             IList<string> color_EnemyLadybug_2 = new List<string>();
             IList<string> color_EnemyLadybug_3 = new List<string>();
 
+            IList<string> pattern_EnemySnail_0 = new List<string>();
+            IList<string> pattern_EnemySnail_1 = new List<string>();
+            IList<string> pattern_EnemySnail_2 = new List<string>();
+            IList<string> pattern_EnemySnail_3 = new List<string>();
+            IList<string> color_EnemySnail_0 = new List<string>();
+            IList<string> color_EnemySnail_1 = new List<string>();
+            IList<string> color_EnemySnail_2 = new List<string>();
+            IList<string> color_EnemySnail_3 = new List<string>();
+
             // old code:
             GoPenguin.Tiles.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
             //GoPenguin.Tiles.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
@@ -120,6 +129,7 @@ namespace MSXUtilities
             GoPenguin.Tiles.Bg_Diamond.LoadFromTinySpriteBackup(out pattern_Diamond_0, out color_Diamond_0, out pattern_Diamond_1, out color_Diamond_1, out pattern_Diamond_2, out color_Diamond_2, out pattern_Diamond_3, out color_Diamond_3);
             GoPenguin.Tiles.Bg_TestSquare.LoadFromTinySpriteBackup(out pattern_TestSquare_0, out color_TestSquare_0, out pattern_TestSquare_1, out color_TestSquare_1, out pattern_TestSquare_2, out color_TestSquare_2, out pattern_TestSquare_3, out color_TestSquare_3);
             GoPenguin.Tiles.Enemy_Ladybug.LoadFromTinySpriteBackup(out pattern_EnemyLadybug_0, out color_EnemyLadybug_0, out pattern_EnemyLadybug_1, out color_EnemyLadybug_1, out pattern_EnemyLadybug_2, out color_EnemyLadybug_2, out pattern_EnemyLadybug_3, out color_EnemyLadybug_3);
+            GoPenguin.Tiles.Enemy_Snail.LoadFromTinySpriteBackup(out pattern_EnemySnail_0, out color_EnemySnail_0, out pattern_EnemySnail_1, out color_EnemySnail_1, out pattern_EnemySnail_2, out color_EnemySnail_2, out pattern_EnemySnail_3, out color_EnemySnail_3);
 
             // TODO: Fix these numbers, all of them are worng, as the small bricks now are 24 tiles, not 48
             
@@ -162,13 +172,11 @@ namespace MSXUtilities
                 color_Rocks_0, color_Rocks_1, color_Rocks_2, color_Rocks_3,
                 "Rocks");
 
-            // TODO: diamond numbers
             builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
                 pattern_Diamond_0, pattern_Diamond_1, pattern_Diamond_2, pattern_Diamond_3,
                 color_Diamond_0, color_Diamond_1, color_Diamond_2, color_Diamond_3,
                 "Diamonds");
 
-            // TODO: test square numbers
             builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
                 pattern_TestSquare_0, pattern_TestSquare_1, pattern_TestSquare_2, pattern_TestSquare_3,
                 color_TestSquare_0, color_TestSquare_1, color_TestSquare_2, color_TestSquare_3,
@@ -178,6 +186,11 @@ namespace MSXUtilities
                 pattern_EnemyLadybug_0, pattern_EnemyLadybug_1, pattern_EnemyLadybug_2, pattern_EnemyLadybug_3,
                 color_EnemyLadybug_0, color_EnemyLadybug_1, color_EnemyLadybug_2, color_EnemyLadybug_3,
                 "EnemyLadybug");
+
+            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+                pattern_EnemySnail_0, pattern_EnemySnail_1, pattern_EnemySnail_2, pattern_EnemySnail_3,
+                color_EnemySnail_0, color_EnemySnail_1, color_EnemySnail_2, color_EnemySnail_3,
+                "EnemySnail");
 
             // old code:
             #region Small bricks
