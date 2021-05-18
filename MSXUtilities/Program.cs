@@ -182,12 +182,12 @@ namespace MSXUtilities
                 color_TestSquare_0, color_TestSquare_1, color_TestSquare_2, color_TestSquare_3,
                 "TestSquare");
 
-            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+            builder.CreateCompleteSetOfTilesForScrolling_Enemy(patternBgBlack,
                 pattern_EnemyLadybug_0, pattern_EnemyLadybug_1, pattern_EnemyLadybug_2, pattern_EnemyLadybug_3,
                 color_EnemyLadybug_0, color_EnemyLadybug_1, color_EnemyLadybug_2, color_EnemyLadybug_3,
                 "EnemyLadybug");
 
-            builder.CreateCompleteSetOfTilesForScrolling(patternBgBlack,
+            builder.CreateCompleteSetOfTilesForScrolling_Enemy(patternBgBlack,
                 pattern_EnemySnail_0, pattern_EnemySnail_1, pattern_EnemySnail_2, pattern_EnemySnail_3,
                 color_EnemySnail_0, color_EnemySnail_1, color_EnemySnail_2, color_EnemySnail_3,
                 "EnemySnail");
