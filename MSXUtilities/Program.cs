@@ -29,10 +29,13 @@ namespace MSXUtilities
 
             //CreateTilesForPacific2()
 
-            CreateTilesForGoPenguin();
+
+
+
+            //CreateTilesForGoPenguin();
             
             // Create Tilemap for Go Penguin
-            //GoPenguin.TileMaps.CreateTileMap.Execute();
+            GoPenguin.TileMaps.CreateTileMap.Execute();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
