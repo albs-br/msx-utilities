@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MSXUtilities.GoPenguin.Tiles
 {
-    public class Enemy_Ladybug : TileBase
+    public class Enemy_Snail_Right : TileBase
     {
         public static void LoadFromTinySpriteBackup(
             out IList<string> bgPattern_0,      // top left
@@ -27,17 +27,17 @@ namespace MSXUtilities.GoPenguin.Tiles
                 "................" +
                 "................" +
                 "................" +
-                "........9999...." +
-                "......999..999.." +
+                "................" +
+                ".....BB........." +
+                "...BBBBBB......." +
                 "................" +
                 "................" +
-                "................" +
-                "...FF..........." +
-                "....F..........." +
-                "..4444.........." +
-                ".44444.........." +
-                ".......4......4." +
-                "......44.....44.";
+                "............FF.." +
+                "............F..." +
+                "............CCCC" +
+                "...........CCCCC" +
+                "C.........CCCC.." +
+                "CCC......CCCC...";
 
             LoadFromTinySpriteBackup(
                 input,
