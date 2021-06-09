@@ -32,10 +32,10 @@ namespace MSXUtilities
 
 
 
-            //CreateTilesForGoPenguin();
+            CreateTilesForGoPenguin();
             
             // Create Tilemap for Go Penguin
-            GoPenguin.TileMaps.CreateTileMap.Execute();
+            //GoPenguin.TileMaps.CreateTileMap.Execute();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -112,6 +112,11 @@ namespace MSXUtilities
             IList<string> pattern_EnemyLadybug_Left_2 = new List<string>();
             IList<string> pattern_EnemyLadybug_Left_3 = new List<string>();
 
+            IList<string> pattern_EnemyLadybug_Right_0 = new List<string>();
+            IList<string> pattern_EnemyLadybug_Right_1 = new List<string>();
+            IList<string> pattern_EnemyLadybug_Right_2 = new List<string>();
+            IList<string> pattern_EnemyLadybug_Right_3 = new List<string>();
+
             // Colors are the same for both left and right positions of the character
             IList<string> color_EnemyLadybug_0 = new List<string>();
             IList<string> color_EnemyLadybug_1 = new List<string>();
@@ -149,6 +154,7 @@ namespace MSXUtilities
             GoPenguin.Tiles.Bg_TestSquare.LoadFromTinySpriteBackup(out pattern_TestSquare_0, out color_TestSquare_0, out pattern_TestSquare_1, out color_TestSquare_1, out pattern_TestSquare_2, out color_TestSquare_2, out pattern_TestSquare_3, out color_TestSquare_3);
             
             GoPenguin.Tiles.Enemy_Ladybug_Left.LoadFromTinySpriteBackup(out pattern_EnemyLadybug_Left_0, out color_EnemyLadybug_0, out pattern_EnemyLadybug_Left_1, out color_EnemyLadybug_1, out pattern_EnemyLadybug_Left_2, out color_EnemyLadybug_2, out pattern_EnemyLadybug_Left_3, out color_EnemyLadybug_3);
+            GoPenguin.Tiles.Enemy_Ladybug_Right.LoadFromTinySpriteBackup(out pattern_EnemyLadybug_Right_0, out color_EnemyLadybug_0, out pattern_EnemyLadybug_Right_1, out color_EnemyLadybug_1, out pattern_EnemyLadybug_Right_2, out color_EnemyLadybug_2, out pattern_EnemyLadybug_Right_3, out color_EnemyLadybug_3);
             
             GoPenguin.Tiles.Enemy_Snail_Left.LoadFromTinySpriteBackup(out pattern_EnemySnail_Left_0, out color_EnemySnail_0, out pattern_EnemySnail_Left_1, out color_EnemySnail_1, out pattern_EnemySnail_Left_2, out color_EnemySnail_2, out pattern_EnemySnail_Left_3, out color_EnemySnail_3);
             GoPenguin.Tiles.Enemy_Snail_Right.LoadFromTinySpriteBackup(out pattern_EnemySnail_Right_0, out color_EnemySnail_0, out pattern_EnemySnail_Right_1, out color_EnemySnail_1, out pattern_EnemySnail_Right_2, out color_EnemySnail_2, out pattern_EnemySnail_Right_3, out color_EnemySnail_3);
@@ -207,7 +213,12 @@ namespace MSXUtilities
             builder.CreateCompleteSetOfTilesForScrolling_Enemy(patternBgBlack,
                 pattern_EnemyLadybug_Left_0, pattern_EnemyLadybug_Left_1, pattern_EnemyLadybug_Left_2, pattern_EnemyLadybug_Left_3,
                 color_EnemyLadybug_0, color_EnemyLadybug_1, color_EnemyLadybug_2, color_EnemyLadybug_3,
-                "EnemyLadybug");
+                "EnemyLadybug_Left");
+
+            builder.CreateCompleteSetOfTilesForScrolling_Enemy(patternBgBlack,
+                pattern_EnemyLadybug_Right_0, pattern_EnemyLadybug_Right_1, pattern_EnemyLadybug_Right_2, pattern_EnemyLadybug_Right_3,
+                color_EnemyLadybug_0, color_EnemyLadybug_1, color_EnemyLadybug_2, color_EnemyLadybug_3,
+                "EnemyLadybug_Right");
 
             builder.CreateCompleteSetOfTilesForScrolling_Enemy(patternBgBlack,
                 pattern_EnemySnail_Left_0, pattern_EnemySnail_Left_1, pattern_EnemySnail_Left_2, pattern_EnemySnail_Left_3,
