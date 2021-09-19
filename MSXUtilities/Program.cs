@@ -33,9 +33,11 @@ namespace MSXUtilities
 
 
             //CreateTilesForGoPenguin();
-            
+
             // Create Tilemap for Go Penguin
-            GoPenguin.TileMaps.CreateTileMap.Execute();
+            //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_1.TileMap_TestLevel_1.LoadTileMap();
+            var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_2.TileMap_TestLevel_2.LoadTileMap();
+            GoPenguin.TileMaps.CreateTileMap.Execute(tileMap_16x16_Static);
 
             Console.WriteLine("Done.");
             Console.ReadLine();

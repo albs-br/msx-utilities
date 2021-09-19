@@ -7,7 +7,7 @@ namespace MSXUtilities.GoPenguin.TileMaps
 {
     public static class CreateTileMap
     {
-        public static void Execute()
+        public static void Execute(List<List<int>> tileMap_16x16_Static)
         {
             Console.WriteLine("Creating tilemap for Go Penguin");
 
@@ -23,8 +23,6 @@ namespace MSXUtilities.GoPenguin.TileMaps
             }
 
             const int TILEMAP_SIZE_IN_8X8_COLUMNS = 512;
-
-            var tileMap_16x16_Static = TileMap_Level_Test.LoadTileMap();
 
             // ---- Conversion logic from tilemap 16x16 static to 8x8 animated
 

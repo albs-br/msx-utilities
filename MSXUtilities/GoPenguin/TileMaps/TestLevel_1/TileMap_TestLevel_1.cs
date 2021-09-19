@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MSXUtilities.GoPenguin.TileMaps
+namespace MSXUtilities.GoPenguin.TileMaps.TestLevel_1
 {
-    public static class TileMap_Level_Test
+    public static class TileMap_TestLevel_1
     {
         public static List<List<int>> LoadTileMap()
         {
