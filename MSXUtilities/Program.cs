@@ -149,9 +149,9 @@ namespace MSXUtilities
 
             // old code:
             GoPenguin.Tiles.Bg_Black.Load(out patternBgBlack, out colorBgBlack);
-            //GoPenguin.Tiles.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
+            GoPenguin.Tiles.Bg_Bricks_Small.Load(out pattern_SmallBricks_0, out color_SmallBricks_0, out pattern_SmallBricks_1, out color_SmallBricks_1, out pattern_SmallBricks_2, out color_SmallBricks_2, out pattern_SmallBricks_3, out color_SmallBricks_3);
 
-            //GoPenguin.Tiles.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
+            GoPenguin.Tiles.Bg_Bricks_Big.LoadFromTinySpriteBackup(out pattern_BigBricks_0, out color_BigBricks_0, out pattern_BigBricks_1, out color_BigBricks_1, out pattern_BigBricks_2, out color_BigBricks_2, out pattern_BigBricks_3, out color_BigBricks_3);
             GoPenguin.Tiles.Bg_Grass.LoadFromTinySpriteBackup(out pattern_Grass_0, out color_Grass_0, out pattern_Grass_1, out color_Grass_1, out pattern_Grass_2, out color_Grass_2, out pattern_Grass_3, out color_Grass_3);
             GoPenguin.Tiles.Bg_Rocks.LoadFromTinySpriteBackup(out pattern_Rocks_0, out color_Rocks_0, out pattern_Rocks_1, out color_Rocks_1, out pattern_Rocks_2, out color_Rocks_2, out pattern_Rocks_3, out color_Rocks_3);
             GoPenguin.Tiles.Bg_Diamond.LoadFromTinySpriteBackup(out pattern_Diamond_0, out color_Diamond_0, out pattern_Diamond_1, out color_Diamond_1, out pattern_Diamond_2, out color_Diamond_2, out pattern_Diamond_3, out color_Diamond_3);
@@ -165,8 +165,12 @@ namespace MSXUtilities
 
 
 
-            // Save a .png file for each tile
-            SaveTilePngImage("grass", pattern_Grass_0, color_Grass_0, pattern_Grass_1, color_Grass_1, pattern_Grass_2, color_Grass_2, pattern_Grass_3, color_Grass_3);
+            // Save a .png file for each tile (will be used on Tiled map editor)
+            SaveTilePngImage("Bricks small", pattern_SmallBricks_0, color_SmallBricks_0, pattern_SmallBricks_1, color_SmallBricks_1, pattern_SmallBricks_2, color_SmallBricks_2, pattern_SmallBricks_3, color_SmallBricks_3);
+            SaveTilePngImage("Bricks big", pattern_BigBricks_0, color_BigBricks_0, pattern_BigBricks_1, color_BigBricks_1, pattern_BigBricks_2, color_BigBricks_2, pattern_BigBricks_3, color_BigBricks_3);
+            SaveTilePngImage("Grass", pattern_Grass_0, color_Grass_0, pattern_Grass_1, color_Grass_1, pattern_Grass_2, color_Grass_2, pattern_Grass_3, color_Grass_3);
+            SaveTilePngImage("Rocks", pattern_Rocks_0, color_Rocks_0, pattern_Rocks_1, color_Rocks_1, pattern_Rocks_2, color_Rocks_2, pattern_Rocks_3, color_Rocks_3);
+            SaveTilePngImage("Diamond", pattern_Diamond_0, color_Diamond_0, pattern_Diamond_1, color_Diamond_1, pattern_Diamond_2, color_Diamond_2, pattern_Diamond_3, color_Diamond_3);
 
 
             // TODO: Fix these numbers, all of them are wrong, as the small bricks now are 24 tiles, not 48
@@ -273,43 +277,53 @@ namespace MSXUtilities
 
         }
 
-        private static void SaveTilePngImage(string fileName, IList<string> pattern_0, IList<string> color_0, IList<string> pattern_Grass_1, IList<string> color_Grass_1, IList<string> pattern_Grass_2, IList<string> color_Grass_2, IList<string> pattern_Grass_3, IList<string> color_Grass_3)
+        private static void SaveTilePngImage(string fileName, 
+            IList<string> pattern_0, IList<string> color_0, IList<string> pattern_1, IList<string> color_1, 
+            IList<string> pattern_2, IList<string> color_2, IList<string> pattern_3, IList<string> color_3)
         {
-            using (Bitmap b = new Bitmap(16, 16))
+            using (Bitmap bmp = new Bitmap(16, 16))
             {
-                using (Graphics g = Graphics.FromImage(b))
+                using (Graphics grp = Graphics.FromImage(bmp))
                 {
-                    g.Clear(Color.Black);
+                    grp.Clear(Color.Black);
                 }
 
-                int x = 0, y = 0, index = 0;
-                foreach (var line in pattern_0)
+                for (int y = 0; y < 16; y++)
                 {
-
-                    x = 0;
-                    for (int i = 0; i < 8; i++)
+                    var patternLine = "";
+                    var colorLine = "";
+                    if (y < 8)
                     {
-                        var bit = line.Substring(i, 1);
+                        patternLine = pattern_0[y] + pattern_1[y];
+                        colorLine = color_0[y];
+                    }
+                    else
+                    {
+                        patternLine = pattern_2[y - 8] + pattern_3[y - 8];
+                        colorLine = color_2[y - 8];
+                    }
+                    colorLine = colorLine.Replace("0x", "");
+
+                    for (int x = 0; x < 16; x++)
+                    {
+                        var bit = patternLine.Substring(x, 1);
                         var hexStr = "";
                         if (bit == "1") // foreground color
                         {
-                            hexStr = color_0[index].Substring(0, 1);
+                            hexStr = colorLine.Substring(0, 1);
                         }
                         else // background color
                         {
-                            hexStr = color_0[index].Substring(1, 1);
+                            hexStr = colorLine.Substring(1, 1);
                         }
+
                         var colorValue = Convert.ToInt32(hexStr, 16);
                         var color = ConvertMsxColorValueToColor(colorValue);
-                        b.SetPixel(x, y, color);
-
-                        x++;
+                        bmp.SetPixel(x, y, color);
                     }
-                    index++;
-                    y++;
                 }
 
-                b.Save(fileName + ".png", ImageFormat.Png);
+                bmp.Save(fileName + ".png", ImageFormat.Png);
             }
         }
 
