@@ -1,6 +1,8 @@
 ﻿using MSXUtilities.GoPenguin.TileMaps;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 
@@ -32,12 +34,12 @@ namespace MSXUtilities
 
 
 
-            //CreateTilesForGoPenguin();
+            CreateTilesForGoPenguin();
 
             // Create Tilemap for Go Penguin
             //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_1.TileMap_TestLevel_1.LoadTileMap();
-            var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_2.TileMap_TestLevel_2.LoadTileMap();
-            GoPenguin.TileMaps.CreateTileMap.Execute(tileMap_16x16_Static);
+            //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_2.TileMap_TestLevel_2.LoadTileMap();
+            //GoPenguin.TileMaps.CreateTileMap.Execute(tileMap_16x16_Static);
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -161,8 +163,14 @@ namespace MSXUtilities
             GoPenguin.Tiles.Enemy_Snail_Left.LoadFromTinySpriteBackup(out pattern_EnemySnail_Left_0, out color_EnemySnail_0, out pattern_EnemySnail_Left_1, out color_EnemySnail_1, out pattern_EnemySnail_Left_2, out color_EnemySnail_2, out pattern_EnemySnail_Left_3, out color_EnemySnail_3);
             GoPenguin.Tiles.Enemy_Snail_Right.LoadFromTinySpriteBackup(out pattern_EnemySnail_Right_0, out color_EnemySnail_0, out pattern_EnemySnail_Right_1, out color_EnemySnail_1, out pattern_EnemySnail_Right_2, out color_EnemySnail_2, out pattern_EnemySnail_Right_3, out color_EnemySnail_3);
 
+
+
+            // Save a .png file for each tile
+            SaveTilePngImage("grass", pattern_Grass_0, color_Grass_0, pattern_Grass_1, color_Grass_1, pattern_Grass_2, color_Grass_2, pattern_Grass_3, color_Grass_3);
+
+
             // TODO: Fix these numbers, all of them are wrong, as the small bricks now are 24 tiles, not 48
-            
+
             // Tile pattern # 49    bg              --> top left
             // Tile pattern # 57    top left        --> top right
             // Tile pattern # 65    top right       --> bg
@@ -263,6 +271,87 @@ namespace MSXUtilities
             #endregion
 
 
+        }
+
+        private static void SaveTilePngImage(string fileName, IList<string> pattern_0, IList<string> color_0, IList<string> pattern_Grass_1, IList<string> color_Grass_1, IList<string> pattern_Grass_2, IList<string> color_Grass_2, IList<string> pattern_Grass_3, IList<string> color_Grass_3)
+        {
+            using (Bitmap b = new Bitmap(16, 16))
+            {
+                using (Graphics g = Graphics.FromImage(b))
+                {
+                    g.Clear(Color.Black);
+                }
+
+                int x = 0, y = 0, index = 0;
+                foreach (var line in pattern_0)
+                {
+
+                    x = 0;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        var bit = line.Substring(i, 1);
+                        var hexStr = "";
+                        if (bit == "1") // foreground color
+                        {
+                            hexStr = color_0[index].Substring(0, 1);
+                        }
+                        else // background color
+                        {
+                            hexStr = color_0[index].Substring(1, 1);
+                        }
+                        var colorValue = Convert.ToInt32(hexStr, 16);
+                        var color = ConvertMsxColorValueToColor(colorValue);
+                        b.SetPixel(x, y, color);
+
+                        x++;
+                    }
+                    index++;
+                    y++;
+                }
+
+                b.Save(fileName + ".png", ImageFormat.Png);
+            }
+        }
+
+        static Color ConvertMsxColorValueToColor(int colorValue)
+        {
+            switch (colorValue)
+            {
+                case 0:
+                    return Color.FromArgb(0, 0, 0);
+                case 1:
+                    return Color.FromArgb(1, 1, 1);
+                case 2:
+                    return Color.FromArgb(62, 184, 73);
+                case 3:
+                    return Color.FromArgb(116, 208, 125);
+                case 4:
+                    return Color.FromArgb(89, 85, 224);
+                case 5:
+                    return Color.FromArgb(128, 118, 241);
+                case 6:
+                    return Color.FromArgb(185, 94, 81);
+                case 7:
+                    return Color.FromArgb(101, 219, 239);
+                case 8:
+                    return Color.FromArgb(219, 101, 89);
+                case 9:
+                    return Color.FromArgb(255, 137, 125);
+                case 10:
+                    return Color.FromArgb(204, 195, 94);
+                case 11:
+                    return Color.FromArgb(222, 208, 135);
+                case 12:
+                    return Color.FromArgb(58, 162, 65);
+                case 13:
+                    return Color.FromArgb(183, 102, 181);
+                case 14:
+                    return Color.FromArgb(204, 204, 204);
+                case 15:
+                    return Color.FromArgb(255, 255, 255);
+                default:
+                    return Color.Black;
+            }
         }
 
         static void CreateTilesForPacific2()
