@@ -34,17 +34,83 @@ namespace MSXUtilities
 
 
 
-            CreateTilesForGoPenguin();
+            //CreateTilesForGoPenguin();
 
             // Create Tilemap for Go Penguin
             //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_1.TileMap_TestLevel_1.LoadTileMap();
             //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_2.TileMap_TestLevel_2.LoadTileMap();
             //GoPenguin.TileMaps.CreateTileMap.Execute(tileMap_16x16_Static);
 
+            // Import tilemap from Tiled Map Editor
+            var Tiled_TileMapFilePath = @"C:\Users\albs_\OneDrive\Desktop\MSX development\GoPenguin\tile map test..csv";
+            var tilemapConverted = ImportTileMapFromTiled(Tiled_TileMapFilePath);
+            GoPenguin.TileMaps.CreateTileMap.Execute(tilemapConverted);
+
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
 
+        private static List<List<int>> ImportTileMapFromTiled(string tileMapFilePath)
+        {
+            var output = new List<List<int>>();
+            var file = File.ReadAllText(tileMapFilePath);
+            
+            var lines = file.Split(Environment.NewLine).ToList();
+            lines  = lines.Where(x => x.Trim() != "").ToList();
+            if (lines.Count() != 12) throw new InvalidDataException("Tilemap file must have exactly 12 lines");
+
+            foreach (var line in lines)
+            {
+                var outputLine = new List<int>();
+
+                var arrayLine = line.Split(",");
+                if (arrayLine.Count() != 256) throw new InvalidDataException("Each line of the tilemap file must have exactly 256 tiles");
+
+                foreach (var item in arrayLine)
+                {
+                    var intValueConverted = 0;
+                    switch (int.Parse(item))
+                    {
+                        case -1:
+                            intValueConverted = 0;
+                            break;
+
+                        case 0:
+                            // Big Bricks
+                            intValueConverted = 2;
+                            break;
+
+                        case 1:
+                            // Small Bricks
+                            intValueConverted = 1;
+                            break;
+
+                        case 2:
+                            // Diamond
+                            intValueConverted = 0;
+                            break;
+
+                        case 3:
+                            // Grass
+                            intValueConverted = 3;
+                            break;
+
+                        case 4:
+                            // Rocks
+                            intValueConverted = 4;
+                            break;
+
+                        default:
+                            break;
+                    }
+                    outputLine.Add(intValueConverted);
+                }
+                
+                output.Add(outputLine);
+            }
+
+            return output;
+        }
 
         static void CreateTilesForGoPenguin()
         {
