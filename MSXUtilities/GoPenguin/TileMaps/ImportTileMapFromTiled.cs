@@ -22,6 +22,7 @@ namespace MSXUtilities.GoPenguin.TileMaps
 
             int x = 0, y = 0;
             var arrayBgObjectsScreens = new string[16];
+            var arrayBgObjectsObjectsperScreen = new int[16];
             foreach (var line in lines)
             {
                 var outputLine = new List<int>();
@@ -70,7 +71,11 @@ namespace MSXUtilities.GoPenguin.TileMaps
                                 "DIAMOND_FIRST_TILE",
                                 y
                                 );
-
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            if (arrayBgObjectsObjectsperScreen[currentScreen] > 16)
+                            {
+                                throw new InvalidDataException(String.Format("Screen number {0} has more than 16 dynamic objects (e.g. Diamonds, enemies, etc)", currentScreen));
+                            }
                             break;
 
                         case 3:
@@ -86,6 +91,23 @@ namespace MSXUtilities.GoPenguin.TileMaps
                         default:
                             break;
                     }
+
+                    int? previousItem = null;
+                    foreach (var outputItem in outputLine)
+                    {
+                        if (previousItem != null && outputItem != 0 && previousItem != 0 && outputItem != previousItem) 
+                        {
+                            throw new InvalidDataException(
+                                String.Format(
+                                    "It's not allowed two different blocks together. Column: {0}, Line: {1}.",
+                                    x, 
+                                    y
+                                ));
+                        }
+
+                        previousItem = outputItem;
+                    }
+
                     outputLine.Add(intValueConverted);
 
                     x++;
