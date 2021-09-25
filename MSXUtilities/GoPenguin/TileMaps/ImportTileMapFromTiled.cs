@@ -30,20 +30,11 @@ namespace MSXUtilities.GoPenguin.TileMaps
                 var arrayLine = line.Split(",");
                 if (arrayLine.Count() != 256) throw new InvalidDataException("Each line of the tilemap file must have exactly 256 tiles");
 
+                const string BASE_STRUCT_BGOBJECTS = "\tdb      {0},     {1},          {2} * 2 * 8,      1,  0,  {3},    0,  0,  0,  0,  0,  0,  0,  0,  0,  0";
                 x = 0;
-                //int lastScreen = 0;
                 foreach (var item in arrayLine)
                 {
                     int currentScreen = x / 16;
-                    //if (currentScreen > lastScreen)
-                    //{
-                    //    bgObjectsText += String.Format(
-                    //        "\tds     256 - ($ - ({0} + {1})), 0                 ; fill with 0s until end of block",
-                    //        startLabel,
-                    //        currentScreen * 256
-                    //        );
-                    //    lastScreen = currentScreen;
-                    //}
 
                     var intValueConverted = 0;
                     switch (int.Parse(item))
@@ -64,18 +55,14 @@ namespace MSXUtilities.GoPenguin.TileMaps
 
                         case 2:
                             // Diamond
-                            //intValueConverted = 0;
                             arrayBgObjectsScreens[currentScreen] +=
-                                String.Format("\tdb      {0},      {1},     {2} * 2 * 8,      1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0" + Environment.NewLine,
+                                String.Format(BASE_STRUCT_BGOBJECTS + Environment.NewLine,
                                 x,
                                 "DIAMOND_FIRST_TILE",
-                                y
+                                y,
+                                0
                                 );
                             arrayBgObjectsObjectsperScreen[currentScreen]++;
-                            if (arrayBgObjectsObjectsperScreen[currentScreen] > 16)
-                            {
-                                throw new InvalidDataException(String.Format("Screen number {0} has more than 16 dynamic objects (e.g. Diamonds, enemies, etc)", currentScreen));
-                            }
                             break;
 
                         case 3:
@@ -88,8 +75,39 @@ namespace MSXUtilities.GoPenguin.TileMaps
                             intValueConverted = 4;
                             break;
 
-                        default:
+                        case 6:
+                            // Ladybug
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS + Environment.NewLine,
+                                x,
+                                "ENEMY_TYPE_A",
+                                y,
+                                "ENEMY_TYPE_LADYBUG_LEFT"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
                             break;
+
+                        case 7:
+                            // Snail
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS + Environment.NewLine,
+                                x,
+                                "ENEMY_TYPE_A",
+                                y,
+                                "ENEMY_TYPE_SNAIL_LEFT"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            break;
+
+
+                        default:
+                            //intValueConverted = 0;
+                            break;
+                    }
+                    
+                    if (arrayBgObjectsObjectsperScreen[currentScreen] > 16)
+                    {
+                        throw new InvalidDataException(String.Format("Screen number {0} has more than 16 dynamic objects (e.g. Diamonds, enemies, etc)", currentScreen));
                     }
 
                     int? previousItem = null;
