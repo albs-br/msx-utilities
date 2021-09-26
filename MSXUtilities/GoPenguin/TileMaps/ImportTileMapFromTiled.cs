@@ -30,7 +30,9 @@ namespace MSXUtilities.GoPenguin.TileMaps
                 var arrayLine = line.Split(",");
                 if (arrayLine.Count() != 256) throw new InvalidDataException("Each line of the tilemap file must have exactly 256 tiles");
 
-                const string BASE_STRUCT_BGOBJECTS = "\tdb      {0},     {1},          {2} * 2 * 8,      1,  0,  {3},    0,  0,  0,  0,  0,  0,  0,  0,  0,  0";
+                const string BASE_STRUCT_BGOBJECTS =         "\tdb      {0},     {1},          {2} * 2 * 8,      1,  0,  {3},    0,  0,  0,  0,  0,  0,  0,  0,  0,  0";
+                const string BASE_STRUCT_BGOBJECTS_ENEMY_B = "\tdb      {0},     {1},          {2} * 2 * 8,      1,  0,  {3},    ({2} * 2 * 8) {4},  ({2} * 2 * 8) {5},  0,  0,  0,  0,  0,  0,  0,  0";
+
                 x = 0;
                 foreach (var item in arrayLine)
                 {
@@ -95,6 +97,62 @@ namespace MSXUtilities.GoPenguin.TileMaps
                                 "ENEMY_TYPE_A",
                                 y,
                                 "ENEMY_TYPE_SNAIL_LEFT"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            break;
+
+                        case 8:
+                            // Armadillo
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS_ENEMY_B + Environment.NewLine,
+                                x,
+                                "ENEMY_TYPE_B",
+                                y,
+                                "ENEMY_TYPE_ARMADILLO_LEFT",
+                                "+ 9",
+                                "- 7"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            break;
+
+                        case 9:
+                            // Dino
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS_ENEMY_B + Environment.NewLine,
+                                x,
+                                "ENEMY_TYPE_B",
+                                y,
+                                "ENEMY_TYPE_DINO_LEFT",
+                                "+ 14",
+                                "- 5"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            break;
+
+                        case 10:
+                            // Elephant
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS_ENEMY_B + Environment.NewLine,
+                                x,
+                                "ENEMY_TYPE_B",
+                                y,
+                                "ENEMY_TYPE_ELEPHANT_LEFT",
+                                "+ 15",
+                                "- 5"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            break;
+
+                        case 11:
+                            // Centipede
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS_ENEMY_B + Environment.NewLine,
+                                x,
+                                "ENEMY_TYPE_B",
+                                y,
+                                "ENEMY_TYPE_CENTIPEDE_LEFT",
+                                "+ 15",
+                                "- 4"
                                 );
                             arrayBgObjectsObjectsperScreen[currentScreen]++;
                             break;
