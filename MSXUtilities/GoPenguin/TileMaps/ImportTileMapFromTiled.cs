@@ -30,6 +30,7 @@ namespace MSXUtilities.GoPenguin.TileMaps
                 var arrayLine = line.Split(",");
                 if (arrayLine.Count() != 256) throw new InvalidDataException("Each line of the tilemap file must have exactly 256 tiles");
 
+                                                            //  db        9, SCENERY,            9 * 2 * 8,      1,  0,  SCENERY_TYPE_BUSH,         0,  0,  0,  0,  0,  0,  0,  0,  0,  0
                 const string BASE_STRUCT_BGOBJECTS =         "\tdb      {0},     {1},          {2} * 2 * 8,      1,  0,  {3},    0,  0,  0,  0,  0,  0,  0,  0,  0,  0";
                 const string BASE_STRUCT_BGOBJECTS_ENEMY_B = "\tdb      {0},     {1},          {2} * 2 * 8,      1,  0,  {3},    ({2} * 2 * 8) {4},  ({2} * 2 * 8) {5},  0,  0,  0,  0,  0,  0,  0,  0";
 
@@ -156,6 +157,31 @@ namespace MSXUtilities.GoPenguin.TileMaps
                                 );
                             arrayBgObjectsObjectsperScreen[currentScreen]++;
                             break;
+                        
+                        case 12:
+                            // Scenery bush
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS + Environment.NewLine,
+                                x,
+                                "SCENERY",
+                                y,
+                                "SCENERY_TYPE_BUSH"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            break;
+
+                        case 13:
+                            // Scenery fence
+                            arrayBgObjectsScreens[currentScreen] +=
+                                String.Format(BASE_STRUCT_BGOBJECTS + Environment.NewLine,
+                                x,
+                                "SCENERY",
+                                y,
+                                "SCENERY_TYPE_FENCE"
+                                );
+                            arrayBgObjectsObjectsperScreen[currentScreen]++;
+                            break;
+
 
 
                         default:
