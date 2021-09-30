@@ -42,13 +42,68 @@ namespace MSXUtilities
             //GoPenguin.TileMaps.CreateTileMap.Execute(tileMap_16x16_Static);
 
             // Import tilemap from Tiled Map Editor
-            var Tiled_TileMapFilePath = @"C:\Users\albs_\OneDrive\Desktop\MSX development\GoPenguin\tile map test..csv";
-            var baseLabel = "BgObjectsInitialState_TestLevel_2";
-            var tilemapConverted = GoPenguin.TileMaps.ImportTileMapFromTiled.Execute(Tiled_TileMapFilePath, baseLabel);
-            GoPenguin.TileMaps.CreateTileMap.Execute(tilemapConverted);
+            //var Tiled_TileMapFilePath = @"C:\Users\albs_\OneDrive\Desktop\MSX development\GoPenguin\tile map test..csv";
+            //var baseLabel = "BgObjectsInitialState_TestLevel_2";
+            //var tilemapConverted = GoPenguin.TileMaps.ImportTileMapFromTiled.Execute(Tiled_TileMapFilePath, baseLabel);
+            //GoPenguin.TileMaps.CreateTileMap.Execute(tilemapConverted);
+
+            var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\95254 cropped 304x1008.bmp";
+            var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
+            var heightSc8 = (16 * 1024) / 256;  // 128 bytes per line (e.g. screen 8)
+            SplitImageIn16KbChunks(image, heightSc5, "aerofighters");
 
             Console.WriteLine("Done.");
             Console.ReadLine();
+        }
+
+        
+        /// <summary>
+        /// Split image file in BMP format in smaller images that, when converted to MSX formats (.sc5, .sc8)
+        /// will give 16 kb chunks to fit a Mega ROM page
+        /// </summary>
+        /// <param name="imageSourcePath"></param>
+        /// <param name="height"></param>
+        /// <param name="destinyBaseFilename"></param>
+        private static void SplitImageIn16KbChunks(string imageSourcePath, int height, string destinyBaseFilename)
+        {
+            using (Bitmap bmpSource = new Bitmap(imageSourcePath))
+            {
+                if (bmpSource.Width < 256) 
+                {
+                    throw new InvalidDataException("Source image should be at least 256 pixels wide");
+                }
+
+                int? lastImageNumber = null;
+                Bitmap bmpDestiny = null;
+                int yDest = 0;
+                for (int y = 0; y < bmpSource.Height; y++)
+                {
+                    var currentImageNumber = ((int)(y / height));
+
+                    if (lastImageNumber == null || lastImageNumber != currentImageNumber)
+                    {
+                        if (bmpDestiny != null)
+                        {
+                            bmpDestiny.Save(destinyBaseFilename + "_" + lastImageNumber + ".bmp", ImageFormat.Bmp);
+                        }
+
+                        lastImageNumber = currentImageNumber;
+                        yDest = 0;
+
+                        //height = ((bmpSource.Height - (currentImageNumber * height)) < height) ? (bmpSource.Height - (currentImageNumber * height)) : height;
+
+                        bmpDestiny = new Bitmap(256, height);
+                    }
+
+                    for (int x = 0; x < 256; x++)
+                    {
+                        bmpDestiny.SetPixel(x, yDest, bmpSource.GetPixel(x, y));
+                    }
+
+                    yDest++;
+                }
+                bmpDestiny.Save(destinyBaseFilename + "_" + lastImageNumber + ".bmp", ImageFormat.Bmp);
+            }
         }
 
         static void CreateTilesForGoPenguin()
