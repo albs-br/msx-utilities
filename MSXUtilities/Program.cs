@@ -47,16 +47,51 @@ namespace MSXUtilities
             //var tilemapConverted = GoPenguin.TileMaps.ImportTileMapFromTiled.Execute(Tiled_TileMapFilePath, baseLabel);
             //GoPenguin.TileMaps.CreateTileMap.Execute(tilemapConverted);
 
-            var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\95254 cropped 304x1008.bmp";
-            var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
-            var heightSc8 = (16 * 1024) / 256;  // 128 bytes per line (e.g. screen 8)
-            SplitImageIn16KbChunks(image, heightSc5, "aerofighters");
+            // Convert bmp image into 16kb chunks to be used as background scroll on MSX 2
+            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\95254 cropped 304x1008.bmp";
+            //var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
+            //var heightSc8 = (16 * 1024) / 256;  // 128 bytes per line (e.g. screen 8)
+            //SplitImageIn16KbChunks(image, heightSc5, "aerofighters");
+
+            // Remove 7 byte header from file
+            var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\aerofighters_{0}.sc5";
+            RemoveBytesFromStartOfFiles(baseFileName, 7);
 
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
 
-        
+        private static void RemoveBytesFromStartOfFiles(string baseFileName, int skipBytes)
+        {
+            var fileName = String.Format(baseFileName, 1);
+
+            using (var input = File.OpenRead(fileName))
+            using (var reader = new BinaryReader(input))
+            using (var output = File.Create(fileName + ".new"))
+            {
+                //var start = 0;
+                //// seek to sync byte
+                //while (reader.ReadByte() != skipBytes)
+                //{
+                //    start++;
+                //}
+                var start = skipBytes;
+                for (int i = 0; i < skipBytes; i++)
+                {
+                    reader.ReadByte();
+                }
+
+                var buffer = new byte[4096]; // 4k page - adjust as you see fit
+
+                do
+                {
+                    var actual = reader.Read(buffer, 0, buffer.Length);
+                    output.Write(buffer, 0, actual);
+                } while (reader.PeekChar() >= 0);
+            }
+        }
+
+
         /// <summary>
         /// Split image file in BMP format in smaller images that, when converted to MSX formats (.sc5, .sc8)
         /// will give 16 kb chunks to fit a Mega ROM page
