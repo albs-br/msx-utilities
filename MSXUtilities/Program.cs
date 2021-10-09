@@ -97,6 +97,8 @@ namespace MSXUtilities
             {
                 // calculate distance from this color to each other
                 var distances = new List<int>();
+                var smallestDistance = (7 + 7 + 7);
+                var smallestDistanceIndex = 0;
                 for (int j = FIRST_COLOR; j < 16; j++)
                 {
                     if (i != j)
@@ -104,17 +106,35 @@ namespace MSXUtilities
                         const int RED = 0;
                         const int BLUE = 1;
                         const int GREEN = 2;
-                        distances.Add(
+                        var currentDistance =
                             Math.Abs(palette[i][RED] - palette[j][RED]) +
                             Math.Abs(palette[i][BLUE] - palette[j][BLUE]) +
-                            Math.Abs(palette[i][GREEN] - palette[j][GREEN])
-                            );
+                            Math.Abs(palette[i][GREEN] - palette[j][GREEN]);
+                        distances.Add(currentDistance);
+
+                        if (currentDistance < smallestDistance)
+                        {
+                            smallestDistance = currentDistance;
+                            smallestDistanceIndex = j;
+                        }
+                        else if (currentDistance == smallestDistance)
+                        {
+                            // if two RGB distances are equal, the one with smaller individual distances should prevail
+                            // Ex.: RGB distances (0, 2, 0) vs (1, 1, 0), the second one is the winner
+                            //if (Math.Abs(palette[i][RED] - palette[j][RED]) == Math.Abs(palette[i][RED] - palette[smallestDistanceIndex][RED]))
+                            //{ 
+                            //}
+
+
+                            //Math.Abs(palette[i][BLUE] - palette[j][BLUE]) +
+                            //Math.Abs(palette[i][GREEN] - palette[j][GREEN]);
+                        }
                     }
                 }
 
-                //TODO: not working
                 // put the color most similar in the replacement array
-                paletteReplacement.Add(distances.OrderByDescending(x => x).First());
+                paletteReplacement.Add(smallestDistanceIndex);
+
 
             }
 
