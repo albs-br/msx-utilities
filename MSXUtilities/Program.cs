@@ -1,5 +1,4 @@
-﻿using MSXUtilities.GoPenguin.TileMaps;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -82,7 +81,7 @@ namespace MSXUtilities
                 reader.Read(paletteBytes, 0, 32);
             }
             var palette = new List<List<int>>();
-            for (int i = 0; i < 32; i+=2)
+            for (int i = 0; i < 32; i += 2)
             {
                 int red = (paletteBytes[i] & 0b11110000) >> 4;
                 int blue = (paletteBytes[i] & 0b00001111);
@@ -92,12 +91,13 @@ namespace MSXUtilities
             }
             // create a replacement color for each color of the palette (color most similar)
             var paletteReplacement = new List<int>();
-            const int FIRST_COLOR= 1; // skip palette first entry (transperent)
+            paletteReplacement.Add(-1); // first index is transperent color
+            const int FIRST_COLOR = 1; // skip palette first entry (transperent)
             for (int i = FIRST_COLOR; i < 16; i++)
             {
                 // calculate distance from this color to each other
                 var distances = new List<int>();
-                var smallestDistance = (7 + 7 + 7);
+                var smallestDistance = (7 + 7 + 7) + 1;
                 var smallestDistanceIndex = 0;
                 for (int j = FIRST_COLOR; j < 16; j++)
                 {
@@ -121,6 +121,29 @@ namespace MSXUtilities
                         {
                             // if two RGB distances are equal, the one with smaller individual distances should prevail
                             // Ex.: RGB distances (0, 2, 0) vs (1, 1, 0), the second one is the winner
+
+                            //var distanceRed = Math.Abs(palette[i][RED] - palette[j][RED]) - Math.Abs(palette[i][RED] - palette[smallestDistanceIndex][RED]);
+                            //var distanceBlue = Math.Abs(palette[i][BLUE] - palette[j][BLUE]) - Math.Abs(palette[i][BLUE] - palette[smallestDistanceIndex][BLUE]);
+                            //var distanceGreen = Math.Abs(palette[i][GREEN] - palette[j][GREEN]) - Math.Abs(palette[i][GREEN] - palette[smallestDistanceIndex][GREEN]);
+
+                            var distancesFromIToJ = new int[] {
+                                Math.Abs(palette[i][RED] - palette[j][RED]),
+                                Math.Abs(palette[i][BLUE] - palette[j][BLUE]),
+                                Math.Abs(palette[i][GREEN] - palette[j][GREEN])
+                            };
+
+                            var distancesFromIToSmallest = new int[] {
+                                Math.Abs(palette[i][RED] - palette[smallestDistanceIndex][RED]),
+                                Math.Abs(palette[i][BLUE] - palette[smallestDistanceIndex][BLUE]),
+                                Math.Abs(palette[i][GREEN] - palette[smallestDistanceIndex][GREEN])
+                            };
+
+                            if (Enumerable.Max(distancesFromIToJ) < Enumerable.Max(distancesFromIToSmallest))
+                            {
+                                //smallestDistance = currentDistance;
+                                smallestDistanceIndex = j;
+                            }
+
                             //if (Math.Abs(palette[i][RED] - palette[j][RED]) == Math.Abs(palette[i][RED] - palette[smallestDistanceIndex][RED]))
                             //{ 
                             //}
@@ -233,7 +256,7 @@ namespace MSXUtilities
         {
             using (Bitmap bmpSource = new Bitmap(imageSourcePath))
             {
-                if (bmpSource.Width < 256) 
+                if (bmpSource.Width < 256)
                 {
                     throw new InvalidDataException("Source image should be at least 256 pixels wide");
                 }
@@ -352,14 +375,14 @@ namespace MSXUtilities
             IList<string> color_EnemyLadybug_2 = new List<string>();
             IList<string> color_EnemyLadybug_3 = new List<string>();
 
-            
-            
+
+
             // ------ Enemy Snail
             IList<string> pattern_EnemySnail_Left_0 = new List<string>();
             IList<string> pattern_EnemySnail_Left_1 = new List<string>();
             IList<string> pattern_EnemySnail_Left_2 = new List<string>();
             IList<string> pattern_EnemySnail_Left_3 = new List<string>();
-            
+
             IList<string> pattern_EnemySnail_Right_0 = new List<string>();
             IList<string> pattern_EnemySnail_Right_1 = new List<string>();
             IList<string> pattern_EnemySnail_Right_2 = new List<string>();
@@ -381,10 +404,10 @@ namespace MSXUtilities
             GoPenguin.Tiles.Bg_Rocks.LoadFromTinySpriteBackup(out pattern_Rocks_0, out color_Rocks_0, out pattern_Rocks_1, out color_Rocks_1, out pattern_Rocks_2, out color_Rocks_2, out pattern_Rocks_3, out color_Rocks_3);
             GoPenguin.Tiles.Bg_Diamond.LoadFromTinySpriteBackup(out pattern_Diamond_0, out color_Diamond_0, out pattern_Diamond_1, out color_Diamond_1, out pattern_Diamond_2, out color_Diamond_2, out pattern_Diamond_3, out color_Diamond_3);
             GoPenguin.Tiles.Bg_TestSquare.LoadFromTinySpriteBackup(out pattern_TestSquare_0, out color_TestSquare_0, out pattern_TestSquare_1, out color_TestSquare_1, out pattern_TestSquare_2, out color_TestSquare_2, out pattern_TestSquare_3, out color_TestSquare_3);
-            
+
             GoPenguin.Tiles.Enemy_Ladybug_Left.LoadFromTinySpriteBackup(out pattern_EnemyLadybug_Left_0, out color_EnemyLadybug_0, out pattern_EnemyLadybug_Left_1, out color_EnemyLadybug_1, out pattern_EnemyLadybug_Left_2, out color_EnemyLadybug_2, out pattern_EnemyLadybug_Left_3, out color_EnemyLadybug_3);
             GoPenguin.Tiles.Enemy_Ladybug_Right.LoadFromTinySpriteBackup(out pattern_EnemyLadybug_Right_0, out color_EnemyLadybug_0, out pattern_EnemyLadybug_Right_1, out color_EnemyLadybug_1, out pattern_EnemyLadybug_Right_2, out color_EnemyLadybug_2, out pattern_EnemyLadybug_Right_3, out color_EnemyLadybug_3);
-            
+
             GoPenguin.Tiles.Enemy_Snail_Left.LoadFromTinySpriteBackup(out pattern_EnemySnail_Left_0, out color_EnemySnail_0, out pattern_EnemySnail_Left_1, out color_EnemySnail_1, out pattern_EnemySnail_Left_2, out color_EnemySnail_2, out pattern_EnemySnail_Left_3, out color_EnemySnail_3);
             GoPenguin.Tiles.Enemy_Snail_Right.LoadFromTinySpriteBackup(out pattern_EnemySnail_Right_0, out color_EnemySnail_0, out pattern_EnemySnail_Right_1, out color_EnemySnail_1, out pattern_EnemySnail_Right_2, out color_EnemySnail_2, out pattern_EnemySnail_Right_3, out color_EnemySnail_3);
 
@@ -502,8 +525,8 @@ namespace MSXUtilities
 
         }
 
-        private static void SaveTilePngImage(string fileName, 
-            IList<string> pattern_0, IList<string> color_0, IList<string> pattern_1, IList<string> color_1, 
+        private static void SaveTilePngImage(string fileName,
+            IList<string> pattern_0, IList<string> color_0, IList<string> pattern_1, IList<string> color_1,
             IList<string> pattern_2, IList<string> color_2, IList<string> pattern_3, IList<string> color_3)
         {
             using (Bitmap bmp = new Bitmap(16, 16))
@@ -676,7 +699,7 @@ namespace MSXUtilities
 
         static void PocMegaROM()
         {
-            var text =  "\torg	8000h,0BFFFh	; page {0}" + "\n\r" +
+            var text = "\torg	8000h,0BFFFh	; page {0}" + "\n\r" +
                         "\tdb \"Text from segment {0}\",LF,CR,0" + "\n\r" +
                         "\tds PageSize -($ -8000h),255" + "\n\r";
 
@@ -740,7 +763,7 @@ namespace MSXUtilities
         /// <summary>
         /// Read all color table separating each byte in two nibbles and converting color value from "x" to "y'
         /// </summary>
-        static void ConvertColorTable() 
+        static void ConvertColorTable()
         {
             var inputFilename = "screen.ct2";
             var outputFilename = "screen converted.ct2";
