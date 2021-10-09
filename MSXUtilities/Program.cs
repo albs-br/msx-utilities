@@ -73,14 +73,57 @@ namespace MSXUtilities
         {
             const int HEADER_SIZE = 7; // 7 bytes header
 
-            //TODO: get palette from file (last 32 bytes)
+            // get palette from file (last 32 bytes)
+            byte[] paletteBytes = new byte[32];
+            using (var input = File.OpenRead(fileName))
+            using (BinaryReader reader = new BinaryReader(input))
+            {
+                reader.BaseStream.Seek(input.Length - 32, SeekOrigin.Begin);
+                reader.Read(paletteBytes, 0, 32);
+            }
+            var palette = new List<List<int>>();
+            for (int i = 0; i < 32; i+=2)
+            {
+                int red = (paletteBytes[i] & 0b11110000) >> 4;
+                int blue = (paletteBytes[i] & 0b00001111);
+                int green = paletteBytes[i + 1];
+
+                palette.Add(new List<int> { red, blue, green });
+            }
+            // create a replacement color for each color of the palette (color most similar)
+            var paletteReplacement = new List<int>();
+            const int FIRST_COLOR= 1; // skip palette first entry (transperent)
+            for (int i = FIRST_COLOR; i < 16; i++)
+            {
+                // calculate distance from this color to each other
+                var distances = new List<int>();
+                for (int j = FIRST_COLOR; j < 16; j++)
+                {
+                    if (i != j)
+                    {
+                        const int RED = 0;
+                        const int BLUE = 1;
+                        const int GREEN = 2;
+                        distances.Add(
+                            Math.Abs(palette[i][RED] - palette[j][RED]) +
+                            Math.Abs(palette[i][BLUE] - palette[j][BLUE]) +
+                            Math.Abs(palette[i][GREEN] - palette[j][GREEN])
+                            );
+                    }
+                }
+
+                //TODO: not working
+                // put the color most similar in the replacement array
+                paletteReplacement.Add(distances.OrderByDescending(x => x).First());
+
+            }
 
             using (var input = File.OpenRead(fileName))
             using (var reader = new BinaryReader(input))
             using (var output = File.Create(fileName + ".new"))
             {
                 var counter = 0;
-                var colorsList = new List<int>();
+                IList<int> colorsList = new List<int>();
                 //var pixelsList = new List<int>();
                 for (int j = 0; j < input.Length; j++)
                 {
@@ -93,15 +136,23 @@ namespace MSXUtilities
                         var leftPixelColor = highNibble >> 4;
                         var rightPixelColor = lowNibble;
 
-                        if (leftPixelColor != 0 && !colorsList.Contains(leftPixelColor)) colorsList.Add(leftPixelColor);
-                        if (rightPixelColor != 0 && !colorsList.Contains(rightPixelColor)) colorsList.Add(rightPixelColor);
+                        //if (leftPixelColor != 0 && !colorsList.Contains(leftPixelColor)) colorsList.Add(leftPixelColor);
+                        //if (rightPixelColor != 0 && !colorsList.Contains(rightPixelColor)) colorsList.Add(rightPixelColor);
+
+                        if (leftPixelColor != 0) colorsList.Add(leftPixelColor);
+                        if (rightPixelColor != 0) colorsList.Add(rightPixelColor);
 
                         counter++;
-                        if (counter == 16)
+                        if (counter == 8) // 8 bytes = 16 pixels on screen 5
                         {
-                            //TODO: loop throught list of colors of this 16 pixels to determine if there is more than 3
-                            if (colorsList.Count > 3)
-                            { 
+                            var colorsGrouped = colorsList
+                                .GroupBy(x => x)
+                                .Select(n => new { ColorNumber = n.Key, Count = n.Count() })
+                                .OrderByDescending(x => x.Count)
+                                .ToList();
+
+                            if (colorsGrouped.Count > 3)
+                            {
                             }
 
                             colorsList.Clear();
