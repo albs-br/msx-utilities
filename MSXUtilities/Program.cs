@@ -168,6 +168,8 @@ namespace MSXUtilities
                 var counter = 0;
                 IList<int> colorsList = new List<int>();
                 //var pixelsList = new List<int>();
+                var foundCounter = 0;
+                var notFoundCounter = 0;
                 for (int j = 0; j < input.Length; j++)
                 {
                     var byteRead = reader.ReadByte();
@@ -194,8 +196,66 @@ namespace MSXUtilities
                                 .OrderByDescending(x => x.Count)
                                 .ToList();
 
-                            if (colorsGrouped.Count > 3)
+                            if (colorsGrouped.Count == 3)
                             {
+                                var color1 = 0;
+                                var color2 = 0;
+                                var orColor = 0;
+                                bool found = false;
+
+                                found = CheckIfOrColorIsPossible(
+                                    colorsGrouped[0].ColorNumber,
+                                    colorsGrouped[1].ColorNumber,
+                                    colorsGrouped[2].ColorNumber
+                                    );
+
+                                if (!found)
+                                {
+                                    // try again, replacing each color by a replacement candidate
+                                    found = CheckIfOrColorIsPossible(
+                                        paletteReplacement[colorsGrouped[0].ColorNumber],
+                                        colorsGrouped[1].ColorNumber,
+                                        colorsGrouped[2].ColorNumber
+                                        );
+
+                                    if (!found)
+                                    {
+                                        found = CheckIfOrColorIsPossible(
+                                            colorsGrouped[0].ColorNumber,
+                                            paletteReplacement[colorsGrouped[1].ColorNumber],
+                                            colorsGrouped[2].ColorNumber
+                                            );
+                                    }
+
+                                    if (!found)
+                                    {
+                                        found = CheckIfOrColorIsPossible(
+                                            colorsGrouped[0].ColorNumber,
+                                            colorsGrouped[1].ColorNumber,
+                                            paletteReplacement[colorsGrouped[2].ColorNumber]
+                                            );
+                                    }
+
+                                }
+
+                                if (!found)
+                                {
+                                    notFoundCounter++;
+                                }
+                                else
+                                {
+                                    foundCounter++;
+                                }
+                            }
+                            else if (colorsGrouped.Count > 3)
+                            {
+                                // loop from color with less repetitions upwards
+                                // replacing by the others until find a combination
+                                // valid to form 3 colors with OR-color
+                                foreach (var item in colorsGrouped)
+                                {
+
+                                }
                             }
 
                             colorsList.Clear();
@@ -210,6 +270,38 @@ namespace MSXUtilities
                 //var actual = reader.Read(buffer, 0, buffer.Length);
                 //output.Write(buffer, 0, actual);
             }
+        }
+
+        private static bool CheckIfOrColorIsPossible(int color0, int color1, int color2)
+        {
+            var or1 = color0 | color1;
+            if (or1 == color2)
+            {
+                //color1 = colorsGrouped[0].ColorNumber;
+                //color2 = colorsGrouped[1].ColorNumber;
+                //orColor = colorsGrouped[2].ColorNumber;
+                return true;
+            }
+
+            var or2 = color0 | color2;
+            if (or2 == color1)
+            {
+                //color1 = colorsGrouped[0].ColorNumber;
+                //color2 = colorsGrouped[1].ColorNumber;
+                //orColor = colorsGrouped[2].ColorNumber;
+                return true;
+            }
+
+            var or3 = color1 | color2;
+            if (or3 == color0)
+            {
+                //color1 = colorsGrouped[0].ColorNumber;
+                //color2 = colorsGrouped[1].ColorNumber;
+                //orColor = colorsGrouped[2].ColorNumber;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
