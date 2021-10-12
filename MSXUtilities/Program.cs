@@ -60,8 +60,8 @@ namespace MSXUtilities
             var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes.bak.SC5";
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                0, 0,
-                0, 0
+                0, 0, 16,
+                0, 0, 16
                 );
 
             Console.WriteLine("Done.");

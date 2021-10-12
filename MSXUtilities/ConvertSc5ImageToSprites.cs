@@ -11,8 +11,8 @@ namespace MSXUtilities
         const int HEADER_SIZE = 7; // 7 bytes header
 
         public static void Execute(string fileName,
-            int sprite0_offsetX, int sprite0_offsetY,
-            int sprite1_offsetX, int sprite1_offsetY
+            int sprite0_offsetX, int sprite0_offsetY, int sprite0_width,
+            int sprite1_offsetX, int sprite1_offsetY, int sprite0_height
             )
         {
             List<List<int>> palette = GetPaletteFromFile(fileName);
@@ -21,16 +21,26 @@ namespace MSXUtilities
             using (var reader = new BinaryReader(input))
             //using (var output = File.Create(fileName + ".new"))
             {
-                const int WIDTH = 256;
+                const int SCREEN_WIDTH_IN_PIXELS = 256;
+                const int SCREEN_WIDTH_IN_BYTES = SCREEN_WIDTH_IN_PIXELS / 2;
+                const int SPRITE_WIDTH = 16;
+                const int SPRITE_HEIGHT = 16;
+
                 var counter = 0;
                 int x = 0, y = 0;
-                int lastX = sprite0_offsetX + 15;
-                int lastY = sprite0_offsetY + 15;
+                
+                int totalLastX = sprite0_offsetX + SPRITE_WIDTH - 1;
+                int totalLastY = sprite0_offsetY + SPRITE_HEIGHT - 1;
+
+                int usefulLastX = sprite0_offsetX + sprite0_width - 1;
+                int usefulLastY = sprite0_offsetY + sprite0_height - 1;
+
                 IList<int> colorsList = new List<int>();
                 //var pixelsList = new List<int>();
-                var foundCounter = 0;
-                var notFoundCounter = 0;
+                //var foundCounter = 0;
+                //var notFoundCounter = 0;
                 string pattern_0 = "", pattern_1 = "";
+
                 for (int j = 0; j < input.Length; j++)
                 {
                     var byteRead = reader.ReadByte();
@@ -38,22 +48,50 @@ namespace MSXUtilities
                     if (j < HEADER_SIZE) continue; // skip header
 
                     counter = j - HEADER_SIZE;
-                    y = counter / WIDTH;
-                    x = counter - (WIDTH * y);
+                    y = counter / (SCREEN_WIDTH_IN_BYTES);
+                    x = (counter - (SCREEN_WIDTH_IN_BYTES * y)) * 2; // each byte represents 2 pixels on SC5
+                    
+                    // Left pixel
+                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, ref pattern_0, ref pattern_1, byteRead, true);
 
+                    // Right pixel
+                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, ref pattern_0, ref pattern_1, byteRead, false);
+                }
 
-                    if (x >= sprite0_offsetX && x <= lastX
-                        && y >= sprite0_offsetY && y <= lastY)
+                //var buffer = new byte[4096 * 4]; // 16 kb page
+
+                //// only one page
+                //var actual = reader.Read(buffer, 0, buffer.Length);
+                //output.Write(buffer, 0, actual);
+            }
+        }
+
+        private static void GetNibbleOfByte(
+            int sprite0_offsetX, int sprite0_offsetY, int x, int y, int totalLastX, int totalLastY, int usefulLastX, int usefulLastY, 
+            ref string pattern_0, ref string pattern_1, byte byteRead, bool leftPixel)
+        {
+            if (!leftPixel)
+            {
+                x++;
+            }
+
+            if (x >= sprite0_offsetX && x <= totalLastX         // check if current (x, y) is inside the 16x16 sprite area
+                && y >= sprite0_offsetY && y <= totalLastX)
+            {
+                if (x >= sprite0_offsetX && x <= usefulLastX    // check if current (x, y) is inside the width x height useful sprite area
+                    && y >= sprite0_offsetY && y <= usefulLastY)
+                {
+                    var highNibble = byteRead & 0b11110000;
+                    var lowNibble = byteRead & 0b00001111;
+
+                    var leftPixelColor = highNibble >> 4;
+                    var rightPixelColor = lowNibble;
+
+                    //if (leftPixelColor != 0) colorsList.Add(leftPixelColor);
+                    //if (rightPixelColor != 0) colorsList.Add(rightPixelColor);
+
+                    if (leftPixel)
                     {
-                        var highNibble = byteRead & 0b11110000;
-                        var lowNibble = byteRead & 0b00001111;
-
-                        var leftPixelColor = highNibble >> 4;
-                        var rightPixelColor = lowNibble;
-
-                        //if (leftPixelColor != 0) colorsList.Add(leftPixelColor);
-                        //if (rightPixelColor != 0) colorsList.Add(rightPixelColor);
-
                         if (leftPixelColor == 0)
                         {
                             pattern_0 += "0";
@@ -64,7 +102,9 @@ namespace MSXUtilities
                             pattern_0 += "1";
                             pattern_1 += "1";
                         }
-
+                    }
+                    else
+                    {
                         if (rightPixelColor == 0)
                         {
                             pattern_0 += "0";
@@ -75,20 +115,20 @@ namespace MSXUtilities
                             pattern_0 += "1";
                             pattern_1 += "1";
                         }
-
-                        if (x == lastX && y <= lastY)
-                        {
-                            pattern_0 += Environment.NewLine;
-                            pattern_1 += Environment.NewLine;
-                        }
                     }
                 }
+                else
+                {
+                    pattern_0 += "0";
+                    pattern_1 += "0";
+                }
 
-                //var buffer = new byte[4096 * 4]; // 16 kb page
+                if (x == totalLastX && y <= totalLastY)
+                {
+                    pattern_0 += Environment.NewLine;
+                    pattern_1 += Environment.NewLine;
+                }
 
-                //// only one page
-                //var actual = reader.Read(buffer, 0, buffer.Length);
-                //output.Write(buffer, 0, actual);
             }
         }
 
