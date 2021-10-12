@@ -21,6 +21,7 @@ namespace MSXUtilities
             using (var reader = new BinaryReader(input))
             //using (var output = File.Create(fileName + ".new"))
             {
+                const int WIDTH = 256;
                 var counter = 0;
                 int x = 0, y = 0;
                 int lastX = sprite0_offsetX + 15;
@@ -29,12 +30,22 @@ namespace MSXUtilities
                 //var pixelsList = new List<int>();
                 var foundCounter = 0;
                 var notFoundCounter = 0;
+                string pattern_0 = "", pattern_1 = "";
                 for (int j = 0; j < input.Length; j++)
                 {
                     var byteRead = reader.ReadByte();
-                    if (j >= HEADER_SIZE) // skip header
+
+                    if (j < HEADER_SIZE) continue; // skip header
+
+                    counter = j - HEADER_SIZE;
+                    y = counter / WIDTH;
+                    x = counter - (WIDTH * y);
+
+
+                    if (x >= sprite0_offsetX && x <= lastX
+                        && y >= sprite0_offsetY && y <= lastY)
                     {
-                        var highNibble = byteRead & 0xf0;
+                        var highNibble = byteRead & 0b11110000;
                         var lowNibble = byteRead & 0b00001111;
 
                         var leftPixelColor = highNibble >> 4;
@@ -43,18 +54,33 @@ namespace MSXUtilities
                         //if (leftPixelColor != 0) colorsList.Add(leftPixelColor);
                         //if (rightPixelColor != 0) colorsList.Add(rightPixelColor);
 
-                        //if(leftPixelColor == 0) 
-
-
-                        counter++;
-
-                        x += 2;
-                        if (x > lastX)
+                        if (leftPixelColor == 0)
                         {
-                            x = 0;
-                            y++;
+                            pattern_0 += "0";
+                            pattern_1 += "0";
                         }
-                        if (y > lastY) break;
+                        else
+                        {
+                            pattern_0 += "1";
+                            pattern_1 += "1";
+                        }
+
+                        if (rightPixelColor == 0)
+                        {
+                            pattern_0 += "0";
+                            pattern_1 += "0";
+                        }
+                        else
+                        {
+                            pattern_0 += "1";
+                            pattern_1 += "1";
+                        }
+
+                        if (x == lastX && y <= lastY)
+                        {
+                            pattern_0 += Environment.NewLine;
+                            pattern_1 += Environment.NewLine;
+                        }
                     }
                 }
 
