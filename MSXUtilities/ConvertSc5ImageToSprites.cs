@@ -11,9 +11,8 @@ namespace MSXUtilities
         const int HEADER_SIZE = 7; // 7 bytes header
 
         public static void Execute(string fileName,
-            int sprite0_offsetX, int sprite0_offsetY, int sprite0_width,
-            int sprite1_offsetX, int sprite1_offsetY, int sprite0_height
-            )
+            int sprite0_offsetX, int sprite0_offsetY, int sprite0_width, int sprite0_height,
+            int sprite1_offsetX, int sprite1_offsetY)
         {
             List<List<int>> palette = GetPaletteFromFile(fileName);
 
@@ -35,10 +34,7 @@ namespace MSXUtilities
                 int usefulLastX = sprite0_offsetX + sprite0_width - 1;
                 int usefulLastY = sprite0_offsetY + sprite0_height - 1;
 
-                IList<int> colorsList = new List<int>();
-                //var pixelsList = new List<int>();
-                //var foundCounter = 0;
-                //var notFoundCounter = 0;
+                IList<IList<int>> colorsList = new List<IList<int>>();
                 string pattern_0 = "", pattern_1 = "";
 
                 for (int j = 0; j < input.Length; j++)
@@ -52,10 +48,26 @@ namespace MSXUtilities
                     x = (counter - (SCREEN_WIDTH_IN_BYTES * y)) * 2; // each byte represents 2 pixels on SC5
                     
                     // Left pixel
-                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, ref pattern_0, ref pattern_1, byteRead, true);
+                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, 
+                        ref pattern_0, ref pattern_1, colorsList, byteRead, true);
 
                     // Right pixel
-                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, ref pattern_0, ref pattern_1, byteRead, false);
+                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, 
+                        ref pattern_0, ref pattern_1, colorsList, byteRead, false);
+                }
+
+                // count colors per line
+                foreach (var line in colorsList)
+                {
+                    Console.Write(line.Count + " colors: ");
+                    foreach (var color in line)
+                    {
+                        Console.Write(color.ToString().PadLeft(2, ' ') + ", ");
+                    }
+
+                    Console.Write("; Distinct colors: " + line.Where(x => x != 0).Distinct().Count());
+
+                    Console.WriteLine();
                 }
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
@@ -68,19 +80,27 @@ namespace MSXUtilities
 
         private static void GetNibbleOfByte(
             int sprite0_offsetX, int sprite0_offsetY, int x, int y, int totalLastX, int totalLastY, int usefulLastX, int usefulLastY, 
-            ref string pattern_0, ref string pattern_1, byte byteRead, bool leftPixel)
+            ref string pattern_0, ref string pattern_1, IList<IList<int>> colorsList, byte byteRead, bool leftPixel)
         {
             if (!leftPixel)
             {
                 x++;
             }
 
+            var xSprite = x - sprite0_offsetX;
+            var ySprite = y - sprite0_offsetY;
+
             if (x >= sprite0_offsetX && x <= totalLastX         // check if current (x, y) is inside the 16x16 sprite area
-                && y >= sprite0_offsetY && y <= totalLastX)
+                && y >= sprite0_offsetY && y <= totalLastY)
             {
                 if (x >= sprite0_offsetX && x <= usefulLastX    // check if current (x, y) is inside the width x height useful sprite area
                     && y >= sprite0_offsetY && y <= usefulLastY)
                 {
+                    if (xSprite == 0)
+                    {
+                        colorsList.Add(new List<int>());
+                    }
+
                     var highNibble = byteRead & 0b11110000;
                     var lowNibble = byteRead & 0b00001111;
 
@@ -92,6 +112,8 @@ namespace MSXUtilities
 
                     if (leftPixel)
                     {
+                        colorsList[ySprite].Add(leftPixelColor);
+
                         if (leftPixelColor == 0)
                         {
                             pattern_0 += "0";
@@ -105,6 +127,8 @@ namespace MSXUtilities
                     }
                     else
                     {
+                        colorsList[ySprite].Add(leftPixelColor);
+
                         if (rightPixelColor == 0)
                         {
                             pattern_0 += "0";
