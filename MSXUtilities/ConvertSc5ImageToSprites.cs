@@ -56,19 +56,50 @@ namespace MSXUtilities
                         ref pattern_0, ref pattern_1, colorsList, byteRead, false);
                 }
 
+                // show pattern 0
+                Console.WriteLine(pattern_0);
+
                 // count colors per line
+                var lineNumber = 0;
                 foreach (var line in colorsList)
                 {
-                    Console.Write(line.Count + " colors: ");
+                    Console.Write("Line #" + lineNumber.ToString().PadLeft(2, ' ') + ": ");
+                    //Console.Write(line.Count + " colors: ");
+                    if (line.Count != 16) throw new InvalidDataException("Line #" + lineNumber + " has " + line.Count + " pixels. Should be 16.");
+
                     foreach (var color in line)
                     {
                         Console.Write(color.ToString().PadLeft(2, ' ') + ", ");
                     }
 
-                    Console.Write("; Distinct colors: " + line.Where(x => x != 0).Distinct().Count());
+                    // get the distinct colors different than transparent on this line
+                    var distinctColors = line.Where(x => x != 0).Distinct().ToList();
+
+                    Console.Write("; Distinct colors: " + distinctColors.Count());
+
+                    // check if OR-color is possible
+                    if (distinctColors.Count() == 3)
+                    {
+                        if (
+                               ((distinctColors[0] | distinctColors[1]) == distinctColors[2])
+                            || ((distinctColors[0] | distinctColors[2]) == distinctColors[1])
+                            || ((distinctColors[1] | distinctColors[2]) == distinctColors[0])
+                            )
+                        {
+                            Console.Write("; OR-color possible");
+                        }
+                        else
+                        {
+                            Console.Write("; OR-color impossible");
+                        }
+                    }
 
                     Console.WriteLine();
+
+                    lineNumber++;
                 }
+
+                Console.WriteLine("Total distinct colors: " + colorsList.SelectMany(x => x).Where(x => x != 0).Distinct().Count());
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
 
@@ -127,7 +158,7 @@ namespace MSXUtilities
                     }
                     else
                     {
-                        colorsList[ySprite].Add(leftPixelColor);
+                        colorsList[ySprite].Add(rightPixelColor);
 
                         if (rightPixelColor == 0)
                         {
