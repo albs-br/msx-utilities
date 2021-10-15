@@ -56,8 +56,18 @@ namespace MSXUtilities
                         ref pattern_0, ref pattern_1, colorsList, byteRead, false);
                 }
 
+                //var newPalette = new List<int>();
+                //for (int i = 0; i < 16; i++)
+                //{
+                //    newPalette.Add(0);
+                //}
+
+
                 // show pattern 0
                 Console.WriteLine(pattern_0);
+
+
+                var listOf3Colors = new List<List<int>>();
 
                 // count colors per line
                 var lineNumber = 0;
@@ -77,9 +87,11 @@ namespace MSXUtilities
 
                     Console.Write("; Distinct colors: " + distinctColors.Count());
 
-                    // check if OR-color is possible
+                    // check if OR-color is possible on the default palette
                     if (distinctColors.Count() == 3)
                     {
+                        listOf3Colors.Add(new List<int> { distinctColors[0], distinctColors[1], distinctColors[2] });
+
                         if (
                                ((distinctColors[0] | distinctColors[1]) == distinctColors[2])
                             || ((distinctColors[0] | distinctColors[2]) == distinctColors[1])
@@ -91,6 +103,11 @@ namespace MSXUtilities
                         else
                         {
                             Console.Write("; OR-color impossible");
+                            //if (newPalette[distinctColors[0]] = 0 &&
+                            //    newPalette[distinctColors[0]] = 0) 
+                            //{
+                            //    newPalette[distinctColors[0]] = distinctColors[0];
+                            //}
                         }
                     }
 
@@ -99,7 +116,42 @@ namespace MSXUtilities
                     lineNumber++;
                 }
 
+                Console.WriteLine();
                 Console.WriteLine("Total distinct colors: " + colorsList.SelectMany(x => x).Where(x => x != 0).Distinct().Count());
+
+                Console.WriteLine();
+                Console.WriteLine("3 colors combinations:");
+                var newListOf3Colors = new List<List<int>>();
+                foreach (var item in listOf3Colors)
+                {
+                    var colors = item.OrderBy(x => x).ToList();
+                    foreach (var color in colors)
+                    {
+                        Console.Write(color + ", ");
+                    }
+
+                    // New list without duplicated combinations
+                    //if (!newListOf3Colors.Any<List<int>>(x => x.All(y => y == colors.Any(z => z)))
+                    if (!newListOf3Colors.Any(c => c.SequenceEqual(colors)))
+                    {
+                        newListOf3Colors.Add(colors);
+                    }
+
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("3 colors combinations without repetitions:");
+                foreach (var colors in newListOf3Colors)
+                {
+                    foreach (var color in colors)
+                    {
+                        Console.Write(color + ", ");
+                    }
+
+                    Console.WriteLine();
+                }
+
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
 
