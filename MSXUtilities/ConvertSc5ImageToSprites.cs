@@ -140,6 +140,7 @@ namespace MSXUtilities
                     Console.WriteLine();
                 }
 
+                var orColorCount = new Dictionary<int, int>();
                 Console.WriteLine();
                 Console.WriteLine("3 colors combinations without repetitions:");
                 foreach (var colors in newListOf3Colors)
@@ -147,11 +148,25 @@ namespace MSXUtilities
                     foreach (var color in colors)
                     {
                         Console.Write(color + ", ");
+
+                        // count most common colors
+                        if (!orColorCount.ContainsKey(color))
+                        {
+                            orColorCount.Add(color, 0);
+                        }
+                        orColorCount[color]++;
                     }
 
                     Console.WriteLine();
                 }
 
+
+                Console.WriteLine();
+                Console.WriteLine("Most common colors (only on 3 color lines):");
+                foreach (var item in orColorCount.OrderByDescending(x => x.Value))
+                {
+                    Console.WriteLine("Color " + item.Key + ": " + item.Value);
+                }
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
 
