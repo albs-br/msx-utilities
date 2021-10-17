@@ -83,19 +83,19 @@ namespace MSXUtilities
                     }
 
                     // get the distinct colors different than transparent on this line
-                    var distinctColors = line.Where(x => x != 0).Distinct().ToList();
+                    var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
 
-                    Console.Write("; Distinct colors: " + distinctColors.Count());
+                    Console.Write("; Distinct colors: " + distinctColorsOnLine.Count());
 
                     // check if OR-color is possible on the default palette
-                    if (distinctColors.Count() == 3)
+                    if (distinctColorsOnLine.Count() == 3)
                     {
-                        listOf3Colors.Add(new List<int> { distinctColors[0], distinctColors[1], distinctColors[2] });
+                        listOf3Colors.Add(new List<int> { distinctColorsOnLine[0], distinctColorsOnLine[1], distinctColorsOnLine[2] });
 
                         if (
-                               ((distinctColors[0] | distinctColors[1]) == distinctColors[2])
-                            || ((distinctColors[0] | distinctColors[2]) == distinctColors[1])
-                            || ((distinctColors[1] | distinctColors[2]) == distinctColors[0])
+                               ((distinctColorsOnLine[0] | distinctColorsOnLine[1]) == distinctColorsOnLine[2])
+                            || ((distinctColorsOnLine[0] | distinctColorsOnLine[2]) == distinctColorsOnLine[1])
+                            || ((distinctColorsOnLine[1] | distinctColorsOnLine[2]) == distinctColorsOnLine[0])
                             )
                         {
                             Console.Write("; OR-color possible");
@@ -116,9 +116,9 @@ namespace MSXUtilities
                     lineNumber++;
                 }
 
-                var distinctColors = colorsList.SelectMany(x => x).Where(x => x != 0).Distinct();
+                var distinctColors1 = colorsList.SelectMany(x => x).Where(x => x != 0).Distinct();
                 Console.WriteLine();
-                Console.WriteLine("Total distinct colors: " + distinctColors.Count());
+                Console.WriteLine("Total distinct colors: " + distinctColors1.Count());
 
                 Console.WriteLine();
                 Console.WriteLine("3 colors combinations:");
@@ -180,11 +180,11 @@ namespace MSXUtilities
                 }
 
                 // Brute force to find a palette
-                //for (int i = 0; i < distinctColors.Count(); i++)
+                //for (int i = 0; i < distinctColors1.Count(); i++)
                 //{
-                //    for (int j = 0; j < distinctColors.Count(); j++)
+                //    for (int j = 0; j < distinctColors1.Count(); j++)
                 //    {
-                //        for (int k = 0; k < distinctColors.Count(); k++)
+                //        for (int k = 0; k < distinctColors1.Count(); k++)
                 //        {
                 //            if (i != k && j != k)
                 //            { 
