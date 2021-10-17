@@ -116,8 +116,9 @@ namespace MSXUtilities
                     lineNumber++;
                 }
 
+                var distinctColors = colorsList.SelectMany(x => x).Where(x => x != 0).Distinct();
                 Console.WriteLine();
-                Console.WriteLine("Total distinct colors: " + colorsList.SelectMany(x => x).Where(x => x != 0).Distinct().Count());
+                Console.WriteLine("Total distinct colors: " + distinctColors.Count());
 
                 Console.WriteLine();
                 Console.WriteLine("3 colors combinations:");
@@ -163,10 +164,36 @@ namespace MSXUtilities
 
                 Console.WriteLine();
                 Console.WriteLine("Most common colors (only on 3 color lines):");
+                var listOfBestOrColors = new List<int> { 
+                    15,                 // 15 combinations
+                    14, 13, 11, 7,      // 6  combinations
+                    12, 10, 9, 6, 5, 3  // 1 combination
+                };
+                var index = 0;
                 foreach (var item in orColorCount.OrderByDescending(x => x.Value))
                 {
-                    Console.WriteLine("Color " + item.Key + ": " + item.Value);
+                    Console.Write("Color " + item.Key + ": " + item.Value + " times");
+                    
+                    Console.WriteLine();
+                    
+                    index++;
                 }
+
+                // Brute force to find a palette
+                //for (int i = 0; i < distinctColors.Count(); i++)
+                //{
+                //    for (int j = 0; j < distinctColors.Count(); j++)
+                //    {
+                //        for (int k = 0; k < distinctColors.Count(); k++)
+                //        {
+                //            if (i != k && j != k)
+                //            { 
+                //            }
+                //        }
+                //    }
+                //}
+
+
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
 
