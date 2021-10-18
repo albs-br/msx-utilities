@@ -122,7 +122,7 @@ namespace MSXUtilities
 
                 Console.WriteLine();
                 Console.WriteLine("3 colors combinations:");
-                var newListOf3Colors = new List<List<int>>();
+                var listOf3ColorsNoRepeat = new List<List<int>>();
                 foreach (var item in listOf3Colors)
                 {
                     var colors = item.OrderBy(x => x).ToList();
@@ -131,11 +131,11 @@ namespace MSXUtilities
                         Console.Write(color + ", ");
                     }
 
-                    // New list without duplicated combinations
+                    // new list without duplicated combinations
                     //if (!newListOf3Colors.Any<List<int>>(x => x.All(y => y == colors.Any(z => z)))
-                    if (!newListOf3Colors.Any(c => c.SequenceEqual(colors)))
+                    if (!listOf3ColorsNoRepeat.Any(c => c.SequenceEqual(colors)))
                     {
-                        newListOf3Colors.Add(colors);
+                        listOf3ColorsNoRepeat.Add(colors);
                     }
 
                     Console.WriteLine();
@@ -144,7 +144,7 @@ namespace MSXUtilities
                 var orColorCount = new Dictionary<int, int>();
                 Console.WriteLine();
                 Console.WriteLine("3 colors combinations without repetitions:");
-                foreach (var colors in newListOf3Colors)
+                foreach (var colors in listOf3ColorsNoRepeat)
                 {
                     foreach (var color in colors)
                     {
@@ -193,6 +193,68 @@ namespace MSXUtilities
                 //    }
                 //}
 
+                Random rnd = new Random();
+                for (int i = 0; i < 1000000; i++)
+                {
+                    // sort list of 15 random colors
+                    var rndPalette = new List<int>();
+                    for (int j = 1; j <= 15; j++)
+                    {
+                        bool found = false;
+                        do
+                        {
+                            int randomNumber = rnd.Next(1, 16);
+                            if (!rndPalette.Contains(randomNumber))
+                            {
+                                rndPalette.Add(randomNumber);
+                                found = true;
+                            }
+                        }
+                        while (!found);
+                    }
+
+
+                    // to substitute on list of 3 colors for this sprite
+                    var newListOf3ColorsNoRepeat = new List<List<int>>();
+                    foreach (var colors in listOf3ColorsNoRepeat)
+                    {
+                        newListOf3ColorsNoRepeat.Add(new List<int>
+                        {
+                            rndPalette[colors[0]],
+                            rndPalette[colors[1]],
+                            rndPalette[colors[2]]
+                        });
+                    }
+
+
+                    // Check if this palette is valid for this sprite
+                    Console.WriteLine();
+                    var isValid = CheckIfPaletteisValidForThisSprite(newListOf3ColorsNoRepeat);
+                    Console.WriteLine("Palette #" + i + " is valid: " + isValid);
+                    if (isValid)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Valid palette found");
+                        foreach (var item in rndPalette)
+                        {
+                            Console.Write(item + ", ");
+                        }
+
+                        Console.WriteLine();
+                        Console.WriteLine();
+                        foreach (var colors in newListOf3ColorsNoRepeat)
+                        {
+                            foreach (var color in colors)
+                            {
+                                Console.Write(color + ", ");
+                            }
+                            Console.WriteLine();
+                        }
+
+                        break;
+                    }
+                }
+
 
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
@@ -201,6 +263,23 @@ namespace MSXUtilities
                 //var actual = reader.Read(buffer, 0, buffer.Length);
                 //output.Write(buffer, 0, actual);
             }
+        }
+
+        private static bool CheckIfPaletteisValidForThisSprite(List<List<int>> listOf3ColorsNoRepeat)
+        {
+            foreach (var colors in listOf3ColorsNoRepeat)
+            {
+                if (
+                    ((colors[0] | colors[1]) != colors[2]) &&
+                    ((colors[2] | colors[1]) != colors[0]) &&
+                    ((colors[2] | colors[0]) != colors[1])
+                  )
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static void GetNibbleOfByte(
