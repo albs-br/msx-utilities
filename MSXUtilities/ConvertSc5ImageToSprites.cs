@@ -169,22 +169,23 @@ namespace MSXUtilities
 
                 // Brute force to find a palette
                 var newListOf3ColorsNoRepeat = new List<List<int>>();
+                var newPalette = new List<int>();
                 Random rnd = new Random();
                 for (UInt64 i = 0; i < UInt64.MaxValue; i++)
                 {
                     newListOf3ColorsNoRepeat.Clear();
+                    newPalette.Clear();
 
                     // sort list of 15 random colors
-                    var rndPalette = new List<int>();
                     for (int j = 1; j <= 15; j++)
                     {
                         bool found = false;
                         do
                         {
                             int randomNumber = rnd.Next(1, 16);
-                            if (!rndPalette.Contains(randomNumber))
+                            if (!newPalette.Contains(randomNumber))
                             {
-                                rndPalette.Add(randomNumber);
+                                newPalette.Add(randomNumber);
                                 found = true;
                             }
                         }
@@ -197,9 +198,9 @@ namespace MSXUtilities
                     {
                         newListOf3ColorsNoRepeat.Add(new List<int>
                         {
-                            rndPalette[colors[0]],
-                            rndPalette[colors[1]],
-                            rndPalette[colors[2]]
+                            newPalette[colors[0]],
+                            newPalette[colors[1]],
+                            newPalette[colors[2]]
                         });
                     }
 
@@ -212,7 +213,7 @@ namespace MSXUtilities
                     {
                         Console.WriteLine();
                         Console.WriteLine("Valid palette found");
-                        foreach (var item in rndPalette)
+                        foreach (var item in newPalette)
                         {
                             Console.Write(item + ", ");
                         }
@@ -265,9 +266,11 @@ namespace MSXUtilities
 
                 // generate patterns and colors for sprite
                 string pattern_0 = "", pattern_1 = "";
-                var lineNumber_1 = 0;
+                lineNumber = 0;
                 foreach (var line in pixelsList)
                 {
+                    var colorsInThisLine = pixelsList[lineNumber].Where(x => x != 0).Distinct().ToList();
+
                     //var colNumber = 0;
                     foreach (var pixel in line)
                     {
@@ -279,14 +282,19 @@ namespace MSXUtilities
                         else
                         {
                             //TODO: continue here
-                            //var i = newListOf3ColorsNoRepeat[lineNumber_1][0];
+                            if (colorsInThisLine.Count == 1)
+                            { 
+                            }
+                            else if (colorsInThisLine.Count == 2)
+                            {
+                            }
                         }
                     }
                     
                     pattern_0 += Environment.NewLine;
                     pattern_1 += Environment.NewLine;
 
-                    lineNumber_1++;
+                    lineNumber++;
                 }
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
