@@ -35,7 +35,8 @@ namespace MSXUtilities
                 int usefulLastY = sprite0_offsetY + sprite0_height - 1;
 
                 IList<IList<int>> colorsList = new List<IList<int>>();
-                string pattern_0 = "", pattern_1 = "";
+                IList<IList<int>> pixelsList = new List<IList<int>>();
+                //string pattern_0 = "", pattern_1 = "";
 
                 for (int j = 0; j < input.Length; j++)
                 {
@@ -48,23 +49,16 @@ namespace MSXUtilities
                     x = (counter - (SCREEN_WIDTH_IN_BYTES * y)) * 2; // each byte represents 2 pixels on SC5
                     
                     // Left pixel
-                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, 
-                        ref pattern_0, ref pattern_1, colorsList, byteRead, true);
+                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY,
+                        pixelsList, colorsList, byteRead, true);
 
                     // Right pixel
-                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY, 
-                        ref pattern_0, ref pattern_1, colorsList, byteRead, false);
+                    GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY,
+                        pixelsList, colorsList, byteRead, false);
                 }
 
-                //var newPalette = new List<int>();
-                //for (int i = 0; i < 16; i++)
-                //{
-                //    newPalette.Add(0);
-                //}
-
-
                 // show pattern 0
-                Console.WriteLine(pattern_0);
+                //Console.WriteLine(pattern_0);
 
 
                 var listOf3Colors = new List<List<int>>();
@@ -103,11 +97,6 @@ namespace MSXUtilities
                         else
                         {
                             Console.Write("; OR-color impossible");
-                            //if (newPalette[distinctColors[0]] = 0 &&
-                            //    newPalette[distinctColors[0]] = 0) 
-                            //{
-                            //    newPalette[distinctColors[0]] = distinctColors[0];
-                            //}
                         }
                     }
 
@@ -132,7 +121,6 @@ namespace MSXUtilities
                     }
 
                     // new list without duplicated combinations
-                    //if (!newListOf3Colors.Any<List<int>>(x => x.All(y => y == colors.Any(z => z)))
                     if (!listOf3ColorsNoRepeat.Any(c => c.SequenceEqual(colors)))
                     {
                         listOf3ColorsNoRepeat.Add(colors);
@@ -180,22 +168,12 @@ namespace MSXUtilities
                 }
 
                 // Brute force to find a palette
-                //for (int i = 0; i < distinctColors1.Count(); i++)
-                //{
-                //    for (int j = 0; j < distinctColors1.Count(); j++)
-                //    {
-                //        for (int k = 0; k < distinctColors1.Count(); k++)
-                //        {
-                //            if (i != k && j != k)
-                //            { 
-                //            }
-                //        }
-                //    }
-                //}
-
+                var newListOf3ColorsNoRepeat = new List<List<int>>();
                 Random rnd = new Random();
-                for (int i = 0; i < 1000000; i++)
+                for (UInt64 i = 0; i < UInt64.MaxValue; i++)
                 {
+                    newListOf3ColorsNoRepeat.Clear();
+
                     // sort list of 15 random colors
                     var rndPalette = new List<int>();
                     for (int j = 1; j <= 15; j++)
@@ -215,7 +193,6 @@ namespace MSXUtilities
 
 
                     // to substitute on list of 3 colors for this sprite
-                    var newListOf3ColorsNoRepeat = new List<List<int>>();
                     foreach (var colors in listOf3ColorsNoRepeat)
                     {
                         newListOf3ColorsNoRepeat.Add(new List<int>
@@ -228,9 +205,9 @@ namespace MSXUtilities
 
 
                     // Check if this palette is valid for this sprite
-                    Console.WriteLine();
                     var isValid = CheckIfPaletteisValidForThisSprite(newListOf3ColorsNoRepeat);
-                    Console.WriteLine("Palette #" + i + " is valid: " + isValid);
+                    //Console.WriteLine();
+                    //Console.WriteLine("Palette #" + i + " is valid: " + isValid);
                     if (isValid)
                     {
                         Console.WriteLine();
@@ -255,7 +232,62 @@ namespace MSXUtilities
                     }
                 }
 
+                // organize list (OR color should be the third of each line)
+                foreach (var colors in newListOf3ColorsNoRepeat)
+                {
+                    var color0 = colors[0];
+                    var color1 = colors[1];
+                    var color2 = colors[2];
 
+                    if ((colors[0] | colors[1]) == colors[2])
+                    {
+                        colors.Clear();
+                        colors.Add(color0);
+                        colors.Add(color1);
+                        colors.Add(color2);
+                    }
+                    else if ((colors[2] | colors[1]) == colors[0])
+                    {
+                        colors.Clear();
+                        colors.Add(color2);
+                        colors.Add(color1);
+                        colors.Add(color0);
+                    }
+                    else if ((colors[0] | colors[2]) == colors[1])
+                    {
+                        colors.Clear();
+                        colors.Add(color0);
+                        colors.Add(color2);
+                        colors.Add(color1);
+                    }
+                }
+
+
+                // generate patterns and colors for sprite
+                string pattern_0 = "", pattern_1 = "";
+                var lineNumber_1 = 0;
+                foreach (var line in pixelsList)
+                {
+                    //var colNumber = 0;
+                    foreach (var pixel in line)
+                    {
+                        if (pixel == 0)
+                        {
+                            pattern_0 += "0";
+                            pattern_1 += "0";
+                        }
+                        else
+                        {
+                            //TODO: continue here
+                            //var i = newListOf3ColorsNoRepeat[lineNumber_1][0];
+                        }
+                    }
+                    
+                    pattern_0 += Environment.NewLine;
+                    pattern_1 += Environment.NewLine;
+
+                    lineNumber_1++;
+                }
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
 
@@ -283,8 +315,8 @@ namespace MSXUtilities
         }
 
         private static void GetNibbleOfByte(
-            int sprite0_offsetX, int sprite0_offsetY, int x, int y, int totalLastX, int totalLastY, int usefulLastX, int usefulLastY, 
-            ref string pattern_0, ref string pattern_1, IList<IList<int>> colorsList, byte byteRead, bool leftPixel)
+            int sprite0_offsetX, int sprite0_offsetY, int x, int y, int totalLastX, int totalLastY, int usefulLastX, int usefulLastY,
+            IList<IList<int>> pixelsList, IList<IList<int>> colorsList, byte byteRead, bool leftPixel)
         {
             if (!leftPixel)
             {
@@ -303,6 +335,7 @@ namespace MSXUtilities
                     if (xSprite == 0)
                     {
                         colorsList.Add(new List<int>());
+                        pixelsList.Add(new List<int>());
                     }
 
                     var highNibble = byteRead & 0b11110000;
@@ -317,45 +350,47 @@ namespace MSXUtilities
                     if (leftPixel)
                     {
                         colorsList[ySprite].Add(leftPixelColor);
+                        pixelsList[ySprite].Add(leftPixelColor);
 
-                        if (leftPixelColor == 0)
-                        {
-                            pattern_0 += "0";
-                            pattern_1 += "0";
-                        }
-                        else
-                        {
-                            pattern_0 += "1";
-                            pattern_1 += "1";
-                        }
+                        //if (leftPixelColor == 0)
+                        //{
+                        //    pattern_0 += "0";
+                        //    pattern_1 += "0";
+                        //}
+                        //else
+                        //{
+                        //    pattern_0 += "1";
+                        //    pattern_1 += "1";
+                        //}
                     }
                     else
                     {
                         colorsList[ySprite].Add(rightPixelColor);
+                        pixelsList[ySprite].Add(rightPixelColor);
 
-                        if (rightPixelColor == 0)
-                        {
-                            pattern_0 += "0";
-                            pattern_1 += "0";
-                        }
-                        else
-                        {
-                            pattern_0 += "1";
-                            pattern_1 += "1";
-                        }
+                        //if (rightPixelColor == 0)
+                        //{
+                        //    pattern_0 += "0";
+                        //    pattern_1 += "0";
+                        //}
+                        //else
+                        //{
+                        //    pattern_0 += "1";
+                        //    pattern_1 += "1";
+                        //}
                     }
                 }
-                else
-                {
-                    pattern_0 += "0";
-                    pattern_1 += "0";
-                }
+                //else
+                //{
+                //    pattern_0 += "0";
+                //    pattern_1 += "0";
+                //}
 
-                if (x == totalLastX && y <= totalLastY)
-                {
-                    pattern_0 += Environment.NewLine;
-                    pattern_1 += Environment.NewLine;
-                }
+                //if (x == totalLastX && y <= totalLastY)
+                //{
+                //    pattern_0 += Environment.NewLine;
+                //    pattern_1 += Environment.NewLine;
+                //}
 
             }
         }
