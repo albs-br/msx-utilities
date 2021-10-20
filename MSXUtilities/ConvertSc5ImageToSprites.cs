@@ -267,44 +267,55 @@ namespace MSXUtilities
 
 
                 // generate patterns and colors for sprite
-                string pattern_0 = "", pattern_1 = "";
+                //string pattern_0 = "", pattern_1 = "";
                 string color_0 = "", color_1 = "";
+                IList<string> pattern_0 = new List<string>(), pattern_1 = new List<string>();
+                for (int i = 0; i < 32; i++)
+                {
+                    pattern_0.Add("");
+                    pattern_1.Add("");
+                }
                 lineNumber = 0;
                 foreach (var line in pixelsList)
                 {
                     var colorsInThisLine = pixelsList[lineNumber].Where(x => x != 0).Distinct().ToList();
 
-                    //var colNumber = 0;
+                    var colNumber = 0;
                     foreach (var pixel in line)
                     {
+                        var lineIndex = (int)Math.Floor((decimal)lineNumber / 8);
+                        var colIndex = (int)Math.Floor((decimal)colNumber / 8);
+                        var spriteIndex = (colIndex * 2) + lineIndex;
+                        var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+
                         // patterns
                         if (pixel == 0)
                         {
-                            pattern_0 += "0";
-                            pattern_1 += "0";
+                            pattern_0[patternIndex] += "0";
+                            pattern_1[patternIndex] += "0";
                         }
                         else
                         {
                             if (pixel == colorsInThisLine[0])
                             {
-                                pattern_0 += "1";
-                                pattern_1 += "0";
+                                pattern_0[patternIndex] += "1";
+                                pattern_1[patternIndex] += "0";
                             }
                             else if (pixel == colorsInThisLine[1])
                             {
-                                pattern_0 += "0";
-                                pattern_1 += "1";
+                                pattern_0[patternIndex] += "0";
+                                pattern_1[patternIndex] += "1";
                             }
                             else if (pixel == colorsInThisLine[2]) // OR-color
                             {
-                                pattern_0 += "1";
-                                pattern_1 += "1";
+                                pattern_0[patternIndex] += "1";
+                                pattern_1[patternIndex] += "1";
                             }
                         }
+
+                        colNumber++;
                     }
 
-                    pattern_0 += Environment.NewLine;
-                    pattern_1 += Environment.NewLine;
 
 
                     // colors
@@ -330,9 +341,15 @@ namespace MSXUtilities
 
                 Console.WriteLine();
                 Console.WriteLine("; pattern 0:");
-                Console.WriteLine(pattern_0);
+                foreach (var line in pattern_0)
+                {
+                    Console.WriteLine(line);
+                }
                 Console.WriteLine("; pattern 1:");
-                Console.WriteLine(pattern_1);
+                foreach (var line in pattern_1)
+                {
+                    Console.WriteLine(line);
+                }
 
                 Console.WriteLine("; color 0:");
                 Console.WriteLine(color_0);
