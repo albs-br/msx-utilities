@@ -168,6 +168,8 @@ namespace MSXUtilities
                 }
 
                 // Brute force to find a palette
+                Console.WriteLine();
+                Console.WriteLine("Brute force to find a palette");
                 var newListOf3ColorsNoRepeat = new List<List<int>>();
                 var newPalette = new List<int>();
                 Random rnd = new Random();
@@ -266,6 +268,7 @@ namespace MSXUtilities
 
                 // generate patterns and colors for sprite
                 string pattern_0 = "", pattern_1 = "";
+                string color_0 = "", color_1 = "";
                 lineNumber = 0;
                 foreach (var line in pixelsList)
                 {
@@ -274,6 +277,7 @@ namespace MSXUtilities
                     //var colNumber = 0;
                     foreach (var pixel in line)
                     {
+                        // patterns
                         if (pixel == 0)
                         {
                             pattern_0 += "0";
@@ -281,21 +285,59 @@ namespace MSXUtilities
                         }
                         else
                         {
-                            //TODO: continue here
-                            if (colorsInThisLine.Count == 1)
-                            { 
-                            }
-                            else if (colorsInThisLine.Count == 2)
+                            if (pixel == colorsInThisLine[0])
                             {
+                                pattern_0 += "1";
+                                pattern_1 += "0";
+                            }
+                            else if (pixel == colorsInThisLine[1])
+                            {
+                                pattern_0 += "0";
+                                pattern_1 += "1";
+                            }
+                            else if (pixel == colorsInThisLine[2]) // OR-color
+                            {
+                                pattern_0 += "1";
+                                pattern_1 += "1";
                             }
                         }
                     }
-                    
+
                     pattern_0 += Environment.NewLine;
                     pattern_1 += Environment.NewLine;
 
+
+                    // colors
+                    if(colorsInThisLine.Count > 0) color_0 += colorsInThisLine[0];
+                    if (colorsInThisLine.Count <= 1)
+                    {
+                        color_1 += "0";
+                    }
+                    else if (colorsInThisLine.Count == 2)
+                    {
+                        color_1 += colorsInThisLine[1];
+                    }
+                    else if (colorsInThisLine.Count == 3) 
+                    { 
+                        color_1 += (colorsInThisLine[1] + 64); 
+                    }
+
+                    color_0 += Environment.NewLine;
+                    color_1 += Environment.NewLine;
+
                     lineNumber++;
                 }
+
+                Console.WriteLine();
+                Console.WriteLine("; pattern 0:");
+                Console.WriteLine(pattern_0);
+                Console.WriteLine("; pattern 1:");
+                Console.WriteLine(pattern_1);
+
+                Console.WriteLine("; color 0:");
+                Console.WriteLine(color_0);
+                Console.WriteLine("; color 1:");
+                Console.WriteLine(color_1);
 
                 //var buffer = new byte[4096 * 4]; // 16 kb page
 
