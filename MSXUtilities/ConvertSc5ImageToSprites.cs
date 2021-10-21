@@ -14,11 +14,15 @@ namespace MSXUtilities
             int sprite0_offsetX, int sprite0_offsetY, int sprite0_width, int sprite0_height,
             int sprite1_offsetX, int sprite1_offsetY)
         {
-            List<List<int>> palette = GetPaletteFromFile(fileName);
+            //List<List<int>> palette = GetPaletteFromFile_ToRgb(fileName);
+            byte[] originalPalette = GetPaletteFromFile_ToBytes(fileName);
+            var outputFileBaseName = "output";
 
             using (var input = File.OpenRead(fileName))
             using (var reader = new BinaryReader(input))
-            //using (var output = File.Create(fileName + ".new"))
+            using (var paletteFile = File.Create(outputFileBaseName + ".pal"))
+            using (var patternsFile = File.Create(outputFileBaseName + ".pat"))
+            using (var colorsFile = File.Create(outputFileBaseName + ".col"))
             {
                 const int SCREEN_WIDTH_IN_PIXELS = 256;
                 const int SCREEN_WIDTH_IN_BYTES = SCREEN_WIDTH_IN_PIXELS / 2;
@@ -206,6 +210,8 @@ namespace MSXUtilities
                         });
                     }
 
+                    // insert first color (transparent)
+                    newPalette.Insert(0, 0);
 
                     // Check if this palette is valid for this sprite
                     var isValid = CheckIfPaletteisValidForThisSprite(newListOf3ColorsNoRepeat);
@@ -356,6 +362,20 @@ namespace MSXUtilities
                 Console.WriteLine("; color 1:");
                 Console.WriteLine(color_1);
 
+
+                // Convert input palette to palette found and save to file
+                var paletteBytes = new byte[32];
+                for (int i = 0; i < 16; i++)
+                {
+                    // newPalette // 16-bytes palette index
+
+                    paletteBytes[i * 2] = originalPalette[newPalette[i] * 2];
+                    paletteBytes[(i * 2) + 1] = originalPalette[(newPalette[i] * 2) + 1];
+                }
+                paletteFile.Write(paletteBytes, 0, paletteBytes.Length);
+
+
+
                 //var buffer = new byte[4096 * 4]; // 16 kb page
 
                 //// only one page
@@ -469,7 +489,7 @@ namespace MSXUtilities
         /// <param name="fileName"></param>
         public static void Execute_old(string fileName)
         {
-            List<List<int>> palette = GetPaletteFromFile(fileName);
+            List<List<int>> palette = GetPaletteFromFile_ToRgb(fileName);
 
 
             // create a replacement color for each color of the palette (color most similar)
@@ -640,7 +660,7 @@ namespace MSXUtilities
             }
         }
 
-        private static List<List<int>> GetPaletteFromFile(string fileName)
+        private static List<List<int>> GetPaletteFromFile_ToRgb(string fileName)
         {
             // get palette from file (last 32 bytes)
             byte[] paletteBytes = new byte[32];
@@ -661,6 +681,20 @@ namespace MSXUtilities
             }
 
             return palette;
+        }
+
+        private static byte[] GetPaletteFromFile_ToBytes(string fileName)
+        {
+            // get palette from file (last 32 bytes)
+            byte[] paletteBytes = new byte[32];
+            using (var input = File.OpenRead(fileName))
+            using (BinaryReader reader = new BinaryReader(input))
+            {
+                reader.BaseStream.Seek(input.Length - 32, SeekOrigin.Begin);
+                reader.Read(paletteBytes, 0, 32);
+            }
+            
+            return paletteBytes;
         }
 
         private static bool CheckIfOrColorIsPossible(int color0, int color1, int color2)
