@@ -214,7 +214,7 @@ namespace MSXUtilities
                     newPalette.Insert(0, 0);
 
                     // Check if this palette is valid for this sprite
-                    var isValid = CheckIfPaletteisValidForThisSprite(newListOf3ColorsNoRepeat);
+                    var isValid = CheckIfPaletteIsValidForThisSprite(newListOf3ColorsNoRepeat);
                     //Console.WriteLine();
                     //Console.WriteLine("Palette #" + i + " is valid: " + isValid);
                     if (isValid)
@@ -375,16 +375,35 @@ namespace MSXUtilities
                 paletteFile.Write(paletteBytes, 0, paletteBytes.Length);
 
 
+                // save patterns file
+                var patternBytes = new byte[64];
+                index = 0;
+                foreach (var line in pattern_0.Concat(pattern_1))
+                {
+                    patternBytes[index] = Convert.ToByte(line, 2);
 
-                //var buffer = new byte[4096 * 4]; // 16 kb page
+                    index++;
+                }
+                patternsFile.Write(patternBytes, 0, patternBytes.Length);
 
-                //// only one page
-                //var actual = reader.Read(buffer, 0, buffer.Length);
-                //output.Write(buffer, 0, actual);
+
+                // save colors file
+                var colorsBytes = new byte[32];
+                index = 0;
+                foreach (var line in (color_0 + color_1).Split(Environment.NewLine))
+                {
+                    if (line != "")
+                    {
+                        colorsBytes[index] = Convert.ToByte(line);
+
+                        index++;
+                    }
+                }
+                colorsFile.Write(colorsBytes, 0, colorsBytes.Length);
             }
         }
 
-        private static bool CheckIfPaletteisValidForThisSprite(List<List<int>> listOf3ColorsNoRepeat)
+        private static bool CheckIfPaletteIsValidForThisSprite(List<List<int>> listOf3ColorsNoRepeat)
         {
             foreach (var colors in listOf3ColorsNoRepeat)
             {
