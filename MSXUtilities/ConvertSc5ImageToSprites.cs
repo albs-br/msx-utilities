@@ -363,16 +363,40 @@ namespace MSXUtilities
                 Console.WriteLine(color_1);
 
 
+                // Show original palette RGB values
+                Console.WriteLine();
+                Console.WriteLine("Original palette RGB values:");
+                for (int i = 0; i < originalPalette.Length; i+=2)
+                {
+                    int red = (originalPalette[i] & 0b11110000) >> 4;
+                    int blue = (originalPalette[i] & 0b00001111);
+                    int green = originalPalette[i + 1];
+
+                    Console.WriteLine((i / 2) + ": " + red + ", " + green + ", " + blue);
+                }
+
+
                 // Convert input palette to palette found and save to file
                 var paletteBytes = new byte[32];
                 for (int i = 0; i < 16; i++)
                 {
-                    // newPalette // 16-bytes palette index
-
                     paletteBytes[i * 2] = originalPalette[newPalette[i] * 2];
                     paletteBytes[(i * 2) + 1] = originalPalette[(newPalette[i] * 2) + 1];
                 }
                 paletteFile.Write(paletteBytes, 0, paletteBytes.Length);
+
+
+                // Show converted palette RGB values
+                Console.WriteLine();
+                Console.WriteLine("Converted palette RGB values:");
+                for (int i = 0; i < paletteBytes.Length; i += 2)
+                {
+                    int red = (paletteBytes[i] & 0b11110000) >> 4;
+                    int blue = (paletteBytes[i] & 0b00001111);
+                    int green = paletteBytes[i + 1];
+
+                    Console.WriteLine((i / 2) + ": " + red + ", " + green + ", " + blue);
+                }
 
 
                 // save patterns file
