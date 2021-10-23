@@ -38,9 +38,7 @@ namespace MSXUtilities
                 int usefulLastX = sprite0_offsetX + sprite0_width - 1;
                 int usefulLastY = sprite0_offsetY + sprite0_height - 1;
 
-                IList<IList<int>> colorsList = new List<IList<int>>();
                 IList<IList<int>> pixelsList = new List<IList<int>>();
-                //string pattern_0 = "", pattern_1 = "";
 
                 for (int j = 0; j < input.Length; j++)
                 {
@@ -54,26 +52,25 @@ namespace MSXUtilities
                     
                     // Left pixel
                     GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY,
-                        pixelsList, colorsList, byteRead, true);
+                        pixelsList, byteRead, true);
 
                     // Right pixel
                     GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY,
-                        pixelsList, colorsList, byteRead, false);
+                        pixelsList, byteRead, false);
                 }
-
-                // show pattern 0
-                //Console.WriteLine(pattern_0);
-
 
                 var listOf3Colors = new List<List<int>>();
 
                 // count colors per line
                 var lineNumber = 0;
-                foreach (var line in colorsList)
+                foreach (var line in pixelsList)
                 {
                     Console.Write("Line #" + lineNumber.ToString().PadLeft(2, ' ') + ": ");
                     //Console.Write(line.Count + " colors: ");
-                    if (line.Count != 16) throw new InvalidDataException("Line #" + lineNumber + " has " + line.Count + " pixels. Should be 16.");
+                    if (line.Count != 16)
+                    {
+                        throw new InvalidDataException("Line #" + lineNumber + " has " + line.Count + " pixels. Should be 16.");
+                    }
 
                     foreach (var color in line)
                     {
@@ -84,6 +81,11 @@ namespace MSXUtilities
                     var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
 
                     Console.Write("; Distinct colors: " + distinctColorsOnLine.Count());
+
+                    if (distinctColorsOnLine.Count() > 3) 
+                    { 
+                        throw new InvalidDataException("Line #" + lineNumber + " has more than 3 colors."); 
+                    }
 
                     // check if OR-color is possible on the default palette
                     if (distinctColorsOnLine.Count() == 3)
@@ -109,9 +111,9 @@ namespace MSXUtilities
                     lineNumber++;
                 }
 
-                var distinctColors1 = colorsList.SelectMany(x => x).Where(x => x != 0).Distinct();
+                var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
                 Console.WriteLine();
-                Console.WriteLine("Total distinct colors: " + distinctColors1.Count());
+                Console.WriteLine("Total distinct colors: " + totalDistinctColors.Count());
 
                 Console.WriteLine();
                 Console.WriteLine("3 colors combinations:");
@@ -245,6 +247,7 @@ namespace MSXUtilities
 
                 //TODO: continue:
 
+                // tansform sprite on original palette to new palette
                 //IList<IList<int>> newPixelsList = new List<IList<int>>();
                 //foreach (var line in pixelsList)
                 //{
@@ -461,7 +464,7 @@ namespace MSXUtilities
 
         private static void GetNibbleOfByte(
             int sprite0_offsetX, int sprite0_offsetY, int x, int y, int totalLastX, int totalLastY, int usefulLastX, int usefulLastY,
-            IList<IList<int>> pixelsList, IList<IList<int>> colorsList, byte byteRead, bool leftPixel)
+            IList<IList<int>> pixelsList, byte byteRead, bool leftPixel)
         {
             if (!leftPixel)
             {
@@ -479,7 +482,6 @@ namespace MSXUtilities
                 {
                     if (xSprite == 0)
                     {
-                        colorsList.Add(new List<int>());
                         pixelsList.Add(new List<int>());
                     }
 
@@ -489,54 +491,15 @@ namespace MSXUtilities
                     var leftPixelColor = highNibble >> 4;
                     var rightPixelColor = lowNibble;
 
-                    //if (leftPixelColor != 0) colorsList.Add(leftPixelColor);
-                    //if (rightPixelColor != 0) colorsList.Add(rightPixelColor);
-
                     if (leftPixel)
                     {
-                        colorsList[ySprite].Add(leftPixelColor);
                         pixelsList[ySprite].Add(leftPixelColor);
-
-                        //if (leftPixelColor == 0)
-                        //{
-                        //    pattern_0 += "0";
-                        //    pattern_1 += "0";
-                        //}
-                        //else
-                        //{
-                        //    pattern_0 += "1";
-                        //    pattern_1 += "1";
-                        //}
                     }
                     else
                     {
-                        colorsList[ySprite].Add(rightPixelColor);
                         pixelsList[ySprite].Add(rightPixelColor);
-
-                        //if (rightPixelColor == 0)
-                        //{
-                        //    pattern_0 += "0";
-                        //    pattern_1 += "0";
-                        //}
-                        //else
-                        //{
-                        //    pattern_0 += "1";
-                        //    pattern_1 += "1";
-                        //}
                     }
                 }
-                //else
-                //{
-                //    pattern_0 += "0";
-                //    pattern_1 += "0";
-                //}
-
-                //if (x == totalLastX && y <= totalLastY)
-                //{
-                //    pattern_0 += Environment.NewLine;
-                //    pattern_1 += Environment.NewLine;
-                //}
-
             }
         }
 
