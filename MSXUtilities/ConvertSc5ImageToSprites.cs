@@ -227,7 +227,7 @@ namespace MSXUtilities
                         }
 
                         Console.WriteLine();
-                        Console.WriteLine();
+                        Console.WriteLine("List of 3 colors after substitution");
                         foreach (var colors in newListOf3ColorsNoRepeat)
                         {
                             foreach (var color in colors)
@@ -241,35 +241,50 @@ namespace MSXUtilities
                     }
                 }
 
-                // organize list (OR color should be the third of each line)
-                foreach (var colors in newListOf3ColorsNoRepeat)
-                {
-                    var color0 = colors[0];
-                    var color1 = colors[1];
-                    var color2 = colors[2];
+                //TODO :this transformation should be made on pixelsList
 
-                    if ((colors[0] | colors[1]) == colors[2])
-                    {
-                        colors.Clear();
-                        colors.Add(color0);
-                        colors.Add(color1);
-                        colors.Add(color2);
-                    }
-                    else if ((colors[2] | colors[1]) == colors[0])
-                    {
-                        colors.Clear();
-                        colors.Add(color2);
-                        colors.Add(color1);
-                        colors.Add(color0);
-                    }
-                    else if ((colors[0] | colors[2]) == colors[1])
-                    {
-                        colors.Clear();
-                        colors.Add(color0);
-                        colors.Add(color2);
-                        colors.Add(color1);
-                    }
-                }
+                //TODO: continue:
+
+                //IList<IList<int>> newPixelsList = new List<IList<int>>();
+                //foreach (var line in pixelsList)
+                //{
+                //    IList<int> newLine = new List<int>();
+                //    foreach (var pixel in line)
+                //    {
+
+                //    }
+                //    newPixelsList.Add()
+                //}
+
+                // organize list (OR color should be the third of each line)
+                //foreach (var colors in newListOf3ColorsNoRepeat)
+                //{
+                //    var color0 = colors[0];
+                //    var color1 = colors[1];
+                //    var color2 = colors[2];
+
+                //    if ((colors[0] | colors[1]) == colors[2])
+                //    {
+                //        colors.Clear();
+                //        colors.Add(color0);
+                //        colors.Add(color1);
+                //        colors.Add(color2);
+                //    }
+                //    else if ((colors[2] | colors[1]) == colors[0])
+                //    {
+                //        colors.Clear();
+                //        colors.Add(color2);
+                //        colors.Add(color1);
+                //        colors.Add(color0);
+                //    }
+                //    else if ((colors[0] | colors[2]) == colors[1])
+                //    {
+                //        colors.Clear();
+                //        colors.Add(color0);
+                //        colors.Add(color2);
+                //        colors.Add(color1);
+                //    }
+                //}
 
 
                 // generate patterns and colors for sprite
