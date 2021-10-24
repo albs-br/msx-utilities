@@ -31,7 +31,7 @@ namespace MSXUtilities
 
                 var counter = 0;
                 int x = 0, y = 0;
-                
+
                 int totalLastX = sprite0_offsetX + SPRITE_WIDTH - 1;
                 int totalLastY = sprite0_offsetY + SPRITE_HEIGHT - 1;
 
@@ -49,7 +49,7 @@ namespace MSXUtilities
                     counter = j - HEADER_SIZE;
                     y = counter / (SCREEN_WIDTH_IN_BYTES);
                     x = (counter - (SCREEN_WIDTH_IN_BYTES * y)) * 2; // each byte represents 2 pixels on SC5
-                    
+
                     // Left pixel
                     GetNibbleOfByte(sprite0_offsetX, sprite0_offsetY, x, y, totalLastX, totalLastY, usefulLastX, usefulLastY,
                         pixelsList, byteRead, true);
@@ -59,57 +59,13 @@ namespace MSXUtilities
                         pixelsList, byteRead, false);
                 }
 
+
                 var listOf3Colors = new List<List<int>>();
 
                 // count colors per line
-                var lineNumber = 0;
-                foreach (var line in pixelsList)
-                {
-                    Console.Write("Line #" + lineNumber.ToString().PadLeft(2, ' ') + ": ");
-                    //Console.Write(line.Count + " colors: ");
-                    if (line.Count != 16)
-                    {
-                        throw new InvalidDataException("Line #" + lineNumber + " has " + line.Count + " pixels. Should be 16.");
-                    }
-
-                    foreach (var color in line)
-                    {
-                        Console.Write(color.ToString().PadLeft(2, ' ') + ", ");
-                    }
-
-                    // get the distinct colors different than transparent on this line
-                    var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
-
-                    Console.Write("; Distinct colors: " + distinctColorsOnLine.Count());
-
-                    if (distinctColorsOnLine.Count() > 3) 
-                    { 
-                        throw new InvalidDataException("Line #" + lineNumber + " has more than 3 colors."); 
-                    }
-
-                    // check if OR-color is possible on the default palette
-                    if (distinctColorsOnLine.Count() == 3)
-                    {
-                        listOf3Colors.Add(new List<int> { distinctColorsOnLine[0], distinctColorsOnLine[1], distinctColorsOnLine[2] });
-
-                        if (
-                               ((distinctColorsOnLine[0] | distinctColorsOnLine[1]) == distinctColorsOnLine[2])
-                            || ((distinctColorsOnLine[0] | distinctColorsOnLine[2]) == distinctColorsOnLine[1])
-                            || ((distinctColorsOnLine[1] | distinctColorsOnLine[2]) == distinctColorsOnLine[0])
-                            )
-                        {
-                            Console.Write("; OR-color possible");
-                        }
-                        else
-                        {
-                            Console.Write("; OR-color impossible");
-                        }
-                    }
-
-                    Console.WriteLine();
-
-                    lineNumber++;
-                }
+                Console.WriteLine();
+                Console.WriteLine("Original sprite:");
+                ShowSprite(pixelsList, listOf3Colors);
 
                 var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
                 Console.WriteLine();
@@ -158,18 +114,18 @@ namespace MSXUtilities
 
                 Console.WriteLine();
                 Console.WriteLine("Most common colors (only on 3 color lines):");
-                var listOfBestOrColors = new List<int> { 
-                    15,                 // 15 combinations
-                    14, 13, 11, 7,      // 6  combinations
-                    12, 10, 9, 6, 5, 3  // 1 combination
-                };
+                //var listOfBestOrColors = new List<int> {
+                //    15,                 // 15 combinations
+                //    14, 13, 11, 7,      // 6  combinations
+                //    12, 10, 9, 6, 5, 3  // 1 combination
+                //};
                 var index = 0;
                 foreach (var item in orColorCount.OrderByDescending(x => x.Value))
                 {
                     Console.Write("Color " + item.Key + ": " + item.Value + " times");
-                    
+
                     Console.WriteLine();
-                    
+
                     index++;
                 }
 
@@ -200,6 +156,9 @@ namespace MSXUtilities
                         while (!found);
                     }
 
+                    // add transparent color
+                    // insert first color (transparent)
+                    newPalette.Insert(0, 0);
 
                     // to substitute on list of 3 colors for this sprite
                     foreach (var colors in listOf3ColorsNoRepeat)
@@ -212,8 +171,6 @@ namespace MSXUtilities
                         });
                     }
 
-                    // insert first color (transparent)
-                    newPalette.Insert(0, 0);
 
                     // Check if this palette is valid for this sprite
                     var isValid = CheckIfPaletteIsValidForThisSprite(newListOf3ColorsNoRepeat);
@@ -227,67 +184,68 @@ namespace MSXUtilities
                         {
                             Console.Write(item + ", ");
                         }
-
                         Console.WriteLine();
-                        Console.WriteLine("List of 3 colors after substitution");
+                        
+                        Console.WriteLine();
+                        Console.WriteLine("List of 3 colors before/after substitution");
+                        var index1 = 0;
                         foreach (var colors in newListOf3ColorsNoRepeat)
                         {
+                            for (int k = 0; k < listOf3ColorsNoRepeat[index1].Count; k++)
+                            {
+                                Console.Write(listOf3ColorsNoRepeat[index1][k] + ", ");
+                            }
+
+                            Console.Write(" ==> ");
+
                             foreach (var color in colors)
                             {
                                 Console.Write(color + ", ");
                             }
                             Console.WriteLine();
+
+                            index1++;
                         }
 
                         break;
                     }
                 }
 
-                //TODO :this transformation should be made on pixelsList
+                // transform sprite on original palette to new palette
+                IList<IList<int>> newPixelsList = new List<IList<int>>();
+                foreach (var line in pixelsList)
+                {
+                    //[debug]
+                    //var colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
+                    //if (colorsInThisLine.Count == 3)
+                    //{
+                    //}
 
-                //TODO: continue:
 
-                // tansform sprite on original palette to new palette
-                //IList<IList<int>> newPixelsList = new List<IList<int>>();
-                //foreach (var line in pixelsList)
-                //{
-                //    IList<int> newLine = new List<int>();
-                //    foreach (var pixel in line)
-                //    {
+                    IList<int> newLine = new List<int>();
+                    foreach (var pixel in line)
+                    {
+                        // find this pixel color on new palette
+                        //var newIndex = 0;
+                        //for (int i = 0; i < newPalette.Count; i++)
+                        //{
+                        //    if (pixel == newPalette[i])
+                        //    {
+                        //        newIndex = i;
+                        //        break;
+                        //    }
+                        //}
+                        //newLine.Add(newIndex);
+                        
+                        newLine.Add(newPalette[pixel]);
+                    }
+                    newPixelsList.Add(newLine);
+                }
 
-                //    }
-                //    newPixelsList.Add()
-                //}
-
-                // organize list (OR color should be the third of each line)
-                //foreach (var colors in newListOf3ColorsNoRepeat)
-                //{
-                //    var color0 = colors[0];
-                //    var color1 = colors[1];
-                //    var color2 = colors[2];
-
-                //    if ((colors[0] | colors[1]) == colors[2])
-                //    {
-                //        colors.Clear();
-                //        colors.Add(color0);
-                //        colors.Add(color1);
-                //        colors.Add(color2);
-                //    }
-                //    else if ((colors[2] | colors[1]) == colors[0])
-                //    {
-                //        colors.Clear();
-                //        colors.Add(color2);
-                //        colors.Add(color1);
-                //        colors.Add(color0);
-                //    }
-                //    else if ((colors[0] | colors[2]) == colors[1])
-                //    {
-                //        colors.Clear();
-                //        colors.Add(color0);
-                //        colors.Add(color2);
-                //        colors.Add(color1);
-                //    }
-                //}
+                var dummyList = new List<List<int>>();
+                Console.WriteLine();
+                Console.WriteLine("Sprite after substitutions:");
+                ShowSprite(newPixelsList, dummyList);
 
 
                 // generate patterns and colors for sprite
@@ -299,10 +257,50 @@ namespace MSXUtilities
                     pattern_0.Add("");
                     pattern_1.Add("");
                 }
-                lineNumber = 0;
-                foreach (var line in pixelsList)
+                var lineNumber = 0;
+                foreach (var line in newPixelsList)
                 {
-                    var colorsInThisLine = pixelsList[lineNumber].Where(x => x != 0).Distinct().ToList();
+                    var colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
+                    int color0 = -1, color1 = -1, orColor = -1;
+                    switch (colorsInThisLine.Count)
+                    {
+                        case 1:
+                            color0 = colorsInThisLine[0];
+                            break;
+
+                        case 2:
+                            color0 = colorsInThisLine[0];
+                            color1 = colorsInThisLine[1];
+                            break;
+
+                        case 3:
+                            if ((colorsInThisLine[0] | colorsInThisLine[1]) == colorsInThisLine[2])
+                            {
+                                color0 = colorsInThisLine[0];
+                                color1 = colorsInThisLine[1];
+                                orColor = colorsInThisLine[2];
+                            }
+                            else if ((colorsInThisLine[2] | colorsInThisLine[1]) == colorsInThisLine[0])
+                            {
+                                color0 = colorsInThisLine[2];
+                                color1 = colorsInThisLine[1];
+                                orColor = colorsInThisLine[0];
+                            }
+                            else if ((colorsInThisLine[0] | colorsInThisLine[2]) == colorsInThisLine[1])
+                            {
+                                color0 = colorsInThisLine[0];
+                                color1 = colorsInThisLine[2];
+                                orColor = colorsInThisLine[1];
+                            }
+                            else
+                            {
+                                throw new InvalidDataException("Color combiantion impossible.");
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
 
                     var colNumber = 0;
                     foreach (var pixel in line)
@@ -318,23 +316,24 @@ namespace MSXUtilities
                             pattern_0[patternIndex] += "0";
                             pattern_1[patternIndex] += "0";
                         }
+                        else if (pixel == color0)
+                        {
+                            pattern_0[patternIndex] += "1";
+                            pattern_1[patternIndex] += "0";
+                        }
+                        else if (pixel == color1)
+                        {
+                            pattern_0[patternIndex] += "0";
+                            pattern_1[patternIndex] += "1";
+                        }
+                        else if (pixel == orColor)
+                        {
+                            pattern_0[patternIndex] += "1";
+                            pattern_1[patternIndex] += "1";
+                        }
                         else
                         {
-                            if (pixel == colorsInThisLine[0])
-                            {
-                                pattern_0[patternIndex] += "1";
-                                pattern_1[patternIndex] += "0";
-                            }
-                            else if (pixel == colorsInThisLine[1])
-                            {
-                                pattern_0[patternIndex] += "0";
-                                pattern_1[patternIndex] += "1";
-                            }
-                            else if (pixel == colorsInThisLine[2]) // OR-color
-                            {
-                                pattern_0[patternIndex] += "1";
-                                pattern_1[patternIndex] += "1";
-                            }
+                            throw new InvalidDataException();
                         }
 
                         colNumber++;
@@ -343,7 +342,7 @@ namespace MSXUtilities
 
 
                     // colors
-                    if(colorsInThisLine.Count > 0) color_0 += colorsInThisLine[0];
+                    if (colorsInThisLine.Count > 0) color_0 += colorsInThisLine[0];
                     if (colorsInThisLine.Count <= 1)
                     {
                         color_1 += "0";
@@ -352,9 +351,9 @@ namespace MSXUtilities
                     {
                         color_1 += colorsInThisLine[1];
                     }
-                    else if (colorsInThisLine.Count == 3) 
-                    { 
-                        color_1 += (colorsInThisLine[1] + 64); 
+                    else if (colorsInThisLine.Count == 3)
+                    {
+                        color_1 += (colorsInThisLine[1] + 64);
                     }
 
                     color_0 += Environment.NewLine;
@@ -384,7 +383,7 @@ namespace MSXUtilities
                 // Show original palette RGB values
                 Console.WriteLine();
                 Console.WriteLine("Original palette RGB values:");
-                for (int i = 0; i < originalPalette.Length; i+=2)
+                for (int i = 0; i < originalPalette.Length; i += 2)
                 {
                     int red = (originalPalette[i] & 0b11110000) >> 4;
                     int blue = (originalPalette[i] & 0b00001111);
@@ -443,6 +442,60 @@ namespace MSXUtilities
                 }
                 colorsFile.Write(colorsBytes, 0, colorsBytes.Length);
             }
+        }
+
+        private static void ShowSprite(IList<IList<int>> pixelsList, List<List<int>> listOf3Colors)
+        {
+            var lineNumber = 0;
+            foreach (var line in pixelsList)
+            {
+                Console.Write("Line #" + lineNumber.ToString().PadLeft(2, ' ') + ": ");
+                //Console.Write(line.Count + " colors: ");
+                if (line.Count != 16)
+                {
+                    throw new InvalidDataException("Line #" + lineNumber + " has " + line.Count + " pixels. Should be 16.");
+                }
+
+                foreach (var color in line)
+                {
+                    Console.Write(color.ToString().PadLeft(2, ' ') + ", ");
+                }
+
+                // get the distinct colors different than transparent on this line
+                var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
+
+                Console.Write("; Distinct colors: " + distinctColorsOnLine.Count());
+
+                if (distinctColorsOnLine.Count() > 3)
+                {
+                    throw new InvalidDataException("Line #" + lineNumber + " has more than 3 colors.");
+                }
+
+                // check if OR-color is possible on the default palette
+                if (distinctColorsOnLine.Count() == 3)
+                {
+                    listOf3Colors.Add(new List<int> { distinctColorsOnLine[0], distinctColorsOnLine[1], distinctColorsOnLine[2] });
+
+                    if (
+                           ((distinctColorsOnLine[0] | distinctColorsOnLine[1]) == distinctColorsOnLine[2])
+                        || ((distinctColorsOnLine[0] | distinctColorsOnLine[2]) == distinctColorsOnLine[1])
+                        || ((distinctColorsOnLine[1] | distinctColorsOnLine[2]) == distinctColorsOnLine[0])
+                        )
+                    {
+                        Console.Write("; OR-color possible");
+                    }
+                    else
+                    {
+                        Console.Write("; OR-color impossible");
+                    }
+                }
+
+                Console.WriteLine();
+
+                lineNumber++;
+            }
+
+            return;
         }
 
         private static bool CheckIfPaletteIsValidForThisSprite(List<List<int>> listOf3ColorsNoRepeat)
