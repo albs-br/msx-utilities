@@ -61,7 +61,14 @@ namespace MSXUtilities
             ConvertSc5ImageToSprites.Execute(
                 fileName,
                 0, 0, 16, 16,
-                0, 0
+                0, 0,
+                "player_plane_0"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                0, 16, 16, 16,
+                0, 0,
+                "player_plane_1"
                 );
 
             Console.WriteLine("Done.");

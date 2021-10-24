@@ -12,11 +12,14 @@ namespace MSXUtilities
 
         public static void Execute(string fileName,
             int sprite0_offsetX, int sprite0_offsetY, int sprite0_width, int sprite0_height,
-            int sprite1_offsetX, int sprite1_offsetY)
+            int sprite1_offsetX, int sprite1_offsetY,
+            string outputFileBaseName)
         {
+            Console.WriteLine("Converting sprite: " + outputFileBaseName);
+
             //List<List<int>> palette = GetPaletteFromFile_ToRgb(fileName);
             byte[] originalPalette = GetPaletteFromFile_ToBytes(fileName);
-            var outputFileBaseName = "output";
+            //var outputFileBaseName = "output";
 
             using (var input = File.OpenRead(fileName))
             using (var reader = new BinaryReader(input))
