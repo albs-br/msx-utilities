@@ -137,6 +137,8 @@ namespace MSXUtilities
                 Random rnd = new Random();
                 for (UInt64 i = 0; i < UInt64.MaxValue; i++)
                 {
+                    if ((i % 100000) == 0) Console.Write(".");
+
                     newListOf3ColorsNoRepeat.Clear();
                     newPalette.Clear();
 
@@ -210,6 +212,7 @@ namespace MSXUtilities
                         break;
                     }
                 }
+                Console.WriteLine();
 
                 // transform sprite on original palette to new palette
                 IList<IList<int>> newPixelsList = new List<IList<int>>();
@@ -342,18 +345,18 @@ namespace MSXUtilities
 
 
                     // colors
-                    if (colorsInThisLine.Count > 0) color_0 += colorsInThisLine[0];
+                    if (colorsInThisLine.Count > 0) color_0 += color0;
                     if (colorsInThisLine.Count <= 1)
                     {
                         color_1 += "0";
                     }
                     else if (colorsInThisLine.Count == 2)
                     {
-                        color_1 += colorsInThisLine[1];
+                        color_1 += color1;
                     }
                     else if (colorsInThisLine.Count == 3)
                     {
-                        color_1 += (colorsInThisLine[1] + 64);
+                        color_1 += (color1 + 64);
                     }
 
                     color_0 += Environment.NewLine;
@@ -397,8 +400,11 @@ namespace MSXUtilities
                 var paletteBytes = new byte[32];
                 for (int i = 0; i < 16; i++)
                 {
-                    paletteBytes[i * 2] = originalPalette[newPalette[i] * 2];
-                    paletteBytes[(i * 2) + 1] = originalPalette[(newPalette[i] * 2) + 1];
+                    var indexOriginalPalette = i * 2;
+                    var indexNewPalette = newPalette[i] * 2;
+
+                    paletteBytes[indexNewPalette] = originalPalette[indexOriginalPalette];
+                    paletteBytes[indexNewPalette + 1] = originalPalette[indexOriginalPalette + 1];
                 }
                 paletteFile.Write(paletteBytes, 0, paletteBytes.Length);
 
