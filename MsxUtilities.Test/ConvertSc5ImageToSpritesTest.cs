@@ -29,13 +29,15 @@ namespace MsxUtilities.Test
                 );
             }
 
+            // TODO: not working because of the random brute force...
+
             // Assert
-            //using (var paletteFile = File.Create(outputFileBaseName + ".pal"))
-            //using (var patternsFile = File.Create(outputFileBaseName + ".pat"))
-            //using (var colorsFile = File.Create(outputFileBaseName + ".col"))
-            //{
-            //    CollectionAssert.AreEqual(paletteBytes, paletteBytes);
-            //}
+            byte[] assertPaletteFile = File.ReadAllBytes(@"AssertFiles\player_plane_0.pal");
+            byte[] assertPatternsFile = File.ReadAllBytes(@"AssertFiles\player_plane_0.pat");
+            byte[] assertColorsFile = File.ReadAllBytes(@"AssertFiles\player_plane_0.col");
+            CollectionAssert.AreEqual(assertPaletteFile, paletteBytes);
+            CollectionAssert.AreEqual(assertPatternsFile, patternBytes);
+            CollectionAssert.AreEqual(assertColorsFile, colorsBytes);
         }
     }
 }
