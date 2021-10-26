@@ -17,9 +17,6 @@ namespace MSXUtilities
         {
             Console.WriteLine("Converting sprite: " + outputFileBaseName);
 
-            //List<List<int>> palette = GetPaletteFromFile_ToRgb(fileName);
-            byte[] originalPalette = GetPaletteFromFile_ToBytes(fileName);
-
             var paletteBytes = new byte[32];
             var patternBytes = new byte[64];
             var colorsBytes = new byte[32];
@@ -27,7 +24,7 @@ namespace MSXUtilities
             using (var input = File.OpenRead(fileName))
             using (var reader = new BinaryReader(input))
             {
-                DoConversion_2_Sprites_Offset_0_0(sprite0_offsetX, sprite0_offsetY, sprite0_width, sprite0_height, originalPalette, paletteBytes, patternBytes, colorsBytes, input, reader);
+                DoConversion_2_Sprites_Offset_0_0(sprite0_offsetX, sprite0_offsetY, sprite0_width, sprite0_height, paletteBytes, patternBytes, colorsBytes, input, reader);
             }
 
             // save output files
@@ -41,8 +38,12 @@ namespace MSXUtilities
             }
         }
 
-        public static void DoConversion_2_Sprites_Offset_0_0(int sprite0_offsetX, int sprite0_offsetY, int sprite0_width, int sprite0_height, byte[] originalPalette, byte[] paletteBytes, byte[] patternBytes, byte[] colorsBytes, FileStream input, BinaryReader reader)
+        public static void DoConversion_2_Sprites_Offset_0_0(int sprite0_offsetX, int sprite0_offsetY, int sprite0_width, int sprite0_height, byte[] paletteBytes, byte[] patternBytes, byte[] colorsBytes, FileStream input, BinaryReader reader)
         {
+            //List<List<int>> palette = GetPaletteFromFile_ToRgb(fileName);
+            byte[] originalPalette = GetPaletteFromFile_ToBytes(input, reader);
+
+
             const int SCREEN_WIDTH_IN_PIXELS = 256;
             const int SCREEN_WIDTH_IN_BYTES = SCREEN_WIDTH_IN_PIXELS / 2;
             const int SPRITE_WIDTH = 16;
@@ -58,6 +59,9 @@ namespace MSXUtilities
             int usefulLastY = sprite0_offsetY + sprite0_height - 1;
 
             IList<IList<int>> pixelsList = new List<IList<int>>();
+
+            // return to start of file
+            reader.BaseStream.Seek(0, SeekOrigin.Begin);
 
             for (int j = 0; j < input.Length; j++)
             {
@@ -775,16 +779,16 @@ namespace MSXUtilities
             return palette;
         }
 
-        private static byte[] GetPaletteFromFile_ToBytes(string fileName)
+        private static byte[] GetPaletteFromFile_ToBytes(FileStream input, BinaryReader reader)
         {
             // get palette from file (last 32 bytes)
             byte[] paletteBytes = new byte[32];
-            using (var input = File.OpenRead(fileName))
-            using (BinaryReader reader = new BinaryReader(input))
-            {
+            //using (var input = File.OpenRead(fileName))
+            //using (BinaryReader reader = new BinaryReader(input))
+            //{
                 reader.BaseStream.Seek(input.Length - 32, SeekOrigin.Begin);
                 reader.Read(paletteBytes, 0, 32);
-            }
+            //}
             
             return paletteBytes;
         }

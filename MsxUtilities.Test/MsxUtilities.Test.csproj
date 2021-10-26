@@ -17,4 +17,24 @@
     <ProjectReference Include="..\MSXUtilities\MSXUtilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AssertFiles\" />
+    <Folder Include="InputFiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AssertFiles\player_plane_0.col">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\player_plane_0.pal">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\player_plane_0.pat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="InputFiles\sprites 2 planes.bak.SC5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

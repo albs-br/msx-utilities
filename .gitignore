@@ -5,3 +5,10 @@
 /MSXUtilities/bin/Debug/netcoreapp3.1
 /MSXUtilities/obj
 /.vs
+/MsxUtilities.Test/bin/Debug/netcoreapp3.1
+/MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.csproj.FileListAbsolute.txt
+/MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.csproj.CoreCompileInputs.cache
+/MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.csproj.CopyComplete
+/MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.dll
+/MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.genruntimeconfig.cache
+/MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.pdb
