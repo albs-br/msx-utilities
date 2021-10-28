@@ -157,6 +157,25 @@ namespace MSXUtilities
             Console.WriteLine("Brute force to find a palette");
             var newListOf3ColorsNoRepeat = new List<List<int>>();
             var newPalette = new List<int>();
+
+            // TODO: Brute force sequentially:
+            //for (int i = 1; i <= 15; i++)
+            //{
+            //    newPalette.Add(i);
+            //}
+            //var allPalettes = GetPermutations(newPalette, 15);
+            //var cont = 0;
+            //foreach (var item in allPalettes)
+            //{
+            //    //Console.Write(item.Count());
+            //    foreach (var item1 in item)
+            //    {
+            //        Console.Write(item1 + ", ");
+            //    }
+            //    Console.WriteLine();
+            //    if (cont++ > 100) break;
+            //}
+
             Random rnd = new Random();
             for (UInt64 i = 0; i < UInt64.MaxValue; i++)
             {
@@ -825,5 +844,23 @@ namespace MSXUtilities
             return false;
         }
 
+        // https://stackoverflow.com/questions/12249051/unique-combinations-of-list
+        private static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> items, int count)
+        {
+            int i = 0;
+            foreach (var item in items)
+            {
+                if (count == 1)
+                    yield return new T[] { item };
+                else
+                {
+                    //foreach (var result in GetPermutations(items.Skip(i + 1), count - 1))
+                    foreach (var result in GetPermutations(items.Except(new[] { item }), count - 1))
+                            yield return new T[] { item }.Concat(result);
+                }
+
+                ++i;
+            }
+        }
     }
 }
