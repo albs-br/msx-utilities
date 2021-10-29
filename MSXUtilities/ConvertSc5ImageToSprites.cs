@@ -156,14 +156,15 @@ namespace MSXUtilities
             Console.WriteLine();
             Console.WriteLine("Brute force to find a palette");
             var newListOf3ColorsNoRepeat = new List<List<int>>();
-            var newPalette = new List<int>();
+            IList<int> newPalette = new List<int>();
 
-            // TODO: Brute force sequentially:
-            //for (int i = 1; i <= 15; i++)
+            // Brute force sequentially (not working: 90 millions combinations tried and no match):
+            //var basePalette = new List<int>();
+            //for (int j = 1; j <= 15; j++)
             //{
-            //    newPalette.Add(i);
+            //    basePalette.Add(j);
             //}
-            //var allPalettes = GetPermutations(newPalette, 15);
+            //var allPalettes = GetPermutations(basePalette, 15);
             //var cont = 0;
             //foreach (var item in allPalettes)
             //{
@@ -178,8 +179,11 @@ namespace MSXUtilities
 
             Random rnd = new Random();
             for (UInt64 i = 0; i < UInt64.MaxValue; i++)
+            //foreach (var pal in allPalettes)
             {
                 if ((i % 100000) == 0) Console.Write(".");
+
+                //newPalette = pal.ToList();
 
                 newListOf3ColorsNoRepeat.Clear();
                 newPalette.Clear();
