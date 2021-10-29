@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MSXUtilities
 {
@@ -155,8 +156,7 @@ namespace MSXUtilities
             // Brute force to find a palette
             Console.WriteLine();
             Console.WriteLine("Brute force to find a palette");
-            var newListOf3ColorsNoRepeat = new List<List<int>>();
-            IList<int> newPalette = new List<int>();
+            IList<int> newPaletteFound = null;
 
             // Brute force sequentially (not working: 90 millions combinations tried and no match):
             //var basePalette = new List<int>();
@@ -177,16 +177,14 @@ namespace MSXUtilities
             //    if (cont++ > 100) break;
             //}
 
-            Random rnd = new Random();
-            for (UInt64 i = 0; i < UInt64.MaxValue; i++)
-            //foreach (var pal in allPalettes)
+            Parallel.For(0, int.MaxValue, (i, state) =>
             {
                 if ((i % 100000) == 0) Console.Write(".");
+                
+                Random rnd = new Random();
 
-                //newPalette = pal.ToList();
-
-                newListOf3ColorsNoRepeat.Clear();
-                newPalette.Clear();
+                var newListOf3ColorsNoRepeat = new List<List<int>>();
+                IList<int> newPalette = new List<int>();
 
                 // sort list of 15 random colors
                 for (int j = 1; j <= 15; j++)
@@ -255,9 +253,12 @@ namespace MSXUtilities
                         index1++;
                     }
 
-                    break;
+                    //state.Break();
+                    state.Stop();
+
+                    newPaletteFound = newPalette;
                 }
-            }
+            });
             Console.WriteLine();
 
             // transform sprite on original palette to new palette
@@ -286,7 +287,7 @@ namespace MSXUtilities
                     //}
                     //newLine.Add(newIndex);
 
-                    newLine.Add(newPalette[pixel]);
+                    newLine.Add(newPaletteFound[pixel]);
                 }
                 newPixelsList.Add(newLine);
             }
@@ -446,7 +447,7 @@ namespace MSXUtilities
             for (int i = 0; i < 16; i++)
             {
                 var indexOriginalPalette = i * 2;
-                var indexNewPalette = newPalette[i] * 2;
+                var indexNewPalette = newPaletteFound[i] * 2;
 
                 paletteBytes[indexNewPalette] = originalPalette[indexOriginalPalette];
                 paletteBytes[indexNewPalette + 1] = originalPalette[indexOriginalPalette + 1];
