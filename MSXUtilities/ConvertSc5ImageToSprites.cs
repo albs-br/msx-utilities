@@ -579,6 +579,7 @@ namespace MSXUtilities
                 if (x >= sprite0_offsetX && x <= usefulLastX    // check if current (x, y) is inside the width x height useful sprite area
                     && y >= sprite0_offsetY && y <= usefulLastY)
                 {
+                    // new line
                     if (xSprite == 0)
                     {
                         pixelsList.Add(new List<int>());

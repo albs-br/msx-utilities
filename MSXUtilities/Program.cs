@@ -56,20 +56,27 @@ namespace MSXUtilities
             //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\aerofighters-bg2_{0}.sra";
             //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
 
-            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites.bak.sc5";
-            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes.bak.SC5";
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                0, 0, 16, 16,
-                0, 0,
-                "player_plane_0"
-                );
+            ////var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites.bak.sc5";
+            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes.bak.SC5";
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    0, 0, 16, 16,
+            //    0, 0,
+            //    "player_plane_0"
+            //    );
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    0, 16, 16, 16,
-            //    0, 0,
+            //    3, 16,
             //    "player_plane_1"
             //    );
+
+
+            // TODO:
+            //var filename = "";
+            //ConvertTinySpriteBkpToSc5Format(filename);
+
+
 
             Console.WriteLine("Done.");
             Console.ReadLine();
