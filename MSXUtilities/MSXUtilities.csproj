@@ -13,6 +13,9 @@
     <None Update="Msxmas21\conveyor belt 1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Msxmas21\conveyor belt 2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="screen.ct2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
