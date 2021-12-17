@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -15,71 +16,97 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            //var command = "OUTI";
-            //var number = 128;
-            //var unrolledCommands = MakeUnrolledCommands(command, number);
-            //return;
+        //var command = "OUTI";
+        //var number = 128;
+        //var unrolledCommands = MakeUnrolledCommands(command, number);
+        //return;
 
-            //PocMegaROM();
+        //PocMegaROM();
 
-            //ConvertColorTable();
+        //ConvertColorTable();
 
-            //NameTableWithOffset();
+        //NameTableWithOffset();
 
-            //CalcPositionsPseudo3DEffect();
+        //CalcPositionsPseudo3DEffect();
 
-            //CreateTilesForPacific2()
-
-
+        //CreateTilesForPacific2()
 
 
-            //CreateTilesForGoPenguin();
-
-            // Create Tilemap for Go Penguin
-            //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_1.TileMap_TestLevel_1.LoadTileMap();
-            //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_2.TileMap_TestLevel_2.LoadTileMap();
-            //GoPenguin.TileMaps.CreateTileMap.Execute(tileMap_16x16_Static);
-
-            // Import tilemap from Tiled Map Editor
-            //var Tiled_TileMapFilePath = @"C:\Users\albs_\OneDrive\Desktop\MSX development\GoPenguin\tile map test..csv";
-            //var baseLabel = "BgObjectsInitialState_TestLevel_2";
-            //var tilemapConverted = GoPenguin.TileMaps.ImportTileMapFromTiled.Execute(Tiled_TileMapFilePath, baseLabel);
-            //GoPenguin.TileMaps.CreateTileMap.Execute(tilemapConverted);
-
-            //// Convert bmp image into 16kb chunks to be used as background scroll on MSX 2
-            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings ussr bg 304x990.png";
-            ////var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
-            //var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8)
-            //SplitImageIn16KbChunks(image, heightSc8, "aerofighters-bg2");
-
-            // Remove 7 byte header from file and keep only 16kb
-            //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\aerofighters-bg2_{0}.sra";
-            //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
-
-            ////var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites.bak.sc5";
-            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes.bak.SC5";
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    0, 0, 16, 16,
-            //    0, 0,
-            //    "player_plane_0"
-            //    );
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    0, 16, 16, 16,
-            //    3, 16,
-            //    "player_plane_1"
-            //    );
 
 
-            // TODO:
-            //var filename = "";
-            //ConvertTinySpriteBkpToSc5Format(filename);
+        //CreateTilesForGoPenguin();
+
+        // Create Tilemap for Go Penguin
+        //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_1.TileMap_TestLevel_1.LoadTileMap();
+        //var tileMap_16x16_Static = MSXUtilities.GoPenguin.TileMaps.TestLevel_2.TileMap_TestLevel_2.LoadTileMap();
+        //GoPenguin.TileMaps.CreateTileMap.Execute(tileMap_16x16_Static);
+
+        // Import tilemap from Tiled Map Editor
+        //var Tiled_TileMapFilePath = @"C:\Users\albs_\OneDrive\Desktop\MSX development\GoPenguin\tile map test..csv";
+        //var baseLabel = "BgObjectsInitialState_TestLevel_2";
+        //var tilemapConverted = GoPenguin.TileMaps.ImportTileMapFromTiled.Execute(Tiled_TileMapFilePath, baseLabel);
+        //GoPenguin.TileMaps.CreateTileMap.Execute(tilemapConverted);
+
+        //// Convert bmp image into 16kb chunks to be used as background scroll on MSX 2
+        //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings ussr bg 304x990.png";
+        ////var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
+        //var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8)
+        //SplitImageIn16KbChunks(image, heightSc8, "aerofighters-bg2");
+
+        // Remove 7 byte header from file and keep only 16kb
+        //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\aerofighters-bg2_{0}.sra";
+        //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
+
+        ////var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites.bak.sc5";
+        //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes.bak.SC5";
+        //ConvertSc5ImageToSprites.Execute(
+        //    fileName,
+        //    0, 0, 16, 16,
+        //    0, 0,
+        //    "player_plane_0"
+        //    );
+        //ConvertSc5ImageToSprites.Execute(
+        //    fileName,
+        //    0, 16, 16, 16,
+        //    3, 16,
+        //    "player_plane_1"
+        //    );
+
+
+            var filename = @"Msxmas21\conveyor belt 1.txt";
+            ConvertTinySpriteBkpToSc5Format(filename);
 
 
 
             Console.WriteLine("Done.");
             Console.ReadLine();
+        }
+
+        private static void ConvertTinySpriteBkpToSc5Format(string filename)
+        {
+            var file = File.ReadAllText(filename);
+
+            var lines = file.Split(Environment.NewLine).ToList();
+            var bytesOutput = new List<byte>();
+
+            foreach (var line in lines)
+            {
+                for (int i = 0; i < line.Length; i+=2)
+                {
+                    var inputCharEven = (line[i] == '.') ? '0' : line[i];
+                    var inputCharOdd = (line[i+1] == '.') ? '0' : line[i+1];
+
+                    var byteInputHighNibble = Byte.Parse(inputCharEven.ToString(), NumberStyles.HexNumber);
+                    var byteInputLowNibble = Byte.Parse(inputCharOdd.ToString(), NumberStyles.HexNumber);
+
+                    var byteOutput = Convert.ToByte((byteInputHighNibble << 4) + byteInputLowNibble);
+                    bytesOutput.Add(byteOutput);
+                }
+            }
+
+            var outputFilename = filename + ".bin";
+
+            File.WriteAllBytes(outputFilename, bytesOutput.ToArray());
         }
 
         /// <summary>
