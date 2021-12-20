@@ -73,8 +73,8 @@ namespace MSXUtilities
         //    );
 
 
-            //var filename = @"Msxmas21\conveyor belt 1.txt";
-            var filename = @"Msxmas21\conveyor belt 2.txt";
+            var filename = @"Msxmas21\conveyor belt 1.txt";
+            //var filename = @"Msxmas21\conveyor belt 2.txt";
             ConvertTinySpriteBkpToSc5Format(filename);
 
 
