@@ -43,6 +43,9 @@
     <None Update="Msxmas21\small gift 1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Msxmas21\wood horizontal.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Msxmas21\xmas tree B 4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
