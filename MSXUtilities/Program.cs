@@ -87,13 +87,15 @@ namespace MSXUtilities
             //ConvertTinySpriteBkpToSc5Format(filename);
             //filename = @"Msxmas21\window 4.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
-            var filename = @"Msxmas21\small gift 1.txt";
-            ConvertTinySpriteBkpToSc5Format(filename);
-            filename = @"Msxmas21\small gift 2.txt";
-            ConvertTinySpriteBkpToSc5Format(filename);
-            filename = @"Msxmas21\small gift 3.txt";
-            ConvertTinySpriteBkpToSc5Format(filename);
-            filename = @"Msxmas21\small gift 4.txt";
+            //var filename = @"Msxmas21\small gift 1.txt";
+            //ConvertTinySpriteBkpToSc5Format(filename);
+            //filename = @"Msxmas21\small gift 2.txt";
+            //ConvertTinySpriteBkpToSc5Format(filename);
+            //filename = @"Msxmas21\small gift 3.txt";
+            //ConvertTinySpriteBkpToSc5Format(filename);
+            //filename = @"Msxmas21\small gift 4.txt";
+            //ConvertTinySpriteBkpToSc5Format(filename);
+            var filename = @"Msxmas21\bricks1.txt";
             ConvertTinySpriteBkpToSc5Format(filename);
 
 
