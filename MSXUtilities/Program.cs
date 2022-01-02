@@ -95,7 +95,13 @@ namespace MSXUtilities
             //ConvertTinySpriteBkpToSc5Format(filename);
             //filename = @"Msxmas21\small gift 4.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
-            var filename = @"Msxmas21\wood vertical.txt";
+            var filename = @"Msxmas21\window snow frame 1.txt";
+            ConvertTinySpriteBkpToSc5Format(filename);
+            filename = @"Msxmas21\window snow frame 2.txt";
+            ConvertTinySpriteBkpToSc5Format(filename);
+            filename = @"Msxmas21\window snow frame 3.txt";
+            ConvertTinySpriteBkpToSc5Format(filename);
+            filename = @"Msxmas21\window snow frame 4.txt";
             ConvertTinySpriteBkpToSc5Format(filename);
 
 

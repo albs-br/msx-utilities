@@ -43,6 +43,18 @@
     <None Update="Msxmas21\small gift 1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Msxmas21\window snow frame 4.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Msxmas21\window snow frame 3.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Msxmas21\window snow frame 2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Msxmas21\window snow frame 1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Msxmas21\wood horizontal.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
