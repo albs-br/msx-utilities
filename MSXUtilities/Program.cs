@@ -58,51 +58,32 @@ namespace MSXUtilities
             //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
 
             ////var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites.bak.sc5";
-            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes.bak.SC5";
+            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes.bak.SC5";
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    0, 0, 16, 16,
             //    0, 0,
             //    "player_plane_0"
             //    );
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    0, 16, 16, 16,
-            //    3, 16,
-            //    "player_plane_1"
-            //    );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                0, 16, 16, 16,
+                3, 16,
+                "player_plane_1"
+                );
 
 
             //var filename = @"Msxmas21\conveyor belt 1.txt";
-            //var filename = @"Msxmas21\conveyor belt 2.txt";
-            //var filename = @"Msxmas21\conveyor belt 3.txt";
-            //var filename = @"Msxmas21\conveyor belt 4.txt";
-            //var filename = @"Msxmas21\bricks.txt";
-            //var filename = @"Msxmas21\floor.txt";
-            //var filename = @"Msxmas21\window 1.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
-            //var filename = @"Msxmas21\window 2.txt";
+
+            //var filename = @"Msxmas21\window snow frame 1.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
-            //filename = @"Msxmas21\window 3.txt";
+            //filename = @"Msxmas21\window snow frame 2.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
-            //filename = @"Msxmas21\window 4.txt";
+            //filename = @"Msxmas21\window snow frame 3.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
-            //var filename = @"Msxmas21\small gift 1.txt";
+            //filename = @"Msxmas21\window snow frame 4.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
-            //filename = @"Msxmas21\small gift 2.txt";
-            //ConvertTinySpriteBkpToSc5Format(filename);
-            //filename = @"Msxmas21\small gift 3.txt";
-            //ConvertTinySpriteBkpToSc5Format(filename);
-            //filename = @"Msxmas21\small gift 4.txt";
-            //ConvertTinySpriteBkpToSc5Format(filename);
-            var filename = @"Msxmas21\window snow frame 1.txt";
-            ConvertTinySpriteBkpToSc5Format(filename);
-            filename = @"Msxmas21\window snow frame 2.txt";
-            ConvertTinySpriteBkpToSc5Format(filename);
-            filename = @"Msxmas21\window snow frame 3.txt";
-            ConvertTinySpriteBkpToSc5Format(filename);
-            filename = @"Msxmas21\window snow frame 4.txt";
-            ConvertTinySpriteBkpToSc5Format(filename);
 
 
 

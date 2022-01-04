@@ -344,7 +344,7 @@ namespace MSXUtilities
                         }
                         else
                         {
-                            throw new InvalidDataException("Color combiantion impossible.");
+                            throw new InvalidDataException("Color combination impossible.");
                         }
                         break;
 
