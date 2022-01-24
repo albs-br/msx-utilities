@@ -12,7 +12,8 @@ namespace MsxUtilities.Test
         public void Test_DoConversion_2_Sprites_Offset_0_0()
         {
             // Arrange
-            int sprite0_offsetX = 0, sprite0_offsetY = 0, sprite0_width = 16, sprite0_height = 16;
+            int sprite0_offsetX = 0, sprite0_offsetY = 0, sprite1_offsetX = 0, sprite1_offsetY = 0;
+            int sprite0_width = 16, sprite0_height = 16;
             var paletteBytes = new byte[32];
             var patternBytes = new byte[64];
             var colorsBytes = new byte[32];
@@ -23,10 +24,11 @@ namespace MsxUtilities.Test
             using (var reader = new BinaryReader(input))
             {
                 ConvertSc5ImageToSprites.DoConversion_2_Sprites_Offset_0_0(
-                sprite0_offsetX, sprite0_offsetY,
-                sprite0_width, sprite0_height,
-                paletteBytes, patternBytes, colorsBytes,
-                input, reader
+                    sprite0_offsetX, sprite0_offsetY,
+                    sprite1_offsetX, sprite1_offsetY,
+                    sprite0_width, sprite0_height,
+                    paletteBytes, patternBytes, colorsBytes,
+                    input, reader
                 );
             }
 

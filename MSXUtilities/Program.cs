@@ -47,6 +47,9 @@ namespace MSXUtilities
             //var tilemapConverted = GoPenguin.TileMaps.ImportTileMapFromTiled.Execute(Tiled_TileMapFilePath, baseLabel);
             //GoPenguin.TileMaps.CreateTileMap.Execute(tilemapConverted);
 
+
+
+
             //// Convert bmp image into 16kb chunks to be used as background scroll on MSX 2
             //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings ussr bg 304x990.png";
             ////var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
@@ -65,12 +68,29 @@ namespace MSXUtilities
             //    0, 0,
             //    "player_plane_0"
             //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    0, 16, 16, 16,
+            //    3, 16,
+            //    "player_plane_1"
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    40, 0, 16, 16,
+            //    0, 0,
+            //    "player_shot"
+            //    );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                0, 16, 16, 16,
-                3, 16,
-                "player_plane_1"
+                //21, 0, 17, 24,
+                //1, 2,     //TODO: xOffset
+                21, 0, 16, 24,
+                0, 2,
+                "enemy_plane",
+                false
                 );
+
+
 
 
             //var filename = @"Msxmas21\conveyor belt 1.txt";

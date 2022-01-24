@@ -14,7 +14,8 @@ namespace MSXUtilities
         public static void Execute(string fileName,
             int sprite0_offsetX, int sprite0_offsetY, int sprite0_width, int sprite0_height,
             int sprite1_offsetX, int sprite1_offsetY,
-            string outputFileBaseName)
+            string outputFileBaseName,
+            bool bruteForcePalette = true)
         {
             Console.WriteLine("Converting sprite: " + outputFileBaseName);
 
@@ -25,7 +26,12 @@ namespace MSXUtilities
             using (var input = File.OpenRead(fileName))
             using (var reader = new BinaryReader(input))
             {
-                DoConversion_2_Sprites_Offset_0_0(sprite0_offsetX, sprite0_offsetY, sprite0_width, sprite0_height, paletteBytes, patternBytes, colorsBytes, input, reader);
+                DoConversion_2_Sprites_Offset_0_0(
+                    sprite0_offsetX, sprite0_offsetY, 
+                    sprite1_offsetX, sprite1_offsetY,
+                    sprite0_width, sprite0_height, 
+                    paletteBytes, patternBytes, colorsBytes, 
+                    input, reader, bruteForcePalette);
             }
 
             // save output files
@@ -39,7 +45,13 @@ namespace MSXUtilities
             }
         }
 
-        public static void DoConversion_2_Sprites_Offset_0_0(int sprite0_offsetX, int sprite0_offsetY, int sprite0_width, int sprite0_height, byte[] paletteBytes, byte[] patternBytes, byte[] colorsBytes, FileStream input, BinaryReader reader)
+        public static void DoConversion_2_Sprites_Offset_0_0(
+            int sprite0_offsetX, int sprite0_offsetY,
+            int sprite1_offsetX, int sprite1_offsetY, 
+            int sprite0_width, int sprite0_height, 
+            byte[] paletteBytes, byte[] patternBytes, byte[] colorsBytes, 
+            FileStream input, BinaryReader reader,
+            bool bruteForcePalette = true)
         {
             //List<List<int>> palette = GetPaletteFromFile_ToRgb(fileName);
             byte[] originalPalette = GetPaletteFromFile_ToBytes(input, reader);
@@ -89,7 +101,7 @@ namespace MSXUtilities
             // count colors per line
             Console.WriteLine();
             Console.WriteLine("Original sprite:");
-            ShowSprite(pixelsList, listOf3Colors);
+            var isPaletteValid = ShowSprite(pixelsList, listOf3Colors);
 
             var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
             Console.WriteLine();
@@ -153,149 +165,162 @@ namespace MSXUtilities
                 index++;
             }
 
-            // Brute force to find a palette
-            Console.WriteLine();
-            Console.WriteLine("Brute force to find a palette");
+
+            IList<IList<int>> newPixelsList = new List<IList<int>>();
             IList<int> newPaletteFound = null;
-
-            // Brute force sequentially (not working: 90 millions combinations tried and no match):
-            //var basePalette = new List<int>();
-            //for (int j = 1; j <= 15; j++)
-            //{
-            //    basePalette.Add(j);
-            //}
-            //var allPalettes = GetPermutations(basePalette, 15);
-            //var cont = 0;
-            //foreach (var item in allPalettes)
-            //{
-            //    //Console.Write(item.Count());
-            //    foreach (var item1 in item)
-            //    {
-            //        Console.Write(item1 + ", ");
-            //    }
-            //    Console.WriteLine();
-            //    if (cont++ > 100) break;
-            //}
-
-            Parallel.For(0, int.MaxValue, (i, state) =>
+            if (!isPaletteValid && bruteForcePalette)
             {
-                if ((i % 100000) == 0) Console.Write(".");
-                
-                Random rnd = new Random();
+                // Brute force to find a palette
+                Console.WriteLine();
+                Console.WriteLine("Brute force to find a palette");
 
-                var newListOf3ColorsNoRepeat = new List<List<int>>();
-                IList<int> newPalette = new List<int>();
+                // Brute force sequentially (not working: 90 millions combinations tried and no match):
+                //var basePalette = new List<int>();
+                //for (int j = 1; j <= 15; j++)
+                //{
+                //    basePalette.Add(j);
+                //}
+                //var allPalettes = GetPermutations(basePalette, 15);
+                //var cont = 0;
+                //foreach (var item in allPalettes)
+                //{
+                //    //Console.Write(item.Count());
+                //    foreach (var item1 in item)
+                //    {
+                //        Console.Write(item1 + ", ");
+                //    }
+                //    Console.WriteLine();
+                //    if (cont++ > 100) break;
+                //}
 
-                // sort list of 15 random colors
-                for (int j = 1; j <= 15; j++)
+                Parallel.For(0, int.MaxValue, (i, state) =>
                 {
-                    bool found = false;
-                    do
+                    if ((i % 100000) == 0) Console.Write(".");
+
+                    Random rnd = new Random();
+
+                    var newListOf3ColorsNoRepeat = new List<List<int>>();
+                    IList<int> newPalette = new List<int>();
+
+                    // sort list of 15 random colors
+                    for (int j = 1; j <= 15; j++)
                     {
-                        int randomNumber = rnd.Next(1, 16);
-                        if (!newPalette.Contains(randomNumber))
+                        bool found = false;
+                        do
                         {
-                            newPalette.Add(randomNumber);
-                            found = true;
+                            int randomNumber = rnd.Next(1, 16);
+                            if (!newPalette.Contains(randomNumber))
+                            {
+                                newPalette.Add(randomNumber);
+                                found = true;
+                            }
                         }
+                        while (!found);
                     }
-                    while (!found);
-                }
 
-                // add transparent color
-                // insert first color (transparent)
-                newPalette.Insert(0, 0);
+                    // add transparent color
+                    // insert first color (transparent)
+                    newPalette.Insert(0, 0);
 
-                // to substitute on list of 3 colors for this sprite
-                foreach (var colors in listOf3ColorsNoRepeat)
-                {
-                    newListOf3ColorsNoRepeat.Add(new List<int>
-                        {
+                    // to substitute on list of 3 colors for this sprite
+                    foreach (var colors in listOf3ColorsNoRepeat)
+                    {
+                        newListOf3ColorsNoRepeat.Add(new List<int>
+                            {
                             newPalette[colors[0]],
                             newPalette[colors[1]],
                             newPalette[colors[2]]
-                        });
-                }
-
-
-                // Check if this palette is valid for this sprite
-                var isValid = CheckIfPaletteIsValidForThisSprite(newListOf3ColorsNoRepeat);
-                //Console.WriteLine();
-                //Console.WriteLine("Palette #" + i + " is valid: " + isValid);
-                if (isValid)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("Valid palette found");
-                    foreach (var item in newPalette)
-                    {
-                        Console.Write(item + ", ");
+                            });
                     }
-                    Console.WriteLine();
 
-                    Console.WriteLine();
-                    Console.WriteLine("List of 3 colors before/after substitution");
-                    var index1 = 0;
-                    foreach (var colors in newListOf3ColorsNoRepeat)
+
+                    // Check if this palette is valid for this sprite
+                    var isValid = CheckIfPaletteIsValidForThisSprite(newListOf3ColorsNoRepeat);
+                    //Console.WriteLine();
+                    //Console.WriteLine("Palette #" + i + " is valid: " + isValid);
+                    if (isValid)
                     {
-                        for (int k = 0; k < listOf3ColorsNoRepeat[index1].Count; k++)
+                        Console.WriteLine();
+                        Console.WriteLine("Valid palette found");
+                        foreach (var item in newPalette)
                         {
-                            Console.Write(listOf3ColorsNoRepeat[index1][k] + ", ");
-                        }
-
-                        Console.Write(" ==> ");
-
-                        foreach (var color in colors)
-                        {
-                            Console.Write(color + ", ");
+                            Console.Write(item + ", ");
                         }
                         Console.WriteLine();
 
-                        index1++;
+                        Console.WriteLine();
+                        Console.WriteLine("List of 3 colors before/after substitution");
+                        var index1 = 0;
+                        foreach (var colors in newListOf3ColorsNoRepeat)
+                        {
+                            for (int k = 0; k < listOf3ColorsNoRepeat[index1].Count; k++)
+                            {
+                                Console.Write(listOf3ColorsNoRepeat[index1][k] + ", ");
+                            }
+
+                            Console.Write(" ==> ");
+
+                            foreach (var color in colors)
+                            {
+                                Console.Write(color + ", ");
+                            }
+                            Console.WriteLine();
+
+                            index1++;
+                        }
+
+                        //state.Break();
+                        state.Stop();
+
+                        newPaletteFound = newPalette;
                     }
+                });
+                Console.WriteLine();
 
-                    //state.Break();
-                    state.Stop();
-
-                    newPaletteFound = newPalette;
-                }
-            });
-            Console.WriteLine();
-
-            // transform sprite on original palette to new palette
-            IList<IList<int>> newPixelsList = new List<IList<int>>();
-            foreach (var line in pixelsList)
-            {
-                //[debug]
-                //var colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
-                //if (colorsInThisLine.Count == 3)
-                //{
-                //}
-
-
-                IList<int> newLine = new List<int>();
-                foreach (var pixel in line)
+                // transform sprite on original palette to new palette
+                foreach (var line in pixelsList)
                 {
-                    // find this pixel color on new palette
-                    //var newIndex = 0;
-                    //for (int i = 0; i < newPalette.Count; i++)
+                    //[debug]
+                    //var colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
+                    //if (colorsInThisLine.Count == 3)
                     //{
-                    //    if (pixel == newPalette[i])
-                    //    {
-                    //        newIndex = i;
-                    //        break;
-                    //    }
                     //}
-                    //newLine.Add(newIndex);
 
-                    newLine.Add(newPaletteFound[pixel]);
+
+                    IList<int> newLine = new List<int>();
+                    foreach (var pixel in line)
+                    {
+                        // find this pixel color on new palette
+                        //var newIndex = 0;
+                        //for (int i = 0; i < newPalette.Count; i++)
+                        //{
+                        //    if (pixel == newPalette[i])
+                        //    {
+                        //        newIndex = i;
+                        //        break;
+                        //    }
+                        //}
+                        //newLine.Add(newIndex);
+
+                        newLine.Add(newPaletteFound[pixel]);
+                    }
+                    newPixelsList.Add(newLine);
                 }
-                newPixelsList.Add(newLine);
-            }
 
-            var dummyList = new List<List<int>>();
-            Console.WriteLine();
-            Console.WriteLine("Sprite after substitutions:");
-            ShowSprite(newPixelsList, dummyList);
+                var dummyList = new List<List<int>>();
+                Console.WriteLine();
+                Console.WriteLine("Sprite after substitutions:");
+                ShowSprite(newPixelsList, dummyList);
+            }
+            else
+            {
+                newPixelsList = pixelsList;
+                newPaletteFound = new List<int>();
+                for (int i = 0; i < originalPalette.Length; i++)
+                {
+                    newPaletteFound.Add(originalPalette[i]);
+                }
+            }
 
 
             // generate patterns and colors for sprite
@@ -308,53 +333,37 @@ namespace MSXUtilities
                 pattern_1.Add("");
             }
             var lineNumber = 0;
+            int pattern_0_Index = 0, pattern_1_Index = 0;
+            bool isFirstSpriteLine = false, isSecondSpriteLine = false;
             foreach (var line in newPixelsList)
             {
-                var colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
+                List<int> colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
                 int color0 = -1, color1 = -1, orColor = -1;
-                switch (colorsInThisLine.Count)
+
+                if (lineNumber < sprite1_offsetY)
                 {
-                    case 1:
-                        color0 = colorsInThisLine[0];
-                        break;
-
-                    case 2:
-                        color0 = colorsInThisLine[0];
-                        color1 = colorsInThisLine[1];
-                        break;
-
-                    case 3:
-                        if ((colorsInThisLine[0] | colorsInThisLine[1]) == colorsInThisLine[2])
-                        {
-                            color0 = colorsInThisLine[0];
-                            color1 = colorsInThisLine[1];
-                            orColor = colorsInThisLine[2];
-                        }
-                        else if ((colorsInThisLine[2] | colorsInThisLine[1]) == colorsInThisLine[0])
-                        {
-                            color0 = colorsInThisLine[2];
-                            color1 = colorsInThisLine[1];
-                            orColor = colorsInThisLine[0];
-                        }
-                        else if ((colorsInThisLine[0] | colorsInThisLine[2]) == colorsInThisLine[1])
-                        {
-                            color0 = colorsInThisLine[0];
-                            color1 = colorsInThisLine[2];
-                            orColor = colorsInThisLine[1];
-                        }
-                        else
-                        {
-                            throw new InvalidDataException("Color combination impossible.");
-                        }
-                        break;
-
-                    default:
-                        break;
+                    // only first sprite
+                    isFirstSpriteLine = true;
+                    color0 = colorsInThisLine[0];
+                }
+                else if (lineNumber >= sprite0_height)
+                {
+                    // only second sprite
+                    isSecondSpriteLine = true;
+                    color1 = colorsInThisLine[0];
+                }
+                else
+                {
+                    // both sprites
+                    isFirstSpriteLine = true;
+                    isSecondSpriteLine = true;
+                    ExtractColorsFromLine(line, out colorsInThisLine, out color0, out color1, out orColor);
                 }
 
                 var colNumber = 0;
                 foreach (var pixel in line)
                 {
+                    // logic to calc what of the four 8x8 sprites this pixel belongs
                     var lineIndex = (int)Math.Floor((decimal)lineNumber / 8);
                     var colIndex = (int)Math.Floor((decimal)colNumber / 8);
                     var spriteIndex = (colIndex * 2) + lineIndex;
@@ -363,23 +372,23 @@ namespace MSXUtilities
                     // patterns
                     if (pixel == 0)
                     {
-                        pattern_0[patternIndex] += "0";
-                        pattern_1[patternIndex] += "0";
+                        if (isFirstSpriteLine) pattern_0[patternIndex] += "0";
+                        if (isSecondSpriteLine) pattern_1[patternIndex] += "0";
                     }
                     else if (pixel == color0)
                     {
-                        pattern_0[patternIndex] += "1";
-                        pattern_1[patternIndex] += "0";
+                        if (isFirstSpriteLine) pattern_0[patternIndex] += "1";
+                        if (isSecondSpriteLine) pattern_1[patternIndex] += "0";
                     }
                     else if (pixel == color1)
                     {
-                        pattern_0[patternIndex] += "0";
-                        pattern_1[patternIndex] += "1";
+                        if (isFirstSpriteLine) pattern_0[patternIndex] += "0";
+                        if (isSecondSpriteLine) pattern_1[patternIndex] += "1";
                     }
                     else if (pixel == orColor)
                     {
-                        pattern_0[patternIndex] += "1";
-                        pattern_1[patternIndex] += "1";
+                        if (isFirstSpriteLine) pattern_0[patternIndex] += "1";
+                        if (isSecondSpriteLine) pattern_1[patternIndex] += "1";
                     }
                     else
                     {
@@ -409,8 +418,82 @@ namespace MSXUtilities
                 color_0 += Environment.NewLine;
                 color_1 += Environment.NewLine;
 
+
+                //
+
+
+                if (isFirstSpriteLine) pattern_0_Index++;
+                if (isSecondSpriteLine) pattern_1_Index++;
+
                 lineNumber++;
             }
+
+            //foreach (var line in newPixelsList)
+            //{
+            //    List<int> colorsInThisLine;
+            //    int color0, color1, orColor;
+            //    ExtractColorsFromLine(line, out colorsInThisLine, out color0, out color1, out orColor);
+
+            //    var colNumber = 0;
+            //    foreach (var pixel in line)
+            //    {
+            //        // logic to calc what of the four 8x8 sprites this pixel belongs
+            //        var lineIndex = (int)Math.Floor((decimal)lineNumber / 8);
+            //        var colIndex = (int)Math.Floor((decimal)colNumber / 8);
+            //        var spriteIndex = (colIndex * 2) + lineIndex;
+            //        var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+
+            //        // patterns
+            //        if (pixel == 0)
+            //        {
+            //            pattern_0[patternIndex] += "0";
+            //            pattern_1[patternIndex] += "0";
+            //        }
+            //        else if (pixel == color0)
+            //        {
+            //            pattern_0[patternIndex] += "1";
+            //            pattern_1[patternIndex] += "0";
+            //        }
+            //        else if (pixel == color1)
+            //        {
+            //            pattern_0[patternIndex] += "0";
+            //            pattern_1[patternIndex] += "1";
+            //        }
+            //        else if (pixel == orColor)
+            //        {
+            //            pattern_0[patternIndex] += "1";
+            //            pattern_1[patternIndex] += "1";
+            //        }
+            //        else
+            //        {
+            //            throw new InvalidDataException();
+            //        }
+
+            //        colNumber++;
+            //    }
+
+
+
+            //    // colors
+            //    if (colorsInThisLine.Count > 0) color_0 += color0;
+            //    if (colorsInThisLine.Count <= 1)
+            //    {
+            //        color_1 += "0";
+            //    }
+            //    else if (colorsInThisLine.Count == 2)
+            //    {
+            //        color_1 += color1;
+            //    }
+            //    else if (colorsInThisLine.Count == 3)
+            //    {
+            //        color_1 += (color1 + 64);
+            //    }
+
+            //    color_0 += Environment.NewLine;
+            //    color_1 += Environment.NewLine;
+
+            //    lineNumber++;
+            //}
 
             Console.WriteLine();
             Console.WriteLine("; pattern 0:");
@@ -443,27 +526,30 @@ namespace MSXUtilities
             }
 
 
-            // Convert input palette to palette found and save to file
-            for (int i = 0; i < 16; i++)
+            if (!isPaletteValid)
             {
-                var indexOriginalPalette = i * 2;
-                var indexNewPalette = newPaletteFound[i] * 2;
+                // Convert input palette to palette found and save to file
+                for (int i = 0; i < 16; i++)
+                {
+                    var indexOriginalPalette = i * 2;
+                    var indexNewPalette = newPaletteFound[i] * 2;
 
-                paletteBytes[indexNewPalette] = originalPalette[indexOriginalPalette];
-                paletteBytes[indexNewPalette + 1] = originalPalette[indexOriginalPalette + 1];
-            }
+                    paletteBytes[indexNewPalette] = originalPalette[indexOriginalPalette];
+                    paletteBytes[indexNewPalette + 1] = originalPalette[indexOriginalPalette + 1];
+                }
 
 
-            // Show converted palette RGB values
-            Console.WriteLine();
-            Console.WriteLine("Converted palette RGB values:");
-            for (int i = 0; i < paletteBytes.Length; i += 2)
-            {
-                int red = (paletteBytes[i] & 0b11110000) >> 4;
-                int blue = (paletteBytes[i] & 0b00001111);
-                int green = paletteBytes[i + 1];
+                // Show converted palette RGB values
+                Console.WriteLine();
+                Console.WriteLine("Converted palette RGB values:");
+                for (int i = 0; i < paletteBytes.Length; i += 2)
+                {
+                    int red = (paletteBytes[i] & 0b11110000) >> 4;
+                    int blue = (paletteBytes[i] & 0b00001111);
+                    int green = paletteBytes[i + 1];
 
-                Console.WriteLine((i / 2) + ": " + red + ", " + green + ", " + blue);
+                    Console.WriteLine((i / 2) + ": " + red + ", " + green + ", " + blue);
+                }
             }
 
 
@@ -490,8 +576,57 @@ namespace MSXUtilities
             }
         }
 
-        private static void ShowSprite(IList<IList<int>> pixelsList, List<List<int>> listOf3Colors)
+        private static void ExtractColorsFromLine(IList<int> line, out List<int> colorsInThisLine, out int color0, out int color1, out int orColor)
         {
+            colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
+            color0 = -1;
+            color1 = -1;
+            orColor = -1;
+            switch (colorsInThisLine.Count)
+            {
+                case 1:
+                    color0 = colorsInThisLine[0];
+                    break;
+
+                case 2:
+                    color0 = colorsInThisLine[0];
+                    color1 = colorsInThisLine[1];
+                    break;
+
+                case 3:
+                    if ((colorsInThisLine[0] | colorsInThisLine[1]) == colorsInThisLine[2])
+                    {
+                        color0 = colorsInThisLine[0];
+                        color1 = colorsInThisLine[1];
+                        orColor = colorsInThisLine[2];
+                    }
+                    else if ((colorsInThisLine[2] | colorsInThisLine[1]) == colorsInThisLine[0])
+                    {
+                        color0 = colorsInThisLine[2];
+                        color1 = colorsInThisLine[1];
+                        orColor = colorsInThisLine[0];
+                    }
+                    else if ((colorsInThisLine[0] | colorsInThisLine[2]) == colorsInThisLine[1])
+                    {
+                        color0 = colorsInThisLine[0];
+                        color1 = colorsInThisLine[2];
+                        orColor = colorsInThisLine[1];
+                    }
+                    else
+                    {
+                        throw new InvalidDataException("Color combination impossible.");
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private static bool ShowSprite(IList<IList<int>> pixelsList, List<List<int>> listOf3Colors)
+        {
+            var valid = true;
+            var moreThan16PixelsPerLine = false;
             var lineNumber = 0;
             foreach (var line in pixelsList)
             {
@@ -499,7 +634,9 @@ namespace MSXUtilities
                 //Console.Write(line.Count + " colors: ");
                 if (line.Count != 16)
                 {
-                    throw new InvalidDataException("Line #" + lineNumber + " has " + line.Count + " pixels. Should be 16.");
+                    //throw new InvalidDataException("Line #" + lineNumber + " has " + line.Count + " pixels. Should be 16.");
+                    Console.Write("[" + line.Count + " pixels] ");
+                    moreThan16PixelsPerLine = true;
                 }
 
                 foreach (var color in line)
@@ -514,6 +651,7 @@ namespace MSXUtilities
 
                 if (distinctColorsOnLine.Count() > 3)
                 {
+                    valid = false;
                     //throw new InvalidDataException("Line #" + lineNumber + " has more than 3 colors.");
                 }
 
@@ -532,6 +670,7 @@ namespace MSXUtilities
                     }
                     else
                     {
+                        valid = false;
                         Console.Write("; OR-color impossible");
                     }
                 }
@@ -541,7 +680,9 @@ namespace MSXUtilities
                 lineNumber++;
             }
 
-            return;
+            if (moreThan16PixelsPerLine) return true; // somewhat ugly code, but more readable
+
+            return valid;
         }
 
         private static bool CheckIfPaletteIsValidForThisSprite(List<List<int>> listOf3ColorsNoRepeat)
@@ -573,8 +714,8 @@ namespace MSXUtilities
             var xSprite = x - sprite0_offsetX;
             var ySprite = y - sprite0_offsetY;
 
-            if (x >= sprite0_offsetX && x <= totalLastX         // check if current (x, y) is inside the 16x16 sprite area
-                && y >= sprite0_offsetY && y <= totalLastY)
+            //if (x >= sprite0_offsetX && x <= totalLastX         // check if current (x, y) is inside the 16x16 sprite area
+            //    && y >= sprite0_offsetY && y <= totalLastY)
             {
                 if (x >= sprite0_offsetX && x <= usefulLastX    // check if current (x, y) is inside the width x height useful sprite area
                     && y >= sprite0_offsetY && y <= usefulLastY)
