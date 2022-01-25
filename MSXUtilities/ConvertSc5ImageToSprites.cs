@@ -325,13 +325,30 @@ namespace MSXUtilities
 
             // generate patterns and colors for sprite
             //string pattern_0 = "", pattern_1 = "";
-            string color_0 = "", color_1 = "";
+            string color_line_pattern_0 = "", color_line_pattern_1 = "";
             IList<string> pattern_0 = new List<string>(), pattern_1 = new List<string>();
             for (int i = 0; i < 32; i++)
             {
                 pattern_0.Add("");
                 pattern_1.Add("");
             }
+
+
+            //var lineNumber = 0;
+            //foreach (var line in newPixelsList)
+            //{
+            //    var colNumber = 0;
+            //    foreach (var pixel in line)
+            //    {
+
+
+            //        colNumber++;
+            //    }
+
+            //    lineNumber++;
+            //}
+
+
             var lineNumber = 0;
             int pattern_0_Index = 0, pattern_1_Index = 0;
             bool isFirstSpriteLine = false, isSecondSpriteLine = false;
@@ -363,36 +380,78 @@ namespace MSXUtilities
                 var colNumber = 0;
                 foreach (var pixel in line)
                 {
-                    // logic to calc what of the four 8x8 sprites this pixel belongs
-                    var lineIndex = (int)Math.Floor((decimal)lineNumber / 8);
-                    var colIndex = (int)Math.Floor((decimal)colNumber / 8);
-                    var spriteIndex = (colIndex * 2) + lineIndex;
-                    var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+                    // check if this pixel belongs to sprite 0 and 1 
+                    var isFirstSpriteCol = false;
+                    var isSecondSpriteCol = false;
+                    if (colNumber < sprite0_width) isFirstSpriteCol = true;
+                    if (colNumber >= sprite1_offsetX) isSecondSpriteCol = true;
 
-                    // patterns
-                    if (pixel == 0)
+                    if (isFirstSpriteCol)
                     {
-                        if (isFirstSpriteLine) pattern_0[patternIndex] += "0";
-                        if (isSecondSpriteLine) pattern_1[patternIndex] += "0";
+                        // logic to calc what of the four 8x8 sprites this pixel belongs
+                        var lineIndex = (int)Math.Floor((decimal)pattern_0_Index / 8);
+                        var colIndex = (int)Math.Floor((decimal)colNumber / 8);
+                        var spriteIndex = (colIndex * 2) + lineIndex;
+                        var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+
+                        // patterns
+                        var bitPattern_0 = "";
+                        if (pixel == 0)
+                        {
+                            bitPattern_0 = "0";
+                        }
+                        else if (pixel == color0)
+                        {
+                            bitPattern_0 = "1";
+                        }
+                        else if (pixel == color1)
+                        {
+                            bitPattern_0 = "0";
+                        }
+                        else if (pixel == orColor)
+                        {
+                            bitPattern_0 = "1";
+                        }
+                        else
+                        {
+                            throw new InvalidDataException();
+                        }
+
+                        if (isFirstSpriteLine) pattern_0[patternIndex] += bitPattern_0;
                     }
-                    else if (pixel == color0)
+
+                    if (isSecondSpriteCol)
                     {
-                        if (isFirstSpriteLine) pattern_0[patternIndex] += "1";
-                        if (isSecondSpriteLine) pattern_1[patternIndex] += "0";
-                    }
-                    else if (pixel == color1)
-                    {
-                        if (isFirstSpriteLine) pattern_0[patternIndex] += "0";
-                        if (isSecondSpriteLine) pattern_1[patternIndex] += "1";
-                    }
-                    else if (pixel == orColor)
-                    {
-                        if (isFirstSpriteLine) pattern_0[patternIndex] += "1";
-                        if (isSecondSpriteLine) pattern_1[patternIndex] += "1";
-                    }
-                    else
-                    {
-                        throw new InvalidDataException();
+                        // logic to calc what of the four 8x8 sprites this pixel belongs
+                        var lineIndex = (int)Math.Floor((decimal)pattern_1_Index / 8);
+                        var colIndex = (int)Math.Floor(((decimal)(colNumber - sprite1_offsetX)) / 8);
+                        var spriteIndex = (colIndex * 2) + lineIndex;
+                        var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+
+                        // patterns
+                        var bitPattern_1 = "";
+                        if (pixel == 0)
+                        {
+                            bitPattern_1 = "0";
+                        }
+                        else if (pixel == color0)
+                        {
+                            bitPattern_1 = "0";
+                        }
+                        else if (pixel == color1)
+                        {
+                            bitPattern_1 = "1";
+                        }
+                        else if (pixel == orColor)
+                        {
+                            bitPattern_1 = "1";
+                        }
+                        else
+                        {
+                            throw new InvalidDataException();
+                        }
+
+                        if (isSecondSpriteLine) pattern_1[patternIndex] += bitPattern_1;
                     }
 
                     colNumber++;
@@ -401,22 +460,22 @@ namespace MSXUtilities
 
 
                 // colors
-                if (colorsInThisLine.Count > 0) color_0 += color0;
-                if (colorsInThisLine.Count <= 1)
+                if (colorsInThisLine.Count > 0 && isFirstSpriteLine) color_line_pattern_0 += color0;
+                if (colorsInThisLine.Count <= 1 && isSecondSpriteLine)
                 {
-                    color_1 += "0";
+                    color_line_pattern_1 += "0";
                 }
-                else if (colorsInThisLine.Count == 2)
+                else if (colorsInThisLine.Count == 2 && isSecondSpriteLine)
                 {
-                    color_1 += color1;
+                    color_line_pattern_1 += color1;
                 }
-                else if (colorsInThisLine.Count == 3)
+                else if (colorsInThisLine.Count == 3 && isSecondSpriteLine)
                 {
-                    color_1 += (color1 + 64);
+                    color_line_pattern_1 += (color1 + 64); // or-color
                 }
 
-                color_0 += Environment.NewLine;
-                color_1 += Environment.NewLine;
+                color_line_pattern_0 += Environment.NewLine;
+                color_line_pattern_1 += Environment.NewLine;
 
 
                 //
@@ -508,9 +567,9 @@ namespace MSXUtilities
             }
 
             Console.WriteLine("; color 0:");
-            Console.WriteLine(color_0);
+            Console.WriteLine(color_line_pattern_0);
             Console.WriteLine("; color 1:");
-            Console.WriteLine(color_1);
+            Console.WriteLine(color_line_pattern_1);
 
 
             // Show original palette RGB values
@@ -565,7 +624,7 @@ namespace MSXUtilities
 
             // create colors output file
             index = 0;
-            foreach (var line in (color_0 + color_1).Split(Environment.NewLine))
+            foreach (var line in (color_line_pattern_0 + color_line_pattern_1).Split(Environment.NewLine))
             {
                 if (line != "")
                 {
