@@ -65,11 +65,11 @@ namespace MSXUtilities
             var counter = 0;
             int x = 0, y = 0;
 
-            int totalLastX = sprite0_offsetX + SPRITE_WIDTH - 1;
-            int totalLastY = sprite0_offsetY + SPRITE_HEIGHT - 1;
+            int totalLastX = sprite0_offsetX + SPRITE_WIDTH + sprite1_offsetX - 1;
+            int totalLastY = sprite0_offsetY + SPRITE_HEIGHT + sprite1_offsetY - 1;
 
-            int usefulLastX = sprite0_offsetX + sprite0_width - 1;
-            int usefulLastY = sprite0_offsetY + sprite0_height - 1;
+            int usefulLastX = sprite0_offsetX + sprite0_width + sprite1_offsetX - 1;
+            int usefulLastY = sprite0_offsetY + sprite0_height + sprite1_offsetY - 1;
 
             IList<IList<int>> pixelsList = new List<IList<int>>();
 
@@ -351,31 +351,36 @@ namespace MSXUtilities
 
             var lineNumber = 0;
             int pattern_0_Index = 0, pattern_1_Index = 0;
-            bool isFirstSpriteLine = false, isSecondSpriteLine = false;
             foreach (var line in newPixelsList)
             {
+                bool isFirstSpriteLine = false, isSecondSpriteLine = false;
+
                 Console.WriteLine("line " + lineNumber);
 
                 List<int> colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
                 int color0 = -1, color1 = -1, orColor = -1;
 
-                // for sprite0_height = 16 and sprite1_offsetY = 2
+                // for sprite0_height = 16 and sprite1_offsetY = 8
                 // first sprite:        lines 0-15
-                // second sprite:       lines 2-17
-                // only first sprite:   lines 0-1
-                // both sprites:        lines 2-15
-                // only second sprite:  lines 16-17
+                // second sprite:       lines 8-23
+                // only first sprite:   lines 0-7
+                // both sprites:        lines 8-15
+                // only second sprite:  lines 16-23
                 if ((lineNumber < sprite1_offsetY))
                 {
                     // only first sprite
                     isFirstSpriteLine = true;
                     color0 = colorsInThisLine[0];
+
+                    if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line");
                 }
                 else if (lineNumber >= sprite0_height)
                 {
                     // only second sprite
                     isSecondSpriteLine = true;
                     color1 = colorsInThisLine[0];
+
+                    if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line");
                 }
                 else
                 {
@@ -383,6 +388,8 @@ namespace MSXUtilities
                     isFirstSpriteLine = true;
                     isSecondSpriteLine = true;
                     ExtractColorsFromLine(line, out colorsInThisLine, out color0, out color1, out orColor);
+
+                    if (colorsInThisLine.Count > 3) throw new Exception("Only 3 colors possible on this line");
                 }
 
                 var colNumber = 0;
