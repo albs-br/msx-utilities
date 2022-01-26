@@ -354,10 +354,18 @@ namespace MSXUtilities
             bool isFirstSpriteLine = false, isSecondSpriteLine = false;
             foreach (var line in newPixelsList)
             {
+                Console.WriteLine("line " + lineNumber);
+
                 List<int> colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
                 int color0 = -1, color1 = -1, orColor = -1;
 
-                if (lineNumber < sprite1_offsetY)
+                // for sprite0_height = 16 and sprite1_offsetY = 2
+                // first sprite:        lines 0-15
+                // second sprite:       lines 2-17
+                // only first sprite:   lines 0-1
+                // both sprites:        lines 2-15
+                // only second sprite:  lines 16-17
+                if ((lineNumber < sprite1_offsetY))
                 {
                     // only first sprite
                     isFirstSpriteLine = true;

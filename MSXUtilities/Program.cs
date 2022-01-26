@@ -84,7 +84,7 @@ namespace MSXUtilities
                 fileName,
                 //21, 0, 17, 24,
                 //1, 2,     //TODO: xOffset
-                21, 0, 16, 24,
+                21, 0, 16, 16,
                 0, 2,
                 "enemy_plane",
                 false
