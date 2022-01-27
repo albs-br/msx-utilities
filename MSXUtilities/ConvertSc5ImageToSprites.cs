@@ -349,19 +349,6 @@ namespace MSXUtilities
             }
 
 
-            //var lineNumber = 0;
-            //foreach (var line in newPixelsList)
-            //{
-            //    var colNumber = 0;
-            //    foreach (var pixel in line)
-            //    {
-
-
-            //        colNumber++;
-            //    }
-
-            //    lineNumber++;
-            //}
 
 
             var lineNumber = 0;
@@ -517,74 +504,9 @@ namespace MSXUtilities
                 lineNumber++;
             }
 
-            //foreach (var line in newPixelsList)
-            //{
-            //    List<int> colorsInThisLine;
-            //    int color0, color1, orColor;
-            //    ExtractColorsFromLine(line, out colorsInThisLine, out color0, out color1, out orColor);
-
-            //    var colNumber = 0;
-            //    foreach (var pixel in line)
-            //    {
-            //        // logic to calc what of the four 8x8 sprites this pixel belongs
-            //        var lineIndex = (int)Math.Floor((decimal)lineNumber / 8);
-            //        var colIndex = (int)Math.Floor((decimal)colNumber / 8);
-            //        var spriteIndex = (colIndex * 2) + lineIndex;
-            //        var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
-
-            //        // patterns
-            //        if (pixel == 0)
-            //        {
-            //            pattern_0[patternIndex] += "0";
-            //            pattern_1[patternIndex] += "0";
-            //        }
-            //        else if (pixel == color0)
-            //        {
-            //            pattern_0[patternIndex] += "1";
-            //            pattern_1[patternIndex] += "0";
-            //        }
-            //        else if (pixel == color1)
-            //        {
-            //            pattern_0[patternIndex] += "0";
-            //            pattern_1[patternIndex] += "1";
-            //        }
-            //        else if (pixel == orColor)
-            //        {
-            //            pattern_0[patternIndex] += "1";
-            //            pattern_1[patternIndex] += "1";
-            //        }
-            //        else
-            //        {
-            //            throw new InvalidDataException();
-            //        }
-
-            //        colNumber++;
-            //    }
-
-
-
-            //    // colors
-            //    if (colorsInThisLine.Count > 0) color_0 += color0;
-            //    if (colorsInThisLine.Count <= 1)
-            //    {
-            //        color_1 += "0";
-            //    }
-            //    else if (colorsInThisLine.Count == 2)
-            //    {
-            //        color_1 += color1;
-            //    }
-            //    else if (colorsInThisLine.Count == 3)
-            //    {
-            //        color_1 += (color1 + 64);
-            //    }
-
-            //    color_0 += Environment.NewLine;
-            //    color_1 += Environment.NewLine;
-
-            //    lineNumber++;
-            //}
 
             Console.WriteLine();
+            Console.WriteLine("Palette, patterns and colors are also saved on .pal, .pat and .col files on output folder");
             Console.WriteLine("; pattern 0:");
             foreach (var line in pattern_0)
             {
