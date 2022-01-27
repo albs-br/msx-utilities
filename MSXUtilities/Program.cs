@@ -82,7 +82,7 @@ namespace MSXUtilities
             //    );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                //21, 0, 17, 24,
+                //21, 0, 16, 16,
                 //1, 2,     //TODO: xOffset
                 21, 0, 16, 16,
                 0, 8,

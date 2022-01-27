@@ -23,7 +23,7 @@ namespace MsxUtilities.Test
             using (var input = File.OpenRead(fileName))
             using (var reader = new BinaryReader(input))
             {
-                ConvertSc5ImageToSprites.DoConversion_2_Sprites_Offset_0_0(
+                ConvertSc5ImageToSprites.DoConversion_2_Sprites(
                     sprite0_offsetX, sprite0_offsetY,
                     sprite1_offsetX, sprite1_offsetY,
                     sprite0_width, sprite0_height,
@@ -64,6 +64,41 @@ namespace MsxUtilities.Test
                     Assert.Fail("Color table is different at index " + i);
                 }
             }
+        }
+
+        [TestMethod]
+        public void Test_DoConversion_2_Sprites_Offset_0_8()
+        {
+            // Arrange
+            int sprite0_offsetX = 21, sprite0_offsetY = 0, sprite1_offsetX = 0, sprite1_offsetY = 8;
+            int sprite0_width = 16, sprite0_height = 16;
+            var paletteBytes = new byte[32];
+            var patternBytes = new byte[64];
+            var colorsBytes = new byte[32];
+            var fileName = @"InputFiles\sprites 2 planes.bak.SC5";
+
+            // Act
+            using (var input = File.OpenRead(fileName))
+            using (var reader = new BinaryReader(input))
+            {
+                ConvertSc5ImageToSprites.DoConversion_2_Sprites(
+                    sprite0_offsetX, sprite0_offsetY,
+                    sprite1_offsetX, sprite1_offsetY,
+                    sprite0_width, sprite0_height,
+                    paletteBytes, patternBytes, colorsBytes,
+                    input, reader,
+                    false
+                );
+            }
+
+            // Assert
+            byte[] assertPaletteFile = File.ReadAllBytes(@"AssertFiles\enemy_plane.pal");
+            byte[] assertPatternsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane.pat");
+            byte[] assertColorsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane.col");
+
+            CollectionAssert.AreEqual(assertPaletteFile, paletteBytes);
+            CollectionAssert.AreEqual(assertPatternsFile, patternBytes);
+            CollectionAssert.AreEqual(assertColorsFile, colorsBytes);
         }
     }
 }

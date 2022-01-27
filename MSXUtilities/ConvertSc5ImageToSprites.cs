@@ -26,7 +26,7 @@ namespace MSXUtilities
             using (var input = File.OpenRead(fileName))
             using (var reader = new BinaryReader(input))
             {
-                DoConversion_2_Sprites_Offset_0_0(
+                DoConversion_2_Sprites(
                     sprite0_offsetX, sprite0_offsetY, 
                     sprite1_offsetX, sprite1_offsetY,
                     sprite0_width, sprite0_height, 
@@ -45,7 +45,22 @@ namespace MSXUtilities
             }
         }
 
-        public static void DoConversion_2_Sprites_Offset_0_0(
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sprite0_offsetX">Offset X from top left of the source bmp</param>
+        /// <param name="sprite0_offsetY">Offset Y from top left of the source bmp</param>
+        /// <param name="sprite1_offsetX">Offset X from top left of the sprite 0</param>
+        /// <param name="sprite1_offsetY">Offset Y from top left of the sprite 0</param>
+        /// <param name="sprite0_width">Normally 16 pixels (untested with other values)</param>
+        /// <param name="sprite0_height">Normally 16 pixels (untested with other values)</param>
+        /// <param name="paletteBytes"></param>
+        /// <param name="patternBytes"></param>
+        /// <param name="colorsBytes"></param>
+        /// <param name="input"></param>
+        /// <param name="reader"></param>
+        /// <param name="bruteForcePalette"></param>
+        public static void DoConversion_2_Sprites(
             int sprite0_offsetX, int sprite0_offsetY,
             int sprite1_offsetX, int sprite1_offsetY, 
             int sprite0_width, int sprite0_height, 
@@ -372,7 +387,7 @@ namespace MSXUtilities
                     isFirstSpriteLine = true;
                     color0 = colorsInThisLine[0];
 
-                    if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line");
+                    if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line (line #" + lineNumber + ")");
                 }
                 else if (lineNumber >= sprite0_height)
                 {
@@ -380,7 +395,7 @@ namespace MSXUtilities
                     isSecondSpriteLine = true;
                     color1 = colorsInThisLine[0];
 
-                    if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line");
+                    if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line (line #" + lineNumber + ")");
                 }
                 else
                 {
