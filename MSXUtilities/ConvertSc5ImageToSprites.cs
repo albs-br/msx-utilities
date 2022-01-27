@@ -476,21 +476,21 @@ namespace MSXUtilities
 
                 // colors
                 if (colorsInThisLine.Count > 0 && isFirstSpriteLine) color_line_pattern_0 += color0;
-                if (colorsInThisLine.Count <= 1 && isSecondSpriteLine)
+                if (colorsInThisLine.Count == 1 && isSecondSpriteLine && isFirstSpriteLine)
                 {
                     color_line_pattern_1 += "0";
                 }
-                else if (colorsInThisLine.Count == 2 && isSecondSpriteLine)
-                {
-                    color_line_pattern_1 += color1;
-                }
-                else if (colorsInThisLine.Count == 3 && isSecondSpriteLine)
+                else if (colorsInThisLine.Count == 3 && isFirstSpriteLine && isSecondSpriteLine)
                 {
                     color_line_pattern_1 += (color1 + 64); // or-color
                 }
+                else if (isSecondSpriteLine)
+                {
+                    color_line_pattern_1 += color1;
+                }
 
-                color_line_pattern_0 += Environment.NewLine;
-                color_line_pattern_1 += Environment.NewLine;
+                if (isFirstSpriteLine) color_line_pattern_0 += Environment.NewLine;
+                if (isSecondSpriteLine) color_line_pattern_1 += Environment.NewLine;
 
 
                 //
