@@ -76,6 +76,7 @@ namespace MsxUtilities.Test
             var patternBytes = new byte[64];
             var colorsBytes = new byte[32];
             var fileName = @"InputFiles\sprites 2 planes.bak.SC5";
+            var bruteForcePalette = false;
 
             // Act
             using (var input = File.OpenRead(fileName))
@@ -87,7 +88,7 @@ namespace MsxUtilities.Test
                     sprite0_width, sprite0_height,
                     paletteBytes, patternBytes, colorsBytes,
                     input, reader,
-                    false
+                    bruteForcePalette
                 );
             }
 

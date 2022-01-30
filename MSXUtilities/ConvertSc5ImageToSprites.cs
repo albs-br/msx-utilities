@@ -389,9 +389,9 @@ namespace MSXUtilities
                     // both sprites
                     isFirstSpriteLine = true;
                     isSecondSpriteLine = true;
-                    ExtractColorsFromLine(line, out colorsInThisLine, out color0, out color1, out orColor);
+                    ExtractColorsFromLine(line, lineNumber, sprite0_width, sprite1_offsetX, out colorsInThisLine, out color0, out color1, out orColor);
 
-                    if (colorsInThisLine.Count > 3) throw new Exception("Only 3 colors possible on this line");
+                    if (colorsInThisLine.Count > 3) throw new Exception("Only 3 colors possible on this line (line #" + lineNumber + ")");
                 }
 
                 var colNumber = 0;
@@ -437,7 +437,8 @@ namespace MSXUtilities
                         if (isFirstSpriteLine) pattern_0[patternIndex] += bitPattern_0;
                     }
 
-                    if (isSecondSpriteCol)
+                    // both sprites
+                    if (isFirstSpriteCol && isSecondSpriteCol)
                     {
                         // logic to calc what of the four 8x8 sprites this pixel belongs
                         var lineIndex = (int)Math.Floor((decimal)pattern_1_Index / 8);
@@ -471,25 +472,118 @@ namespace MSXUtilities
                         if (isSecondSpriteLine) pattern_1[patternIndex] += bitPattern_1;
                     }
 
+                    // only second sprite
+                    if (!isFirstSpriteCol && isSecondSpriteCol)
+                    {
+                        // logic to calc what of the four 8x8 sprites this pixel belongs
+                        var lineIndex = (int)Math.Floor((decimal)pattern_1_Index / 8);
+                        var colIndex = (int)Math.Floor(((decimal)(colNumber - sprite1_offsetX)) / 8);
+                        var spriteIndex = (colIndex * 2) + lineIndex;
+                        var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+
+                        // patterns
+                        var bitPattern_1 = "";
+                        if (pixel == 0)
+                        {
+                            bitPattern_1 = "0";
+                        }
+                        else if (pixel == color0)
+                        {
+                            bitPattern_1 = "1";
+                        }
+                        else if (pixel == color1)
+                        {
+                            bitPattern_1 = "1";
+                        }
+                        else if (pixel == orColor)
+                        {
+                            bitPattern_1 = "1";
+                        }
+                        else
+                        {
+                            throw new InvalidDataException();
+                        }
+
+                        if (isSecondSpriteLine) pattern_1[patternIndex] += bitPattern_1;
+                    }
+
                     colNumber++;
                 }
 
 
 
                 // colors
-                if (colorsInThisLine.Count > 0 && isFirstSpriteLine) color_line_pattern_0 += color0;
-                if (colorsInThisLine.Count == 1 && isSecondSpriteLine && isFirstSpriteLine)
+                if (colorsInThisLine.Count == 0)
                 {
-                    color_line_pattern_1 += "0";
+                    if (isFirstSpriteLine) color_line_pattern_0 += "0";
+                    if (isSecondSpriteLine) color_line_pattern_1 += "0";
                 }
-                else if (colorsInThisLine.Count == 3 && isFirstSpriteLine && isSecondSpriteLine)
+                else if (colorsInThisLine.Count == 1)
                 {
-                    color_line_pattern_1 += (color1 + 64); // or-color
+                    if (isSecondSpriteLine && isFirstSpriteLine)
+                    {
+                        color_line_pattern_0 += color0;
+                        color_line_pattern_1 += "0";
+                    }
+                    else if (isFirstSpriteLine)
+                    {
+                        color_line_pattern_0 += color0;
+                    }
+                    else if (isSecondSpriteLine)
+                    {
+                        color_line_pattern_1 += color1;
+                    }
                 }
-                else if (isSecondSpriteLine)
+                else if (colorsInThisLine.Count == 2)
                 {
-                    color_line_pattern_1 += color1;
+                    if (isSecondSpriteLine && isFirstSpriteLine)
+                    {
+                        color_line_pattern_0 += color0;
+                        color_line_pattern_1 += color1;
+                    }
+                    else if (isFirstSpriteLine)
+                    {
+                        throw new InvalidDataException("More than one color for this sprite line. Line #" + lineNumber);
+                    }
+                    else if (isSecondSpriteLine)
+                    {
+                        throw new InvalidDataException("More than one color for this sprite line. Line #" + lineNumber);
+                    }
                 }
+                else if (colorsInThisLine.Count == 3)
+                {
+                    if (isSecondSpriteLine && isFirstSpriteLine)
+                    {
+                        color_line_pattern_0 += color0;
+                        color_line_pattern_1 += (color1 + 64); // or-color
+                    }
+                    else if (isFirstSpriteLine)
+                    {
+                        throw new InvalidDataException("More than one color for this sprite line. Line #" + lineNumber);
+                    }
+                    else if (isSecondSpriteLine)
+                    {
+                        throw new InvalidDataException("More than one color for this sprite line. Line #" + lineNumber);
+                    }
+                }
+                else
+                {
+                    throw new InvalidDataException("More than 3 colors for this sprite line. Line #" + lineNumber);
+                }
+
+                //if (colorsInThisLine.Count > 0 && isFirstSpriteLine) color_line_pattern_0 += color0;
+                //if (colorsInThisLine.Count == 1 && isSecondSpriteLine && isFirstSpriteLine)
+                //{
+                //    color_line_pattern_1 += "0";
+                //}
+                //else if (colorsInThisLine.Count == 3 && isFirstSpriteLine && isSecondSpriteLine)
+                //{
+                //    color_line_pattern_1 += (color1 + 64); // or-color
+                //}
+                //else if (isSecondSpriteLine && colorsInThisLine.Count != 0)
+                //{
+                //    color_line_pattern_1 += color1;
+                //}
 
                 if (isFirstSpriteLine) color_line_pattern_0 += Environment.NewLine;
                 if (isSecondSpriteLine) color_line_pattern_1 += Environment.NewLine;
@@ -508,14 +602,16 @@ namespace MSXUtilities
             Console.WriteLine();
             Console.WriteLine("Palette, patterns and colors are also saved on .pal, .pat and .col files on output folder");
             Console.WriteLine("; pattern 0:");
+            lineNumber = 0;
             foreach (var line in pattern_0)
             {
-                Console.WriteLine(line);
+                Console.WriteLine(line + "\t; line #" + lineNumber++);
             }
             Console.WriteLine("; pattern 1:");
+            lineNumber = 0;
             foreach (var line in pattern_1)
             {
-                Console.WriteLine(line);
+                Console.WriteLine(line + "\t; line #" + lineNumber++);
             }
 
             Console.WriteLine("; color 0:");
@@ -587,7 +683,7 @@ namespace MSXUtilities
             }
         }
 
-        private static void ExtractColorsFromLine(IList<int> line, out List<int> colorsInThisLine, out int color0, out int color1, out int orColor)
+        private static void ExtractColorsFromLine(IList<int> line, int lineNumber, int sprite0_width, int sprite1_offsetX, out List<int> colorsInThisLine, out int color0, out int color1, out int orColor)
         {
             colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
             color0 = -1;
@@ -604,29 +700,96 @@ namespace MSXUtilities
                     color1 = colorsInThisLine[1];
                     break;
 
+                // TODO: OR-color should be validated only where there is 2 sprites overlap, 
+                // not on the pixels that belongs to only one sprite (when there is X offset fot second sprite)
                 case 3:
-                    if ((colorsInThisLine[0] | colorsInThisLine[1]) == colorsInThisLine[2])
+                    var colorsInTheAreaOnlyFirstSprite = new List<int>();
+                    var colorOfFirstSpriteIsFixed = false;
+                    for (int i = 0; i < sprite1_offsetX; i++)
                     {
-                        color0 = colorsInThisLine[0];
-                        color1 = colorsInThisLine[1];
-                        orColor = colorsInThisLine[2];
+                        if (line[i] != 0) colorsInTheAreaOnlyFirstSprite.Add(line[i]);
                     }
-                    else if ((colorsInThisLine[2] | colorsInThisLine[1]) == colorsInThisLine[0])
+                    colorsInTheAreaOnlyFirstSprite = colorsInTheAreaOnlyFirstSprite.Distinct().ToList();
+                    if (colorsInTheAreaOnlyFirstSprite.Count == 1)
                     {
-                        color0 = colorsInThisLine[2];
-                        color1 = colorsInThisLine[1];
-                        orColor = colorsInThisLine[0];
+                        color0 = colorsInTheAreaOnlyFirstSprite[0];
+                        colorOfFirstSpriteIsFixed = true;
                     }
-                    else if ((colorsInThisLine[0] | colorsInThisLine[2]) == colorsInThisLine[1])
+                    if (colorsInTheAreaOnlyFirstSprite.Count > 1) throw new InvalidDataException("More than one color on first sprite only part if line #" + lineNumber);
+
+
+                    var colorsInTheAreaOnlySecondSprite = new List<int>();
+                    var colorOfSecondSpriteIsFixed = false;
+                    for (int i = sprite0_width; i < line.Count; i++)
                     {
-                        color0 = colorsInThisLine[0];
-                        color1 = colorsInThisLine[2];
-                        orColor = colorsInThisLine[1];
+                        if (line[i] != 0) colorsInTheAreaOnlySecondSprite.Add(line[i]);
                     }
-                    else
+                    colorsInTheAreaOnlySecondSprite = colorsInTheAreaOnlySecondSprite.Distinct().ToList();
+                    if (colorsInTheAreaOnlySecondSprite.Count == 1)
                     {
-                        throw new InvalidDataException("Color combination impossible.");
+                        color1 = colorsInTheAreaOnlySecondSprite[0];
+                        colorOfSecondSpriteIsFixed = true;
                     }
+                    if (colorsInTheAreaOnlySecondSprite.Count > 1) throw new InvalidDataException("More than one color on second sprite only part if line #" + lineNumber);
+
+
+                    var colorsInTheIntersection = new List<int>();
+                    for (int i = 0; i < line.Count; i++)
+                    {
+                        if (line[i] != 0 && i >= sprite1_offsetX && i < sprite0_width) colorsInTheIntersection.Add(line[i]);
+                    }
+                    colorsInTheIntersection = colorsInTheIntersection.Distinct().ToList();
+
+                    if (color0 == -1) color0 = colorsInTheIntersection[0];
+                    if (color1 == -1) color1 = colorsInTheIntersection[1];
+
+                    foreach (var color in colorsInTheIntersection)
+                    {
+                        if (color != color0 && color != color1) orColor = color;
+                    }
+
+                    //if (colorsInTheIntersection.Count == 1 && colorsInTheIntersection[0] != color0 && )
+                    //{
+                    //    color0 = colorsInTheIntersection[0];
+                    //    break;
+                    //}
+                    //if (colorsInTheIntersection.Count == 2)
+                    //{
+                    //    // TODO: serious problem here 
+
+
+                    //    color0 = colorsInTheIntersection[0];
+                    //    color1 = colorsInTheIntersection[1];
+                    //    break;
+                    //}
+
+                    // 3 colors:
+                    if (colorsInTheIntersection.Count == 3 && !colorOfFirstSpriteIsFixed && !colorOfSecondSpriteIsFixed)
+                    {
+                        if ((colorsInTheIntersection[0] | colorsInTheIntersection[1]) == colorsInTheIntersection[2])
+                        {
+                            color0 = colorsInTheIntersection[0];
+                            color1 = colorsInTheIntersection[1];
+                            orColor = colorsInTheIntersection[2];
+                        }
+                        else if ((colorsInTheIntersection[2] | colorsInTheIntersection[1]) == colorsInTheIntersection[0])
+                        {
+                            color0 = colorsInTheIntersection[2];
+                            color1 = colorsInTheIntersection[1];
+                            orColor = colorsInTheIntersection[0];
+                        }
+                        else if ((colorsInTheIntersection[0] | colorsInTheIntersection[2]) == colorsInTheIntersection[1])
+                        {
+                            color0 = colorsInTheIntersection[0];
+                            color1 = colorsInTheIntersection[2];
+                            orColor = colorsInTheIntersection[1];
+                        }
+                        else
+                        {
+                            throw new InvalidDataException("OR-Color impossible on line #" + lineNumber);
+                        }
+                    }
+
                     break;
 
                 default:
