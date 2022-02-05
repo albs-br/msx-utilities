@@ -351,6 +351,7 @@ namespace MSXUtilities
 
 
 
+            var errorCount = 0;
             var lineNumber = 0;
             int pattern_0_Index = 0, pattern_1_Index = 0;
             foreach (var line in newPixelsList)
@@ -376,7 +377,10 @@ namespace MSXUtilities
                         isFirstSpriteLine = true;
                         color0 = colorsInThisLine[0];
 
-                        if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line (line #" + lineNumber + ")");
+                        if (colorsInThisLine.Count > 1)
+                        {
+                            throw new Exception("Only one color possible on this line (line #" + lineNumber + ")");
+                        }
                     }
                     else if (lineNumber >= sprite0_height)
                     {
@@ -384,7 +388,10 @@ namespace MSXUtilities
                         isSecondSpriteLine = true;
                         color1 = colorsInThisLine[0];
 
-                        if (colorsInThisLine.Count > 1) throw new Exception("Only one color possible on this line (line #" + lineNumber + ")");
+                        if (colorsInThisLine.Count > 1)
+                        {
+                            throw new Exception("Only one color possible on this line (line #" + lineNumber + ")");
+                        }
                     }
                     else
                     {
@@ -602,7 +609,15 @@ namespace MSXUtilities
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    errorCount++;
                 }
+            }
+
+            if (errorCount > 0)
+            {
+                Console.WriteLine("ATTENTION: there were one or more errors. Stopping processing here.");
+
+                return;
             }
 
 
