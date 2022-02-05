@@ -97,12 +97,28 @@
     <None Update="Msxmas21\window 1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="MsxWings\sprites - less colors.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MsxWings\sprites - less colors.SC5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MsxWings\sprites 2 planes - less colors.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MsxWings\sprites 2 planes - less colors.SC5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="screen.ct2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="screen1.nt2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MsxWings\" />
   </ItemGroup>
 
 </Project>

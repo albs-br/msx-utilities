@@ -60,7 +60,7 @@ namespace MSXUtilities
             //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\aerofighters-bg2_{0}.sra";
             //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
 
-            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sprites 2 planes - less colors.SC5";
+            var fileName = @"MsxWings\sprites - less colors.SC5";
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    0, 0, 16, 16,
@@ -94,11 +94,32 @@ namespace MSXUtilities
             //    "enemy_plane_1",
             //    false
             //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    70, 39, 16, 16,
+            //    0, 0,
+            //    "enemy_plane_2",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    102, 39, 16, 16,
+            //    0, 0,
+            //    "enemy_plane_3",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    134, 38, 16, 16,
+            //    0, 0,
+            //    "enemy_plane_4",
+            //    false
+            //    );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                70, 39, 16, 16,
-                0, 0,
-                "enemy_plane_2",
+                166, 34, 16, 16,
+                0, 8,
+                "enemy_plane_5",
                 false
                 );
 
