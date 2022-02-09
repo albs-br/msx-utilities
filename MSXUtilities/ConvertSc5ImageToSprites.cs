@@ -420,7 +420,8 @@ namespace MSXUtilities
 
                         if (isFirstSpriteCol)
                         {
-                            // logic to calc what of the four 8x8 sprites this pixel belongs
+                            //int patternIndex = GetSpriteNumber(lineNumber, pattern_0_Index, colNumber, sprite1_offsetX);
+
                             var lineIndex = (int)Math.Floor((decimal)pattern_0_Index / 8);
                             var colIndex = (int)Math.Floor((decimal)colNumber / 8);
                             var spriteIndex = (colIndex * 2) + lineIndex;
@@ -455,7 +456,9 @@ namespace MSXUtilities
                         // both sprites
                         if (isFirstSpriteCol && isSecondSpriteCol)
                         {
-                            // logic to calc what of the four 8x8 sprites this pixel belongs
+                            //int patternIndex = GetSpriteNumber(lineNumber, pattern_1_Index, colNumber, sprite1_offsetX);
+
+                            // logic to calc which of the four 8x8 sprites this pixel belongs
                             var lineIndex = (int)Math.Floor((decimal)pattern_1_Index / 8);
                             var colIndex = (int)Math.Floor(((decimal)(colNumber - sprite1_offsetX)) / 8);
                             var spriteIndex = (colIndex * 2) + lineIndex;
@@ -490,7 +493,9 @@ namespace MSXUtilities
                         // only second sprite
                         if (!isFirstSpriteCol && isSecondSpriteCol)
                         {
-                            // logic to calc what of the four 8x8 sprites this pixel belongs
+                            //int patternIndex = GetSpriteNumber(lineNumber, pattern_1_Index, colNumber, sprite1_offsetX);
+
+                            // logic to calc which of the four 8x8 sprites this pixel belongs
                             var lineIndex = (int)Math.Floor((decimal)pattern_1_Index / 8);
                             var colIndex = (int)Math.Floor(((decimal)(colNumber - sprite1_offsetX)) / 8);
                             var spriteIndex = (colIndex * 2) + lineIndex;
@@ -710,6 +715,17 @@ namespace MSXUtilities
                 }
             }
         }
+
+        //public static int GetSpriteNumber(int lineNumber, int pattern_0_Index, int colNumber, int sprite1_offsetX)
+        //{
+        //    // logic to calc which of the four 8x8 sprites this pixel belongs
+        //    var lineIndex = (int)Math.Floor((decimal)pattern_0_Index / 8);
+        //    var colIndex = (int)Math.Floor(((decimal)(colNumber - sprite1_offsetX)) / 8);
+        //    //var colIndex = (int)Math.Floor((decimal)colNumber / 8);
+        //    var spriteIndex = (colIndex * 2) + lineIndex;
+        //    var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+        //    return patternIndex;
+        //}
 
         private static void ExtractColorsFromLine(IList<int> line, int lineNumber, int sprite0_width, int sprite1_offsetX, out List<int> colorsInThisLine, out int color0, out int color1, out int orColor)
         {
