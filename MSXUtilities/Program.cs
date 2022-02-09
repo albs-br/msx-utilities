@@ -80,13 +80,13 @@ namespace MSXUtilities
             //    0, 0,
             //    "player_shot"
             //    );
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    21, 0, 16, 16,
-            //    0, 8,
-            //    "enemy_plane_0",
-            //    false
-            //    );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                21, 0, 16, 16,
+                0, 8,
+                "enemy_plane_0",
+                false
+                );
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    38, 36, 16, 16,
@@ -115,13 +115,13 @@ namespace MSXUtilities
             //    "enemy_plane_4",
             //    false
             //    );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                166, 34, 16, 16,
-                0, 8,
-                "enemy_plane_5",
-                false
-                );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    166, 34, 16, 16,
+            //    0, 8,
+            //    "enemy_plane_5",
+            //    false
+            //    );
 
 
 

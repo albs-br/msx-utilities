@@ -360,7 +360,7 @@ namespace MSXUtilities
                 {
                     bool isFirstSpriteLine = false, isSecondSpriteLine = false;
 
-                    Console.WriteLine("line " + lineNumber);
+                    Console.Write("line " + lineNumber);
 
                     List<int> colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
                     int color0 = -1, color1 = -1, orColor = -1;
@@ -374,6 +374,8 @@ namespace MSXUtilities
                     if ((lineNumber < sprite1_offsetY))
                     {
                         // only first sprite
+                        Console.WriteLine(", only first sprite");
+
                         isFirstSpriteLine = true;
                         color0 = colorsInThisLine[0];
 
@@ -385,6 +387,8 @@ namespace MSXUtilities
                     else if (lineNumber >= sprite0_height)
                     {
                         // only second sprite
+                        Console.WriteLine(", only second sprite");
+
                         isSecondSpriteLine = true;
                         color1 = colorsInThisLine[0];
 
@@ -396,6 +400,8 @@ namespace MSXUtilities
                     else
                     {
                         // both sprites
+                        Console.WriteLine(", both sprites");
+
                         isFirstSpriteLine = true;
                         isSecondSpriteLine = true;
                         ExtractColorsFromLine(line, lineNumber, sprite0_width, sprite1_offsetX, out colorsInThisLine, out color0, out color1, out orColor);

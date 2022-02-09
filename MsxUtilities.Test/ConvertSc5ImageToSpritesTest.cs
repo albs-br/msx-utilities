@@ -17,7 +17,7 @@ namespace MsxUtilities.Test
             var paletteBytes = new byte[32];
             var patternBytes = new byte[64];
             var colorsBytes = new byte[32];
-            var fileName = @"InputFiles\sprites 2 planes.bak.SC5";
+            var fileName = @"MsxWings\sprites - less colors.SC5";
 
             // Act
             using (var input = File.OpenRead(fileName))
@@ -75,7 +75,7 @@ namespace MsxUtilities.Test
             var paletteBytes = new byte[32];
             var patternBytes = new byte[64];
             var colorsBytes = new byte[32];
-            var fileName = @"InputFiles\sprites 2 planes.bak.SC5";
+            var fileName = @"MsxWings\sprites - less colors.SC5";
             var bruteForcePalette = false;
 
             // Act
@@ -93,11 +93,47 @@ namespace MsxUtilities.Test
             }
 
             // Assert
-            byte[] assertPaletteFile = File.ReadAllBytes(@"AssertFiles\enemy_plane.pal");
-            byte[] assertPatternsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane.pat");
-            byte[] assertColorsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane.col");
+            byte[] assertPaletteFile = File.ReadAllBytes(@"AssertFiles\enemy_plane_0.pal");
+            byte[] assertPatternsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane_0.pat");
+            byte[] assertColorsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane_0.col");
 
             CollectionAssert.AreEqual(assertPaletteFile, paletteBytes);
+            CollectionAssert.AreEqual(assertPatternsFile, patternBytes);
+            CollectionAssert.AreEqual(assertColorsFile, colorsBytes);
+        }
+
+        [TestMethod]
+        public void Test_DoConversion_2_Sprites_Offset_5_0()
+        {
+            // Arrange
+            int sprite0_offsetX = 0, sprite0_offsetY = 16, sprite1_offsetX = 5, sprite1_offsetY = 0;
+            int sprite0_width = 16, sprite0_height = 16;
+            var paletteBytes = new byte[32];
+            var patternBytes = new byte[64];
+            var colorsBytes = new byte[32];
+            var fileName = @"MsxWings\sprites - less colors.SC5";
+            var bruteForcePalette = false;
+
+            // Act
+            using (var input = File.OpenRead(fileName))
+            using (var reader = new BinaryReader(input))
+            {
+                ConvertSc5ImageToSprites.DoConversion_2_Sprites(
+                    sprite0_offsetX, sprite0_offsetY,
+                    sprite1_offsetX, sprite1_offsetY,
+                    sprite0_width, sprite0_height,
+                    paletteBytes, patternBytes, colorsBytes,
+                    input, reader,
+                    bruteForcePalette
+                );
+            }
+
+            // Assert
+            byte[] assertPaletteFile = File.ReadAllBytes(@"AssertFiles\player_plane_bottom.pal");
+            byte[] assertPatternsFile = File.ReadAllBytes(@"AssertFiles\player_plane_bottom.pat");
+            byte[] assertColorsFile = File.ReadAllBytes(@"AssertFiles\player_plane_bottom.col");
+
+            //CollectionAssert.AreEqual(assertPaletteFile, paletteBytes);
             CollectionAssert.AreEqual(assertPatternsFile, patternBytes);
             CollectionAssert.AreEqual(assertColorsFile, colorsBytes);
         }

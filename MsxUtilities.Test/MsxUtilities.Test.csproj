@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="AssertFiles\" />
-    <Folder Include="InputFiles\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +29,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="AssertFiles\enemy_plane.pat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\enemy_plane_0.col">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\enemy_plane_0.pal">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\enemy_plane_0.pat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="AssertFiles\player_plane_0.col">
@@ -50,7 +58,13 @@
     <None Update="AssertFiles\player_plane_1.pat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="InputFiles\sprites 2 planes.bak.SC5">
+    <None Update="AssertFiles\player_plane_bottom.col">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\player_plane_bottom.pal">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\player_plane_bottom.pat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
