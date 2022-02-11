@@ -425,7 +425,7 @@ namespace MSXUtilities
                             var lineIndex = (int)Math.Floor((decimal)pattern_0_Index / 8);
                             var colIndex = (int)Math.Floor((decimal)colNumber / 8);
                             var spriteIndex = (colIndex * 2) + lineIndex;
-                            var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+                            var patternIndex = (spriteIndex * 8) + (pattern_0_Index % 8);
 
                             // patterns
                             var bitPattern_0 = "";
