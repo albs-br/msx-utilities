@@ -103,6 +103,42 @@ namespace MsxUtilities.Test
         }
 
         [TestMethod]
+        public void Test_DoConversion_2_Sprites_Offset_0_4()
+        {
+            // Arrange
+            int sprite0_offsetX = 38, sprite0_offsetY = 36, sprite1_offsetX = 0, sprite1_offsetY = 4;
+            int sprite0_width = 16, sprite0_height = 16;
+            var paletteBytes = new byte[32];
+            var patternBytes = new byte[64];
+            var colorsBytes = new byte[32];
+            var fileName = @"MsxWings\sprites - less colors.SC5";
+            var bruteForcePalette = false;
+
+            // Act
+            using (var input = File.OpenRead(fileName))
+            using (var reader = new BinaryReader(input))
+            {
+                ConvertSc5ImageToSprites.DoConversion_2_Sprites(
+                    sprite0_offsetX, sprite0_offsetY,
+                    sprite1_offsetX, sprite1_offsetY,
+                    sprite0_width, sprite0_height,
+                    paletteBytes, patternBytes, colorsBytes,
+                    input, reader,
+                    bruteForcePalette
+                );
+            }
+
+            // Assert
+            byte[] assertPaletteFile = File.ReadAllBytes(@"AssertFiles\enemy_plane_1.pal");
+            byte[] assertPatternsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane_1.pat");
+            byte[] assertColorsFile = File.ReadAllBytes(@"AssertFiles\enemy_plane_1.col");
+
+            CollectionAssert.AreEqual(assertPaletteFile, paletteBytes);
+            CollectionAssert.AreEqual(assertPatternsFile, patternBytes);
+            CollectionAssert.AreEqual(assertColorsFile, colorsBytes);
+        }
+
+        [TestMethod]
         public void Test_DoConversion_2_Sprites_Offset_5_0()
         {
             // Arrange

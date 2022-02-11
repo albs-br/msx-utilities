@@ -360,7 +360,7 @@ namespace MSXUtilities
                 {
                     bool isFirstSpriteLine = false, isSecondSpriteLine = false;
 
-                    Console.Write("line " + lineNumber);
+                    Console.Write("image line " + (lineNumber + sprite0_offsetY) + ", sprite line " + lineNumber);
 
                     List<int> colorsInThisLine = line.Where(x => x != 0).Distinct().ToList();
                     int color0 = -1, color1 = -1, orColor = -1;
@@ -462,7 +462,7 @@ namespace MSXUtilities
                             var lineIndex = (int)Math.Floor((decimal)pattern_1_Index / 8);
                             var colIndex = (int)Math.Floor(((decimal)(colNumber - sprite1_offsetX)) / 8);
                             var spriteIndex = (colIndex * 2) + lineIndex;
-                            var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+                            var patternIndex = (spriteIndex * 8) + (pattern_1_Index % 8);
 
                             // patterns
                             var bitPattern_1 = "";
@@ -499,7 +499,7 @@ namespace MSXUtilities
                             var lineIndex = (int)Math.Floor((decimal)pattern_1_Index / 8);
                             var colIndex = (int)Math.Floor(((decimal)(colNumber - sprite1_offsetX)) / 8);
                             var spriteIndex = (colIndex * 2) + lineIndex;
-                            var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
+                            var patternIndex = (spriteIndex * 8) + (pattern_1_Index % 8);
 
                             // patterns
                             var bitPattern_1 = "";
