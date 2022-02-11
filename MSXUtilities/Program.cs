@@ -90,7 +90,7 @@ namespace MSXUtilities
             ConvertSc5ImageToSprites.Execute(
                 fileName,
                 38, 36, 16, 16,
-                0, 4,
+                1, 4,
                 "enemy_plane_1",
                 false
                 );

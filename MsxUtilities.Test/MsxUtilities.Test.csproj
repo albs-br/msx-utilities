@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AssertFiles\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="AssertFiles\enemy_plane.col">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -47,6 +43,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="AssertFiles\enemy_plane_1.pat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\enemy_plane_1_without_offset_x.col">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\enemy_plane_1_without_offset_x.pal">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="AssertFiles\enemy_plane_1_without_offset_x.pat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="AssertFiles\player_plane_0.col">
