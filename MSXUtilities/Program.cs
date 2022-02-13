@@ -94,34 +94,34 @@ namespace MSXUtilities
             //    "enemy_plane_1",
             //    false
             //    );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                70, 39, 16, 16,
-                0, 0,
-                "enemy_plane_2",
-                false
-                );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    70, 39, 16, 16,
+            //    1, 0,
+            //    "enemy_plane_2",
+            //    false
+            //    );
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    102, 39, 16, 16,
-            //    0, 0,
+            //    1, 0,
             //    "enemy_plane_3",
             //    false
             //    );
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    134, 38, 16, 16,
-            //    0, 0,
+            //    1, 0,
             //    "enemy_plane_4",
             //    false
             //    );
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    166, 34, 16, 16,
-            //    0, 8,
-            //    "enemy_plane_5",
-            //    false
-            //    );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                166, 34, 16, 16,
+                1, 8,
+                "enemy_plane_5",
+                false
+                );
 
 
 
