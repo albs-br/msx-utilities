@@ -108,13 +108,13 @@ namespace MSXUtilities
             //    "enemy_plane_3",
             //    false
             //    );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                134, 38, 16, 16,
-                1, 0,
-                "enemy_plane_4",
-                false
-                );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    134, 38, 16, 16,
+            //    1, 0,
+            //    "enemy_plane_4",
+            //    false
+            //    );
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    166, 34, 16, 16,
@@ -122,7 +122,13 @@ namespace MSXUtilities
             //    "enemy_plane_5",
             //    false
             //    );
-
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                1, 65, 16, 16,
+                0, 0,
+                "player_plane_left_0_top",
+                false
+                );
 
 
 
