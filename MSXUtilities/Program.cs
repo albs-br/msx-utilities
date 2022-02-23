@@ -122,14 +122,20 @@ namespace MSXUtilities
             //    "enemy_plane_5",
             //    false
             //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    1, 65, 16, 16,
+            //    0, 0,
+            //    "player_plane_left_0_top",
+            //    false
+            //    );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                1, 65, 16, 16,
+                1, 65 + 16, 16, 16,
                 0, 0,
-                "player_plane_left_0_top",
+                "player_plane_left_0_bottom",
                 false
                 );
-
 
 
             //var filename = @"Msxmas21\conveyor belt 1.txt";
