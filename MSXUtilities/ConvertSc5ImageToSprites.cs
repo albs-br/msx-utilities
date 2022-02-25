@@ -145,16 +145,35 @@ namespace MSXUtilities
                         var oldColor = colorCount.First(x => x.Value == colorCount.Values.OrderBy(x => x).First()).Key;
 
                         // get the most similar color in the line
-                        //originalPalette
+                        var oldColorRGB = paletteRGB[oldColor];
+                        double minimumDistance = Double.MaxValue;
+                        int newColor = -1;
+                        foreach (var colorIndex in colorCount.Keys.Where(x => x != oldColor))
+                        {
+                            var colorRGB = paletteRGB[colorIndex];
+
+                            var colorDistance = ColourDistance(colorRGB, oldColorRGB);
+                            if (colorDistance < minimumDistance)
+                            {
+                                minimumDistance = colorDistance;
+                                newColor = colorIndex;
+                            }
+                        }
+
+                        if (newColor == -1) throw new InvalidDataException("Error while trying to reduce color count at line " + line);
 
                         // replace old color by new color in the line
                         for (int i = 0; i < line.Count; i++)
                         {
-                            //if (line[i] == oldColor) line[i] = newColor;
+                            if (line[i] == oldColor) line[i] = newColor;
                         }
                     }
                 }
             }
+
+            Console.WriteLine();
+            Console.WriteLine("Sprite with color count reduced:");
+            isPaletteValid = ShowSprite(pixelsList, listOf3Colors);
 
             var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
             Console.WriteLine();
@@ -764,6 +783,18 @@ namespace MSXUtilities
         //    var patternIndex = (spriteIndex * 8) + (lineNumber % 8);
         //    return patternIndex;
         //}
+
+        public static double ColourDistance(IList<int> c1, IList<int> c2)
+        {
+            // code taken from stackoverflow (with adaptations)
+
+            long rmean = ((long)c1[0] + (long)c2[0]) / 2; ;
+            long r = (long)c1[0] - (long)c2[0];
+            long g = (long)c1[1] - (long)c2[1];
+            long b = (long)c1[2] - (long)c2[2];
+
+            return Math.Sqrt((((512 + rmean) * r * r) >> 8) + (4 * g * g) + (((767 - rmean) * b * b) >> 8));
+        }
 
         private static void ExtractColorsFromLine(IList<int> line, int lineNumber, int sprite0_width, int sprite1_offsetX, out List<int> colorsInThisLine, out int color0, out int color1, out int orColor)
         {
