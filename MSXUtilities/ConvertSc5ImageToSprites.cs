@@ -118,55 +118,16 @@ namespace MSXUtilities
             Console.WriteLine("Original sprite:");
             var isPaletteValid = ShowSprite(pixelsList, listOf3Colors);
 
-            // reduce the color count
+            // reduce the color count to max 3 colors per line
             if (!isPaletteValid)
             {
                 foreach (var line in pixelsList)
                 {
                     var distinctColorsInLine = line.Where(x => x != 0).Distinct();
-                    var colorCount = new Dictionary<int, int>();
-                    if (distinctColorsInLine.Count() > 3)
+                    while (distinctColorsInLine.Count() > 3)
                     {
-                        // count how many repetitions of each color
-                        foreach (var pixel in line)
-                        {
-                            if (pixel != 0)
-                            {
-                                if (!colorCount.Keys.Contains(pixel))
-                                {
-                                    colorCount.Add(pixel, 0);
-                                }
-
-                                colorCount[pixel]++;
-                            }
-                        }
-
-                        // get the least common color
-                        var oldColor = colorCount.First(x => x.Value == colorCount.Values.OrderBy(x => x).First()).Key;
-
-                        // get the most similar color in the line
-                        var oldColorRGB = paletteRGB[oldColor];
-                        double minimumDistance = Double.MaxValue;
-                        int newColor = -1;
-                        foreach (var colorIndex in colorCount.Keys.Where(x => x != oldColor))
-                        {
-                            var colorRGB = paletteRGB[colorIndex];
-
-                            var colorDistance = ColourDistance(colorRGB, oldColorRGB);
-                            if (colorDistance < minimumDistance)
-                            {
-                                minimumDistance = colorDistance;
-                                newColor = colorIndex;
-                            }
-                        }
-
-                        if (newColor == -1) throw new InvalidDataException("Error while trying to reduce color count at line " + line);
-
-                        // replace old color by new color in the line
-                        for (int i = 0; i < line.Count; i++)
-                        {
-                            if (line[i] == oldColor) line[i] = newColor;
-                        }
+                        ReduceColorCountInLine(paletteRGB, line);
+                        distinctColorsInLine = line.Where(x => x != 0).Distinct();
                     }
                 }
             }
@@ -174,6 +135,9 @@ namespace MSXUtilities
             Console.WriteLine();
             Console.WriteLine("Sprite with color count reduced:");
             isPaletteValid = ShowSprite(pixelsList, listOf3Colors);
+
+            //TODO
+            // solve the lines with 3 colors and or-color impossible
 
             var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
             Console.WriteLine();
@@ -773,6 +737,53 @@ namespace MSXUtilities
             }
         }
 
+        private static void ReduceColorCountInLine(List<List<int>> paletteRGB, IList<int> line)
+        {
+            var colorCount = new Dictionary<int, int>();
+            {
+                // count how many repetitions of each color
+                foreach (var pixel in line)
+                {
+                    if (pixel != 0)
+                    {
+                        if (!colorCount.Keys.Contains(pixel))
+                        {
+                            colorCount.Add(pixel, 0);
+                        }
+
+                        colorCount[pixel]++;
+                    }
+                }
+
+                // get the least common color
+                var oldColor = colorCount.First(x => x.Value == colorCount.Values.OrderBy(x => x).First()).Key;
+
+                // get the most similar color in the line
+                var oldColorRGB = paletteRGB[oldColor];
+                double minimumDistance = Double.MaxValue;
+                int newColor = -1;
+                foreach (var colorIndex in colorCount.Keys.Where(x => x != oldColor))
+                {
+                    var colorRGB = paletteRGB[colorIndex];
+
+                    var colorDistance = ColourDistance(colorRGB, oldColorRGB);
+                    if (colorDistance < minimumDistance)
+                    {
+                        minimumDistance = colorDistance;
+                        newColor = colorIndex;
+                    }
+                }
+
+                if (newColor == -1) throw new InvalidDataException("Error while trying to reduce color count at line " + line);
+
+                // replace old color by new color in the line
+                for (int i = 0; i < line.Count; i++)
+                {
+                    if (line[i] == oldColor) line[i] = newColor;
+                }
+            }
+        }
+
         //public static int GetSpriteNumber(int lineNumber, int pattern_0_Index, int colNumber, int sprite1_offsetX)
         //{
         //    // logic to calc which of the four 8x8 sprites this pixel belongs
@@ -912,6 +923,7 @@ namespace MSXUtilities
 
         private static bool ShowSprite(IList<IList<int>> pixelsList, List<List<int>> listOf3Colors)
         {
+            listOf3Colors.Clear();
             var valid = true;
             var moreThan16PixelsPerLine = false;
             var lineNumber = 0;
