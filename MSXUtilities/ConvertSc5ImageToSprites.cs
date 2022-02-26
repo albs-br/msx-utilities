@@ -139,6 +139,20 @@ namespace MSXUtilities
             //TODO
             // solve the lines with 3 colors and or-color impossible
 
+            // create list of all OR-color combinations possible
+            var allOrColor = new List<List<int>>();
+            for (int color1 = 1; color1 <= 15; color1++)
+            {
+                for (int color2 = 1; color2 <= 15; color2++)
+                {
+                    var orColor = color1 | color2;
+                    if (color1 != color2 && color1 != orColor && color2 != orColor)
+                    {
+                        allOrColor.Add(new List<int> { color1, color2, orColor });
+                    }
+                }
+            }
+
             var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
             Console.WriteLine();
             Console.WriteLine("Total distinct colors: " + totalDistinctColors.Count());
