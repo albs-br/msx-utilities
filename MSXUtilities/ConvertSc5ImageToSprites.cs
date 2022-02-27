@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -152,6 +154,24 @@ namespace MSXUtilities
                     }
                 }
             }
+
+            // save bmp image
+            var bmp = new Bitmap(16, 16);
+            var yBmp = 0;
+            foreach (var line in pixelsList)
+            {
+                var xBmp = 0;
+                foreach (var pixel in line)
+                {
+                    var red = paletteRGB[pixel][0] * 36; // 36 = 255 / 7
+                    var green = paletteRGB[pixel][1] * 36;
+                    var blue = paletteRGB[pixel][2] * 36;
+                    bmp.SetPixel(xBmp, yBmp, Color.FromArgb(red, green, blue));
+                    xBmp++;
+                }
+                yBmp++;
+            }
+            bmp.Save("test.bmp", ImageFormat.Bmp);
 
             var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
             Console.WriteLine();
