@@ -129,11 +129,25 @@ namespace MSXUtilities
             //    "player_plane_left_0_top",
             //    false
             //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    1, 65 + 16, 16, 16,
+            //    0, 0,
+            //    "player_plane_left_0_bottom",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    35, 65, 16, 16,
+            //    0, 0,
+            //    "player_plane_left_1_top",
+            //    false
+            //    );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                1, 65 + 16, 16, 16,
+                35, 65 + 16, 16, 16,
                 0, 0,
-                "player_plane_left_0_bottom",
+                "player_plane_left_1_bottom",
                 false
                 );
 

@@ -163,7 +163,7 @@ namespace MSXUtilities
                 var xBmp = 0;
                 foreach (var pixel in line)
                 {
-                    var red = paletteRGB[pixel][0] * 36; // 36 = 255 / 7
+                    var red = paletteRGB[pixel][0] * 36; // 36 = 255 / 7, to convert rgb level from 0-7 to 0-255
                     var green = paletteRGB[pixel][1] * 36;
                     var blue = paletteRGB[pixel][2] * 36;
                     bmp.SetPixel(xBmp, yBmp, Color.FromArgb(red, green, blue));
@@ -171,7 +171,7 @@ namespace MSXUtilities
                 }
                 yBmp++;
             }
-            bmp.Save("test.bmp", ImageFormat.Bmp);
+            bmp.Save("temp.bmp", ImageFormat.Bmp);
 
             var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
             Console.WriteLine();
