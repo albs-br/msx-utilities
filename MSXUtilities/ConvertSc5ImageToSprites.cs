@@ -155,7 +155,36 @@ namespace MSXUtilities
                 }
             }
 
-            // save bmp image
+            //foreach (var line in pixelsList)
+            //{
+            //    var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
+            //    if (distinctColorsOnLine.Count() == 3)
+            //    {
+            //        if (!
+            //               ((distinctColorsOnLine[0] | distinctColorsOnLine[1]) == distinctColorsOnLine[2])
+            //            || ((distinctColorsOnLine[0] | distinctColorsOnLine[2]) == distinctColorsOnLine[1])
+            //            || ((distinctColorsOnLine[1] | distinctColorsOnLine[2]) == distinctColorsOnLine[0])
+            //            )
+            //        {
+            //            // or-color impossible
+
+            //            // try to change the first color and check if it makes or-color possible
+            //            var bestMatchValue = int.MaxValue;
+            //            var bestMatchColors = new List<int>();
+            //            foreach (var item in allOrColor)
+            //            {
+            //                var color1 = distinctColorsOnLine[0];
+            //                var color2 = distinctColorsOnLine[1];
+            //                var orColor = distinctColorsOnLine[2];
+
+            //                var colorDistance = ColourDistance(color1, item[0]);
+
+            //            }
+            //        }
+            //    }
+            //}
+
+            // save 16x16 bmp image after conversion
             var bmp = new Bitmap(16, 16);
             var yBmp = 0;
             foreach (var line in pixelsList)
