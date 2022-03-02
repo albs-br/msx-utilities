@@ -142,65 +142,99 @@ namespace MSXUtilities
             // solve the lines with 3 colors and or-color impossible
 
             // create list of all OR-color combinations possible
-            var allOrColor = new List<List<int>>();
-            for (int color1 = 1; color1 <= 15; color1++)
-            {
-                for (int color2 = 1; color2 <= 15; color2++)
-                {
-                    var orColor = color1 | color2;
-                    if (color1 != color2 && color1 != orColor && color2 != orColor)
-                    {
-                        allOrColor.Add(new List<int> { color1, color2, orColor });
-                    }
-                }
-            }
+            //var allOrColor = new List<List<int>>();
+            //for (int color1 = 1; color1 <= 15; color1++)
+            //{
+            //    for (int color2 = 1; color2 <= 15; color2++)
+            //    {
+            //        var orColor = color1 | color2;
+            //        if (color1 != color2 && color1 != orColor && color2 != orColor)
+            //        {
+            //            allOrColor.Add(new List<int> { color1, color2, orColor });
+            //        }
+            //    }
+            //}
 
             //foreach (var line in pixelsList)
             //{
             //    var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
             //    if (distinctColorsOnLine.Count() == 3)
             //    {
-            //        if (!
-            //               ((distinctColorsOnLine[0] | distinctColorsOnLine[1]) == distinctColorsOnLine[2])
-            //            || ((distinctColorsOnLine[0] | distinctColorsOnLine[2]) == distinctColorsOnLine[1])
-            //            || ((distinctColorsOnLine[1] | distinctColorsOnLine[2]) == distinctColorsOnLine[0])
-            //            )
+            //        if (!CheckIfOrColorIsPossible(distinctColorsOnLine))
             //        {
             //            // or-color impossible
 
             //            // try to change the first color and check if it makes or-color possible
-            //            var bestMatchValue = int.MaxValue;
-            //            var bestMatchColors = new List<int>();
-            //            foreach (var item in allOrColor)
+
+            //            // get most similar color
+            //            int colorToBeReplaced = 0; // 0-2 (distinctColorsOnLine)
+            //            int mostSimilarValue = int.MaxValue;
+            //            int mostSimilarIndex = -1;
+            //            for (int i = 1; i <= 15; i++)
             //            {
-            //                var color1 = distinctColorsOnLine[0];
-            //                var color2 = distinctColorsOnLine[1];
-            //                var orColor = distinctColorsOnLine[2];
-
-            //                var colorDistance = ColourDistance(color1, item[0]);
-
+            //                if (distinctColorsOnLine[colorToBeReplaced] != i)
+            //                {
+            //                    var colorDistance = ColourDistance(paletteRGB[distinctColorsOnLine[colorToBeReplaced]], paletteRGB[i]);
+            //                    if (colorDistance < mostSimilarValue)
+            //                    {
+            //                        colorDistance = mostSimilarValue;
+            //                        mostSimilarIndex = i;
+            //                    }
+            //                }
             //            }
+
+            //            // recalculate or-color
+            //            var orColorCombinations = new List<List<int>>();
+
+            //            IList<int> otherColors = new List<int>();
+            //            switch (colorToBeReplaced)
+            //            {
+            //                case 0:
+            //                    otherColors = new List<int> { 1, 2 };
+            //                    break;
+            //                case 1:
+            //                    otherColors = new List<int> { 0, 2 };
+            //                    break;
+            //                case 2:
+            //                    otherColors = new List<int> { 0, 1 };
+            //                    break;
+            //                default:
+            //                    break;
+            //            }
+
+            //            foreach (var item in otherColors)
+            //            {
+            //                var colors = new List<int> { mostSimilarIndex, distinctColorsOnLine[item], mostSimilarIndex | distinctColorsOnLine[item] };
+            //                if (CheckIfOrColorIsPossible(colors))
+            //                {
+            //                    orColorCombinations.Add(colors);
+            //                }
+            //            }
+
             //        }
             //    }
             //}
 
             // save 16x16 bmp image after conversion
-            var bmp = new Bitmap(16, 16);
-            var yBmp = 0;
-            foreach (var line in pixelsList)
+            if (sprite1_offsetX == 0 && sprite1_offsetY == 0) // TODO: fix it
             {
-                var xBmp = 0;
-                foreach (var pixel in line)
+                var bmp = new Bitmap(16, 16);
+                var yBmp = 0;
+                foreach (var line in pixelsList)
                 {
-                    var red = paletteRGB[pixel][0] * 36; // 36 = 255 / 7, to convert rgb level from 0-7 to 0-255
-                    var green = paletteRGB[pixel][1] * 36;
-                    var blue = paletteRGB[pixel][2] * 36;
-                    bmp.SetPixel(xBmp, yBmp, Color.FromArgb(red, green, blue));
-                    xBmp++;
+                    var xBmp = 0;
+                    foreach (var pixel in line)
+                    {
+                        var red = paletteRGB[pixel][0] * 36; // 36 = 255 / 7, to convert rgb level from 0-7 to 0-255
+                        var green = paletteRGB[pixel][1] * 36;
+                        var blue = paletteRGB[pixel][2] * 36;
+                        bmp.SetPixel(xBmp, yBmp, Color.FromArgb(red, green, blue));
+                        xBmp++;
+                    }
+                    yBmp++;
                 }
-                yBmp++;
+                bmp.Save("temp.bmp", ImageFormat.Bmp);
             }
-            bmp.Save("temp.bmp", ImageFormat.Bmp);
 
             var totalDistinctColors = pixelsList.SelectMany(x => x).Where(x => x != 0).Distinct();
             Console.WriteLine();
@@ -798,6 +832,13 @@ namespace MSXUtilities
                     index++;
                 }
             }
+        }
+
+        private static bool CheckIfOrColorIsPossible(IList<int> colors)
+        {
+            return ((colors[0] | colors[1]) == colors[2])
+                || ((colors[0] | colors[2]) == colors[1])
+                || ((colors[1] | colors[2]) == colors[0]);
         }
 
         private static void ReduceColorCountInLine(List<List<int>> paletteRGB, IList<int> line)
