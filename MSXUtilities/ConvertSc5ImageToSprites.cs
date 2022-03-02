@@ -142,18 +142,62 @@ namespace MSXUtilities
             // solve the lines with 3 colors and or-color impossible
 
             // create list of all OR-color combinations possible
-            //var allOrColor = new List<List<int>>();
-            //for (int color1 = 1; color1 <= 15; color1++)
-            //{
-            //    for (int color2 = 1; color2 <= 15; color2++)
-            //    {
-            //        var orColor = color1 | color2;
-            //        if (color1 != color2 && color1 != orColor && color2 != orColor)
-            //        {
-            //            allOrColor.Add(new List<int> { color1, color2, orColor });
-            //        }
-            //    }
-            //}
+            var allOrColor = new List<List<int>>();
+            for (int color1 = 1; color1 <= 15; color1++)
+            {
+                for (int color2 = 1; color2 <= 15; color2++)
+                {
+                    var orColor = color1 | color2;
+                    if (color1 != color2 && color1 != orColor && color2 != orColor)
+                    {
+                        allOrColor.Add(new List<int> { color1, color2, orColor });
+                    }
+                }
+            }
+
+            for (int i = 0; i < pixelsList.Count; i++)
+            {
+                var line = pixelsList[i];
+
+                var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
+                if (distinctColorsOnLine.Count() == 3)
+                {
+                    if (!CheckIfOrColorIsPossible(distinctColorsOnLine))
+                    {
+                        // compare this or-color combination with all possible or-color combinations
+                        // and get the combination with smallest distance from original
+                        double bestDistanceSum = double.MaxValue;
+                        var bestOrColorCombination = new List<int>();
+
+                        foreach (var orColorList in allOrColor)
+                        {
+                            double distanceSum = 0;
+                            for (int j = 0; j <= 2; j++)
+                            {
+                                distanceSum += ColourDistance(paletteRGB[distinctColorsOnLine[j]], paletteRGB[orColorList[j]]);
+                            }
+
+                            if (distanceSum < bestDistanceSum)
+                            {
+                                bestDistanceSum = distanceSum;
+                                bestOrColorCombination = orColorList;
+                            }
+                        }
+
+                        // replace pixels in line by the new colors
+                        for (int pixel = 0; pixel < line.Count; pixel++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (line[pixel] == distinctColorsOnLine[j])
+                                {
+                                    line[pixel] = bestOrColorCombination[j];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             //foreach (var line in pixelsList)
             //{
@@ -177,7 +221,7 @@ namespace MSXUtilities
             //                    var colorDistance = ColourDistance(paletteRGB[distinctColorsOnLine[colorToBeReplaced]], paletteRGB[i]);
             //                    if (colorDistance < mostSimilarValue)
             //                    {
-            //                        colorDistance = mostSimilarValue;
+            //                        mostSimilarValue = colorDistance;
             //                        mostSimilarIndex = i;
             //                    }
             //                }
