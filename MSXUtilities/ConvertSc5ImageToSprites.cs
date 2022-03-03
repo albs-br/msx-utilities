@@ -126,7 +126,8 @@ namespace MSXUtilities
                 foreach (var line in pixelsList)
                 {
                     var distinctColorsInLine = line.Where(x => x != 0).Distinct();
-                    while (distinctColorsInLine.Count() > 3)
+                    while (distinctColorsInLine.Count() > 2)
+                    //while (distinctColorsInLine.Count() > 3)
                     {
                         ReduceColorCountInLine(paletteRGB, line);
                         distinctColorsInLine = line.Where(x => x != 0).Distinct();
@@ -164,6 +165,9 @@ namespace MSXUtilities
                 {
                     if (!CheckIfOrColorIsPossible(distinctColorsOnLine))
                     {
+                        Console.WriteLine("-----------------------------");
+                        Console.WriteLine(String.Format("Searching best or-color combination for ({0}, {1}, {2})", distinctColorsOnLine[0], distinctColorsOnLine[1], distinctColorsOnLine[2]));
+
                         // compare this or-color combination with all possible or-color combinations
                         // and get the combination with smallest distance from original
                         double bestDistanceSum = double.MaxValue;
@@ -177,11 +181,14 @@ namespace MSXUtilities
                                 distanceSum += ColourDistance(paletteRGB[distinctColorsOnLine[j]], paletteRGB[orColorList[j]]);
                             }
 
-                            if (distanceSum < bestDistanceSum)
+                            Console.Write(String.Format("{0} ({1}, {2}, {3})", distanceSum, orColorList[0], orColorList[1], orColorList[2]));
+                            if (distanceSum <= bestDistanceSum)
                             {
                                 bestDistanceSum = distanceSum;
                                 bestOrColorCombination = orColorList;
+                                Console.Write(" (*)");
                             }
+                            Console.WriteLine();
                         }
 
                         // replace pixels in line by the new colors
