@@ -151,6 +151,7 @@ namespace MSXUtilities
                     var orColor = color1 | color2;
                     if (color1 != color2 && color1 != orColor && color2 != orColor)
                     {
+                        // add all possible combinations
                         allOrColor.Add(new List<int> { color1, color2, orColor });
                         allOrColor.Add(new List<int> { color1, orColor, color2 });
                         allOrColor.Add(new List<int> { color2, color1, orColor });
@@ -194,16 +195,16 @@ namespace MSXUtilities
                                 differentColorComponents += Math.Abs(color1[2] - color2[2]); // blue
                             }
 
-                            Console.Write(String.Format("distanceSum:{0}, differentColorComponents:{1} ({2}, {3}, {4})", 
-                                distanceSum, differentColorComponents, orColorList[0], orColorList[1], orColorList[2]));
+                            //Console.Write(String.Format("distanceSum:{0}, differentColorComponents:{1} ({2}, {3}, {4})", 
+                            //    distanceSum, differentColorComponents, orColorList[0], orColorList[1], orColorList[2]));
                             if ((distanceSum <= bestDistanceSum) && (differentColorComponents <= bestDifferentColorComponents))
                             {
                                 bestDistanceSum = distanceSum;
                                 bestOrColorCombination = orColorList;
                                 bestDifferentColorComponents = differentColorComponents;
-                                Console.Write(" (*)");
+                                //Console.Write(" (*)");
                             }
-                            Console.WriteLine();
+                            //Console.WriteLine();
                         }
 
                         // replace pixels in line by the new colors

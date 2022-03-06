@@ -122,34 +122,65 @@ namespace MSXUtilities
             //    "enemy_plane_5",
             //    false
             //    );
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    1, 65, 16, 16,
-            //    0, 0,
-            //    "player_plane_left_0_top",
-            //    false
-            //    );
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    1, 65 + 16, 16, 16,
-            //    0, 0,
-            //    "player_plane_left_0_bottom",
-            //    false
-            //    );
-            //ConvertSc5ImageToSprites.Execute(
-            //    fileName,
-            //    35, 65, 16, 16,
-            //    0, 0,
-            //    "player_plane_left_1_top",
-            //    false
-            //    );
+
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                35, 65 + 16, 16, 16,
+                1, 64, 16, 16,
+                0, 0,
+                "player_plane_left_0_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                1, 64 + 16, 16, 16,
+                0, 0,
+                "player_plane_left_0_bottom",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                35, 64, 16, 16,
+                0, 0,
+                "player_plane_left_1_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                35, 64 + 16, 16, 16,
                 0, 0,
                 "player_plane_left_1_bottom",
                 false
                 );
+
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                99, 64, 16, 16,
+                0, 0,
+                "player_plane_right_1_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                99, 64 + 16, 16, 16,
+                0, 0,
+                "player_plane_right_1_bottom",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                132, 64, 16, 16,
+                0, 0,
+                "player_plane_right_0_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                132, 64 + 16, 16, 16,
+                0, 0,
+                "player_plane_right_0_bottom",
+                false
+                );
+
 
 
             //var filename = @"Msxmas21\conveyor belt 1.txt";
