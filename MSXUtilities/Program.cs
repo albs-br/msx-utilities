@@ -51,14 +51,16 @@ namespace MSXUtilities
 
 
             //// Convert bmp image into 16kb chunks to be used as background scroll on MSX 2
-            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings ussr bg 304x990.png";
+            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\AeroFighters2-Stage1-Kyoto,Japan.png";
             ////var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
-            //var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8)
-            //SplitImageIn16KbChunks(image, heightSc8, "aerofighters-bg2");
+            //var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8/11)
+            //SplitImageIn16KbChunks(image, heightSc8, "level3");
+
+            //level3_0.sra.new
 
             // Remove 7 byte header from file and keep only 16kb
-            //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\aerofighters-bg2_{0}.sra";
-            //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
+            var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level3_{0}.sra";
+            RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
 
             var fileName = @"MsxWings\sprites - less colors.SC5";
             //ConvertSc5ImageToSprites.Execute(
@@ -123,63 +125,63 @@ namespace MSXUtilities
             //    false
             //    );
 
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                1, 64, 16, 16,
-                0, 0,
-                "player_plane_left_0_top",
-                false
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                1, 64 + 16, 16, 16,
-                0, 0,
-                "player_plane_left_0_bottom",
-                false
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                35, 64, 16, 16,
-                0, 0,
-                "player_plane_left_1_top",
-                false
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                35, 64 + 16, 16, 16,
-                0, 0,
-                "player_plane_left_1_bottom",
-                false
-                );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    1, 64, 16, 16,
+            //    0, 0,
+            //    "player_plane_left_0_top",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    1, 64 + 16, 16, 16,
+            //    0, 0,
+            //    "player_plane_left_0_bottom",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    35, 64, 16, 16,
+            //    0, 0,
+            //    "player_plane_left_1_top",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    35, 64 + 16, 16, 16,
+            //    0, 0,
+            //    "player_plane_left_1_bottom",
+            //    false
+            //    );
 
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                99, 64, 16, 16,
-                0, 0,
-                "player_plane_right_1_top",
-                false
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                99, 64 + 16, 16, 16,
-                0, 0,
-                "player_plane_right_1_bottom",
-                false
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                132, 64, 16, 16,
-                0, 0,
-                "player_plane_right_0_top",
-                false
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                132, 64 + 16, 16, 16,
-                0, 0,
-                "player_plane_right_0_bottom",
-                false
-                );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    99, 64, 16, 16,
+            //    0, 0,
+            //    "player_plane_right_1_top",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    99, 64 + 16, 16, 16,
+            //    0, 0,
+            //    "player_plane_right_1_bottom",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    132, 64, 16, 16,
+            //    0, 0,
+            //    "player_plane_right_0_top",
+            //    false
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    132, 64 + 16, 16, 16,
+            //    0, 0,
+            //    "player_plane_right_0_bottom",
+            //    false
+            //    );
 
 
 
@@ -240,7 +242,7 @@ namespace MSXUtilities
             for (int i = 0; i < 100; i++)
             {
                 var fileName = String.Format(baseFileName, i);
-                if (!File.Exists(fileName)) break;
+                if (!File.Exists(fileName)) throw new Exception("File " + fileName + " not found.");
 
                 using (var input = File.OpenRead(fileName))
                 using (var reader = new BinaryReader(input))
