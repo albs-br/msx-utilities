@@ -50,7 +50,7 @@ namespace MSXUtilities
 
 
 
-            //// Convert bmp image into 16kb chunks to be used as background scroll on MSX 2
+            //// Convert bmp image into smaller images that will later be 16kb chunks to be used as background scroll on MSX 2
             //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\AeroFighters2-Stage1-Kyoto,Japan.png";
             ////var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
             //var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8/11)
@@ -58,9 +58,16 @@ namespace MSXUtilities
 
             //level3_0.sra.new
 
-            // Remove 7 byte header from file and keep only 16kb
-            var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level3_{0}.sra";
-            RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
+            //// Remove 7 byte header from file and keep only 16kb
+            //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level3_{0}.sra";
+            //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
+
+            // Create .asm code for INCBIN the files
+            var text =
+                        "\torg	0x8000, 0xBFFF" + Environment.NewLine +
+                        "\tINCBIN \"Graphics/Bitmaps/Level_3/level3_{0}.sra.new\"" + Environment.NewLine +
+                        "\tds PAGE_SIZE - ($ - 0x8000), 255" + Environment.NewLine + Environment.NewLine;
+            var output = RepeatText(text, 30);
 
             var fileName = @"MsxWings\sprites - less colors.SC5";
             //ConvertSc5ImageToSprites.Execute(
@@ -202,6 +209,18 @@ namespace MSXUtilities
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
+
+        private static string RepeatText(string text, int max)
+        {
+            var output = "";
+            for (int i = 0; i <= max; i++)
+            {
+                output += String.Format(text, i);
+            }
+
+            return output;
+        }
+
 
         private static void ConvertTinySpriteBkpToSc5Format(string filename)
         {
