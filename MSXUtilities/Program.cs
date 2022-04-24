@@ -50,26 +50,28 @@ namespace MSXUtilities
 
 
 
-            //// Convert bmp image into smaller images that will later be 16kb chunks to be used as background scroll on MSX 2
-            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\AeroFighters2-Stage1-Kyoto,Japan.png";
+            ////Convert bmp image into smaller images that will later be 16kb chunks to be used as background scroll on MSX 2
+            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\AeroFighters2-Stage8-Tikal,Mexico.png";
             ////var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
             //var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8/11)
-            //SplitImageIn16KbChunks(image, heightSc8, "level3");
-
-            //level3_0.sra.new
+            //SplitImageIn16KbChunks(image, heightSc8, "level8");
 
             //// Remove 7 byte header from file and keep only 16kb
-            //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level3_{0}.sra";
+            //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level8_{0}.sra";
             //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
 
-            // Create .asm code for INCBIN the files
-            var text =
-                        "\torg	0x8000, 0xBFFF" + Environment.NewLine +
-                        "\tINCBIN \"Graphics/Bitmaps/Level_3/level3_{0}.sra.new\"" + Environment.NewLine +
-                        "\tds PAGE_SIZE - ($ - 0x8000), 255" + Environment.NewLine + Environment.NewLine;
-            var output = RepeatText(text, 30);
+            //// Create .asm code for INCBIN the files
+            //var levelNumber = "8";
+            //var lastPage = 23;
+            //var text =
+            //            "\torg	0x8000, 0xBFFF" + Environment.NewLine +
+            //            "\tINCBIN \"Graphics/Bitmaps/Level_" + levelNumber + "/level" + levelNumber + "_{0}.sra.new\"" + Environment.NewLine +
+            //            "\tds PAGE_SIZE - ($ - 0x8000), 255" + Environment.NewLine + Environment.NewLine;
+            //var output = RepeatText(text, lastPage);
 
-            var fileName = @"MsxWings\sprites - less colors.SC5";
+
+
+            //var fileName = @"MsxWings\sprites - less colors.SC5";
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    0, 0, 16, 16,
@@ -204,6 +206,8 @@ namespace MSXUtilities
             //filename = @"Msxmas21\window snow frame 4.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
 
+            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
+            ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
 
 
             Console.WriteLine("Done.");
