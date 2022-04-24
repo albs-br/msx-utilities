@@ -17,9 +17,20 @@ namespace MSXUtilities
             {
                 int xStart = 10, yStart = 342;
 
-                bmpDestiny = bmpSource.Clone(new Rectangle(xStart, yStart, 16, 16), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                //bmpDestiny = bmpSource.Clone(new Rectangle(xStart, yStart, 16, 16), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
                 var outputFilename = "temp.bmp";
+                //int xDest = 0, yDest = 0;
+
+                for (int x = 0; x < 16; x++)
+                {
+                    for (int y = 0; y < 16; y++)
+                    {
+                        var pixel = bmpSource.GetPixel((x * 4) + xStart, (y * 4) + yStart);
+
+                        bmpDestiny.SetPixel(x, y, pixel);
+                    }
+                }
 
                 bmpDestiny.Save(outputFilename, ImageFormat.Bmp);
             }
