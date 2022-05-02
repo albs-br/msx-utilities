@@ -206,12 +206,61 @@ namespace MSXUtilities
             //filename = @"Msxmas21\window snow frame 4.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);
 
-            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
-            ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
+
+
+            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
+            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
+
+
+            var spritePattern =
+                "$03,$5B,$AE,$7F,$FF,$6F,$FF,$BF," +
+                "$7F,$BF,$FF,$77,$BF,$77,$09,$56," +
+                "$5C,$FD,$F6,$FF,$DE,$FF,$FB,$FE," +
+                "$FF,$FF,$F6,$FF,$BA,$FE,$D4,$A0,";
+            ConvertTinySpriteToSc11CustomFormat(spritePattern);
+
 
 
             Console.WriteLine("Done.");
             Console.ReadLine();
+        }
+
+        private static void ConvertTinySpriteToSc11CustomFormat(string input)
+        {
+            const string PIXEL_COLOR = "6"; // "1";
+            var bytes = input.Split(',');
+            IList<string> output = new List<string>();
+            for (int i = 0; i < 16; i++)
+            {
+                var tempHex = bytes[i].Replace("$", "");
+                var binaryString = Convert.ToString(Convert.ToInt32(tempHex, 16), 2).PadLeft(8, '0');
+                for (int j = 0; j < 8; j++)
+                {
+                    if (binaryString.Substring(j, 1) == "0")
+                    {
+                        output.Add("0");
+                    }
+                    else
+                    {
+                        output.Add("0x" + PIXEL_COLOR + "8");
+                    }
+                }
+                tempHex = bytes[i + 16].Replace("$", "");
+                binaryString = Convert.ToString(Convert.ToInt32(tempHex, 16), 2).PadLeft(8, '0');
+                for (int j = 0; j < 8; j++)
+                {
+                    if (binaryString.Substring(j, 1) == "0")
+                    {
+                        output.Add("0");
+                    }
+                    else
+                    {
+                        output.Add("0x" + PIXEL_COLOR + "8");
+                    }
+                }
+            }
+            
+            Console.WriteLine("\tdb\t" + String.Join(", ", output));
         }
 
         private static string RepeatText(string text, int max)
