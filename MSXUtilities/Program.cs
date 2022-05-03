@@ -208,16 +208,20 @@ namespace MSXUtilities
 
 
 
-            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
+            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
+            ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
 
 
-            var spritePattern =
-                "$03,$5B,$AE,$7F,$FF,$6F,$FF,$BF," +
-                "$7F,$BF,$FF,$77,$BF,$77,$09,$56," +
-                "$5C,$FD,$F6,$FF,$DE,$FF,$FB,$FE," +
-                "$FF,$FF,$F6,$FF,$BA,$FE,$D4,$A0,";
-            ConvertTinySpriteToSc11CustomFormat(spritePattern);
+            //var spritePattern =
+            //    //"$03,$5B,$AE,$7F,$FF,$6F,$FF,$BF," +
+            //    //"$7F,$BF,$FF,$77,$BF,$77,$09,$56," +
+            //    //"$5C,$FD,$F6,$FF,$DE,$FF,$FB,$FE," +
+            //    //"$FF,$FF,$F6,$FF,$BA,$FE,$D4,$A0,";
+            //    "$03,$0A,$2E,$3F,$5F,$6F,$FF,$BF," +
+            //    "$7F,$BF,$FF,$37,$9F,$57,$09,$14," +
+            //    "$54,$F8,$F4,$FA,$DC,$FE,$FB,$FE," +
+            //    "$FF,$FE,$F6,$FC,$B2,$E8,$D0,$A0,";
+            //ConvertTinySpriteToSc11CustomFormat(spritePattern);
 
 
 
