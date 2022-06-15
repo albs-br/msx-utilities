@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="GoPenguin\Bkps from TinySprite\Tiles - Penguin - Enemies.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Msxmas21\bricks.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

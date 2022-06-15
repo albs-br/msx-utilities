@@ -208,8 +208,8 @@ namespace MSXUtilities
 
 
 
-            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
-            ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
+            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
+            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
 
 
             //var spritePattern =
@@ -225,8 +225,46 @@ namespace MSXUtilities
 
 
 
+
+            //Go Penguin
+            // Convert tiny sprite bkp data to tiles (4x4 pixel)
+            var filename = @"GoPenguin\Bkps from TinySprite\Tiles - Penguin - Enemies.txt";
+            ConvertTinySpriteBkpToTiles_4x4(filename, 3);
+
+
             Console.WriteLine("Done.");
             Console.ReadLine();
+        }
+
+        private static void ConvertTinySpriteBkpToTiles_4x4(string filename, int startLine)
+        {
+            List<string> output = new List<string>();
+
+            string[] lines = File.ReadAllLines(filename);
+
+            int counter = 0;
+            foreach (string line in lines)
+            {
+                if (counter >= startLine)
+                {
+                    for (int i = 0; i < 16; i+=2)
+                    {
+                        var frontColor = line[i];
+                        var backColor = line[i+1];
+
+                        output.Add(", " + frontColor + backColor);
+                    }
+                }
+
+                counter++;
+            }
+
+            File.WriteAllLines("colors.s", output);
+
+            //using (var streamReader = File.OpenText(filename))
+            //{
+
+                //}
         }
 
         private static void ConvertTinySpriteToSc11CustomFormat(string input)
