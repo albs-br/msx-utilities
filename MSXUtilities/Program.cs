@@ -240,23 +240,56 @@ namespace MSXUtilities
         {
             List<string> output = new List<string>();
 
-            string[] lines = File.ReadAllLines(filename);
+            string[] fileLines = File.ReadAllLines(filename);
 
+            IList<string> lines = new List<string>();
+
+            // get the sprite pattern required
             int counter = 0;
-            foreach (string line in lines)
+            const string COLOR_TO_REPLACE_TRANPARENT = "1";
+            foreach (string line in fileLines)
             {
-                if (counter >= startLine)
+                if (counter >= startLine && counter < (startLine+16))
                 {
-                    for (int i = 0; i < 16; i+=2)
-                    {
-                        var frontColor = line[i];
-                        var backColor = line[i+1];
-
-                        output.Add(", " + frontColor + backColor);
-                    }
+                    lines.Add(line.Replace(".", COLOR_TO_REPLACE_TRANPARENT));
                 }
 
                 counter++;
+            }
+
+            if (lines.Count != 16) throw new ArgumentException("Sprite should have 16 lines.");
+
+            counter = 0;
+            for (int lineNumber = 0; lineNumber < 16; lineNumber += 2)
+            {
+                for (int i = 0; i < 16; i += 2)
+                {
+                    output.Add("; --------- colors for pattern #" + (counter + 1));
+
+                    var frontColorUp = lines[lineNumber][i];
+                    var backColorUp = lines[lineNumber][i + 1];
+
+                    // 4x
+                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+
+
+                    var frontColorDown = lines[lineNumber + 1][i];
+                    var backColorDown = lines[lineNumber + 1][i + 1];
+
+                    // 4x
+                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+
+
+                    output.Add(""); // empty line
+
+                    counter++;
+                }
             }
 
             File.WriteAllLines("colors.s", output);
