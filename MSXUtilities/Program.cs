@@ -230,7 +230,10 @@ namespace MSXUtilities
             //Go Penguin
             // Convert tiny sprite bkp data to tiles (4x4 pixel)
             var filename = @"GoPenguin\Bkps from TinySprite\Tiles - Penguin - Enemies.txt";
-            ConvertTinySpriteBkpToTiles_4x4(filename, 3);
+            const int SPRITE_ON_SLOT_0 = 3;
+            const int SPRITE_ON_SLOT_1 = 20;
+            //ConvertTinySpriteBkpToTiles_4x4(filename, SPRITE_ON_SLOT_1);
+            ConvertTinySpriteBkpToTiles_8x8(filename, SPRITE_ON_SLOT_1);
 
 
             Console.WriteLine("Done.");
@@ -319,6 +322,92 @@ namespace MSXUtilities
             // ------------- Names table
             var namesTable = new StringBuilder("\tdb\t");
             const int NUMBER_OF_TILES = 8 * 8;
+            for (int i = 1; i <= NUMBER_OF_TILES; i++)
+            {
+                if(i > 1) namesTable.Append(", ");
+
+                namesTable.Append(i);
+            }
+            File.WriteAllText("names_table.s", namesTable.ToString());
+        }
+        
+        private static void ConvertTinySpriteBkpToTiles_8x8(string filename, int startLine)
+        {
+            List<string> patternTable = new List<string>();
+            List<string> colorTable = new List<string>();
+
+            string[] fileLines = File.ReadAllLines(filename);
+
+            IList<string> lines = new List<string>();
+
+            // get the sprite pattern required
+            int counter = 0;
+            const string COLOR_TO_REPLACE_TRANPARENT = "1";
+            foreach (string line in fileLines)
+            {
+                if (counter >= startLine && counter < (startLine+16))
+                {
+                    lines.Add(line.Replace(".", COLOR_TO_REPLACE_TRANPARENT));
+                }
+
+                counter++;
+            }
+
+            if (lines.Count != 16) throw new ArgumentException("Sprite should have 16 lines.");
+
+            // Create the 15 patterns required (one full 8x8 square for each color
+
+            counter = 0;
+            for (int lineNumber = 0; lineNumber < 16; lineNumber++)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    colorTable.Add("; --------- colors for pattern #" + (counter + 1));
+
+                    var frontColor = lines[lineNumber][i];
+
+                    // 8x
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+                    colorTable.Add("\tdb\t 0x" + frontColor);
+
+                    colorTable.Add(""); // empty line
+
+
+
+                    patternTable.Add("; --------- pattern #" + (counter + 1));
+
+                    // 8x
+                    patternTable.Add("\tdb\t 1111 1111 b");
+                    patternTable.Add("\tdb\t 1111 1111 b");
+                    patternTable.Add("\tdb\t 1111 1111 b");
+                    patternTable.Add("\tdb\t 1111 1111 b");
+                    patternTable.Add("\tdb\t 1111 1111 b");
+                    patternTable.Add("\tdb\t 1111 1111 b");
+                    patternTable.Add("\tdb\t 1111 1111 b");
+                    patternTable.Add("\tdb\t 1111 1111 b");
+
+                    patternTable.Add(""); // empty line
+
+                    counter++;
+                }
+            }
+
+            // TODO: remove duplicates
+
+            File.WriteAllLines("color_table.s", colorTable);
+
+            File.WriteAllLines("pattern_table.s", patternTable);
+
+
+            // ------------- Names table
+            var namesTable = new StringBuilder("\tdb\t");
+            const int NUMBER_OF_TILES = 16 * 16;
             for (int i = 1; i <= NUMBER_OF_TILES; i++)
             {
                 if(i > 1) namesTable.Append(", ");
