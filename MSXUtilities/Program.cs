@@ -233,7 +233,8 @@ namespace MSXUtilities
             //const int SPRITE_ON_SLOT_0 = 3;
             const int SPRITE_ON_SLOT_1 = 20;
             //ConvertTinySpriteBkpToTiles_4x4(filename, SPRITE_ON_SLOT_1);
-            ConvertTinySpriteBkpToTiles_8x8(filename, SPRITE_ON_SLOT_1);
+            //ConvertTinySpriteBkpToTiles_8x8(filename, SPRITE_ON_SLOT_1);
+            ConvertTinySpriteBkpToTiles_16x16(filename, SPRITE_ON_SLOT_1);
 
 
             Console.WriteLine("Done.");
@@ -337,7 +338,63 @@ namespace MSXUtilities
         {
             IList<string> lines = GetSpriteLines(filename, startLine);
 
+            Create_15_Tiles_Square_Filled();
 
+            // ------------- Names table
+            var namesTable = new StringBuilder("\tdb\t");
+            int counter = 0;
+            for (int lineNumber = 0; lineNumber < 16; lineNumber++)
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    if (counter > 0) namesTable.Append(", ");
+
+                    string hexValue = lines[lineNumber][i].ToString();
+                    namesTable.Append(int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber));
+
+                    counter++;
+                }
+            }
+            File.WriteAllText("names_table.s", namesTable.ToString());
+        }
+
+        private static void ConvertTinySpriteBkpToTiles_16x16(string filename, int startLine)
+        {
+            IList<string> lines = GetSpriteLines(filename, startLine);
+
+            Create_15_Tiles_Square_Filled();
+
+            // ------------- Names table
+            var namesTable = new StringBuilder("\tdb\t");
+            int counter = 0;
+            for (int lineNumber = 2; lineNumber < 14; lineNumber++) // only the 12 central lines of the sprite will be used (lines 2 to 13)
+            {
+                IList<string> tempLine = new List<string>();
+
+                if (counter > 0) namesTable.Append(", ");
+
+                // loop through line
+                for (int i = 0; i < 16; i++)
+                {
+                    string hexValue = lines[lineNumber][i].ToString();
+
+                    // x2
+                    tempLine.Add(" " + int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber).ToString());
+                    tempLine.Add(" " + int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber).ToString());
+
+                    counter++;
+                }
+
+                // x2
+                var tempLineConcat = tempLine.Concat(tempLine);
+
+                namesTable.Append(String.Join(",", tempLineConcat.ToArray()));
+            }
+            File.WriteAllText("names_table.s", namesTable.ToString());
+        }
+
+        private static void Create_15_Tiles_Square_Filled()
+        {
             // Create the 15 patterns required (one full 8x8 square for each color)
             List<string> patternTable = new List<string>();
             List<string> colorTable = new List<string>();
@@ -360,24 +417,6 @@ namespace MSXUtilities
             }
             File.WriteAllLines("pattern_table.s", patternTable);
             File.WriteAllLines("color_table.s", colorTable);
-
-
-            // ------------- Names table
-            var namesTable = new StringBuilder("\tdb\t");
-            int counter = 0;
-            for (int lineNumber = 0; lineNumber < 16; lineNumber++)
-            {
-                for (int i = 0; i < 16; i++)
-                {
-                    if (counter > 0) namesTable.Append(", ");
-
-                    string hexValue = lines[lineNumber][i].ToString();
-                    namesTable.Append(int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber));
-
-                    counter++;
-                }
-            }
-            File.WriteAllText("names_table.s", namesTable.ToString());
         }
 
         private static IList<string> GetSpriteLines(string filename, int startLine)
