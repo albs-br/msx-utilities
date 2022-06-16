@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace MSXUtilities
 {
@@ -238,7 +239,8 @@ namespace MSXUtilities
 
         private static void ConvertTinySpriteBkpToTiles_4x4(string filename, int startLine)
         {
-            List<string> output = new List<string>();
+            List<string> patternTable = new List<string>();
+            List<string> colorTable = new List<string>();
 
             string[] fileLines = File.ReadAllLines(filename);
 
@@ -264,40 +266,66 @@ namespace MSXUtilities
             {
                 for (int i = 0; i < 16; i += 2)
                 {
-                    output.Add("; --------- colors for pattern #" + (counter + 1));
+                    colorTable.Add("; --------- colors for pattern #" + (counter + 1));
 
                     var frontColorUp = lines[lineNumber][i];
                     var backColorUp = lines[lineNumber][i + 1];
 
                     // 4x
-                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
-                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
-                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
-                    output.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+                    colorTable.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+                    colorTable.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+                    colorTable.Add("\tdb\t 0x" + frontColorUp + backColorUp);
+                    colorTable.Add("\tdb\t 0x" + frontColorUp + backColorUp);
 
 
                     var frontColorDown = lines[lineNumber + 1][i];
                     var backColorDown = lines[lineNumber + 1][i + 1];
 
                     // 4x
-                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
-                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
-                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
-                    output.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+                    colorTable.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+                    colorTable.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+                    colorTable.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+                    colorTable.Add("\tdb\t 0x" + frontColorDown + backColorDown);
+
+                    colorTable.Add(""); // empty line
 
 
-                    output.Add(""); // empty line
+
+                    patternTable.Add("; --------- pattern #" + (counter + 1));
+
+                    // 8x
+                    patternTable.Add("\tdb\t 1111 0000 b");
+                    patternTable.Add("\tdb\t 1111 0000 b");
+                    patternTable.Add("\tdb\t 1111 0000 b");
+                    patternTable.Add("\tdb\t 1111 0000 b");
+                    patternTable.Add("\tdb\t 1111 0000 b");
+                    patternTable.Add("\tdb\t 1111 0000 b");
+                    patternTable.Add("\tdb\t 1111 0000 b");
+                    patternTable.Add("\tdb\t 1111 0000 b");
+
+                    patternTable.Add(""); // empty line
 
                     counter++;
                 }
             }
 
-            File.WriteAllLines("colors.s", output);
+            // TODO: remove duplicates
 
-            //using (var streamReader = File.OpenText(filename))
-            //{
+            File.WriteAllLines("color_table.s", colorTable);
 
-                //}
+            File.WriteAllLines("pattern_table.s", patternTable);
+
+
+            // ------------- Names table
+            var namesTable = new StringBuilder("\tdb\t");
+            const int NUMBER_OF_TILES = 8 * 8;
+            for (int i = 1; i <= NUMBER_OF_TILES; i++)
+            {
+                if(i > 1) namesTable.Append(", ");
+
+                namesTable.Append(i);
+            }
+            File.WriteAllText("names_table.s", namesTable.ToString());
         }
 
         private static void ConvertTinySpriteToSc11CustomFormat(string input)
