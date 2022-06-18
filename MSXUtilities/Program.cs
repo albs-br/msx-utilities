@@ -234,7 +234,8 @@ namespace MSXUtilities
             const int SPRITE_ON_SLOT_1 = 20;
             //ConvertTinySpriteBkpToTiles_4x4(filename, SPRITE_ON_SLOT_1);
             //ConvertTinySpriteBkpToTiles_8x8(filename, SPRITE_ON_SLOT_1);
-            ConvertTinySpriteBkpToTiles_16x16(filename, SPRITE_ON_SLOT_1);
+            //ConvertTinySpriteBkpToTiles_16x16(filename, SPRITE_ON_SLOT_1);
+            ConvertTinySpriteBkpToTiles_32x32(filename, SPRITE_ON_SLOT_1);
 
 
             Console.WriteLine("Done.");
@@ -387,6 +388,47 @@ namespace MSXUtilities
 
                 // x2
                 var tempLineConcat = tempLine.Concat(tempLine);
+
+                namesTable.Append(String.Join(",", tempLineConcat.ToArray()));
+            }
+            File.WriteAllText("names_table.s", namesTable.ToString());
+        }
+
+        private static void ConvertTinySpriteBkpToTiles_32x32(string filename, int startLine)
+        {
+            IList<string> lines = GetSpriteLines(filename, startLine);
+
+            Create_15_Tiles_Square_Filled();
+
+            // ------------- Names table
+            var namesTable = new StringBuilder("\tdb\t");
+            int counter = 0;
+            for (int lineNumber = 5; lineNumber < 11; lineNumber++) // only the 6 central lines of the sprite will be used (lines 5 to 10)
+            {
+                IList<string> tempLine = new List<string>();
+
+                if (counter > 0) namesTable.Append(", ");
+
+                // loop through line
+                for (int i = 4; i < 12; i++) // only the 8 central columns of the sprite will be used (columns 4 to 11)
+                {
+                    string hexValue = lines[lineNumber][i].ToString();
+
+                    // x4
+                    tempLine.Add(" " + int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber).ToString());
+                    tempLine.Add(" " + int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber).ToString());
+                    tempLine.Add(" " + int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber).ToString());
+                    tempLine.Add(" " + int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber).ToString());
+
+                    counter++;
+                }
+
+                // x4
+                var tempLineConcat = tempLine.Concat(tempLine);
+                tempLineConcat = tempLineConcat.Concat(tempLine);
+                tempLineConcat = tempLineConcat.Concat(tempLine);
+
+                //if (tempLineConcat.Count() != 768) throw new Exception("Names table should have 768 values.");
 
                 namesTable.Append(String.Join(",", tempLineConcat.ToArray()));
             }
