@@ -14,7 +14,8 @@ namespace MSXUtilities
             Console.WriteLine("Converting NeoGeo sprites to MSX 2 sprites");
 
             int xStart = 10, yStart = 342;
-            var fontsFile = new StringBuilder();
+            var patternsFile = new StringBuilder();
+            var colorsFile = new StringBuilder();
 
             using (Bitmap bmpSource = new Bitmap(fileName))
             {
@@ -25,7 +26,7 @@ namespace MSXUtilities
 
                     var bmpDestiny = new Bitmap(16, 16);
 
-                    fontsFile.AppendLine(";------------------------- char #" + i + " -------------------------");
+                    patternsFile.AppendLine(";------------------------- char #" + i + " -------------------------");
 
                     //bmpDestiny = bmpSource.Clone(new Rectangle(xStart, yStart, 16, 16), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
@@ -48,15 +49,8 @@ namespace MSXUtilities
                     // convert from 16x16 bmp to MSX2 sprite format
                     var tempPattern_0 = new StringBuilder();
                     var tempPattern_1 = new StringBuilder();
-                    var color_0 = new StringBuilder("; ------ color 0" + Environment.NewLine);
-                    var color_1 = new StringBuilder("; ------ color 1" + Environment.NewLine);
                     for (int y = 0; y < 16; y++)
                     {
-                        color_0.AppendLine("\tdb\t" + "0x01"); // TODO: use correct colors
-                        color_1.AppendLine("\tdb\t" + "0x02");
-
-                        //tempPattern_0.Append("\tdb\t");
-                        //tempPattern_1.Append("\tdb\t");
                         for (int x = 0; x < 16; x++)
                         {
                             var pixel = bmpDestiny.GetPixel(x, y);
@@ -115,12 +109,24 @@ namespace MSXUtilities
                         }
                     }
 
-                    fontsFile.AppendLine(pattern_0.ToString() + pattern_1.ToString() + color_0.ToString() + color_1.ToString());
+                    patternsFile.AppendLine(pattern_0.ToString() + pattern_1.ToString());
                 }
             }
 
-            // save text file with patterns and colors
-            File.WriteAllText("fonts.s", fontsFile.ToString());
+            var color_0 = new StringBuilder("; ------ color 0" + Environment.NewLine);
+            var color_1 = new StringBuilder("; ------ color 1" + Environment.NewLine);
+            for (int y = 0; y < 16; y++)
+            {
+                color_0.AppendLine("\tdb\t" + "0x08");
+                color_1.AppendLine("\tdb\t" + "0x03");
+            }
+            colorsFile.AppendLine(color_0.ToString() + color_1.ToString());
+
+            // save text file with patterns
+            File.WriteAllText("patterns.s", patternsFile.ToString());
+
+            // save text file with colors
+            File.WriteAllText("colors.s", colorsFile.ToString());
         }
     }
 }

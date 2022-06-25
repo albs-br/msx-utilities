@@ -209,8 +209,8 @@ namespace MSXUtilities
 
 
 
-            //var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
+            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
+            ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
 
 
             //var spritePattern =
@@ -227,15 +227,15 @@ namespace MSXUtilities
 
 
 
-            //Go Penguin
-            // Convert tiny sprite bkp data to tiles (4x4 pixel)
-            var filename = @"GoPenguin\Bkps from TinySprite\Tiles - Penguin - Enemies.txt";
-            //const int SPRITE_ON_SLOT_0 = 3;
-            const int SPRITE_ON_SLOT_1 = 20;
-            //ConvertTinySpriteBkpToTiles_4x4(filename, SPRITE_ON_SLOT_1);
-            //ConvertTinySpriteBkpToTiles_8x8(filename, SPRITE_ON_SLOT_1);
-            //ConvertTinySpriteBkpToTiles_16x16(filename, SPRITE_ON_SLOT_1);
-            ConvertTinySpriteBkpToTiles_32x32(filename, SPRITE_ON_SLOT_1);
+            // // ---- Go Penguin
+            //// Convert tiny sprite bkp data to tiles (4x4 pixel)
+            //var filename = @"GoPenguin\Bkps from TinySprite\Tiles - Penguin - Enemies.txt";
+            ////const int SPRITE_ON_SLOT_0 = 3;
+            //const int SPRITE_ON_SLOT_1 = 20;
+            ////ConvertTinySpriteBkpToTiles_4x4(filename, SPRITE_ON_SLOT_1);
+            ////ConvertTinySpriteBkpToTiles_8x8(filename, SPRITE_ON_SLOT_1);
+            ////ConvertTinySpriteBkpToTiles_16x16(filename, SPRITE_ON_SLOT_1);
+            //ConvertTinySpriteBkpToTiles_32x32(filename, SPRITE_ON_SLOT_1);
 
 
             Console.WriteLine("Done.");
