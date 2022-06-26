@@ -9,24 +9,23 @@ namespace MSXUtilities
 {
     public static class ConvertNeoGeoSpritesToMsx2Sprites
     {
-        public static void DoConversion(string fileName)
+        public static void DoConversion(string fileName, int xStart, int yStart, int numberOfChars, int startCharNumber)
         {
             Console.WriteLine("Converting NeoGeo sprites to MSX 2 sprites");
 
-            int xStart = 10, yStart = 342;
             var patternsFile = new StringBuilder();
             var colorsFile = new StringBuilder();
 
             using (Bitmap bmpSource = new Bitmap(fileName))
             {
-                for (int i = 0; i <= 22; i++)
+                for (int i = 0; i < numberOfChars; i++)
                 {
                     var xOrigin = xStart + (i * 80);
                     var yOrigin = yStart;
 
                     var bmpDestiny = new Bitmap(16, 16);
 
-                    patternsFile.AppendLine(";------------------------- char #" + i + " -------------------------");
+                    patternsFile.AppendLine(";------------------------- char #" + (i + startCharNumber).ToString() + " -------------------------");
 
                     //bmpDestiny = bmpSource.Clone(new Rectangle(xStart, yStart, 16, 16), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 

@@ -100,6 +100,12 @@
     <None Update="Msxmas21\window 1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="MsxWings\MsxWings BMP2MSX settings.B2M">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MsxWings\sonic wings font neo geo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="MsxWings\sprites - less colors.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

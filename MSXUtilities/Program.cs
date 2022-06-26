@@ -209,8 +209,18 @@ namespace MSXUtilities
 
 
 
-            var fileName = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\sonic wings font neo geo.png";
-            ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName);
+            var fileName = @"MsxWings\sonic wings font neo geo.png";
+
+            //int xStart = 10, yStart = 342;
+            //int numberOfChars = 23;
+            //int startCharNumber = 0;
+            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
+
+            int xStart = 10, yStart = 426;
+            int numberOfChars = 12;
+            int startCharNumber = 23;
+            ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
+
 
 
             //var spritePattern =
