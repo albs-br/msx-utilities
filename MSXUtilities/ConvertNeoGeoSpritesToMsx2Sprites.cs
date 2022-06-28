@@ -9,7 +9,8 @@ namespace MSXUtilities
 {
     public static class ConvertNeoGeoSpritesToMsx2Sprites
     {
-        private const string OUTPUT_PATTERN_FILE = "patterns.s";
+        private const string OUTPUT_PATTERNS_FILE = "patterns.s";
+        private const string OUTPUT_COLORS_FILE = "colors.s";
 
         public struct ConversionParams
         {
@@ -23,22 +24,23 @@ namespace MSXUtilities
             Console.WriteLine("Batch converting NeoGeo sprites to MSX 2 sprites:");
 
             // delete output file, if exists
-            if (File.Exists(OUTPUT_PATTERN_FILE)) File.Delete(OUTPUT_PATTERN_FILE);
+            if (File.Exists(OUTPUT_PATTERNS_FILE)) File.Delete(OUTPUT_PATTERNS_FILE);
 
             int startCharNumber = 0;
             foreach (var item in list)
             {
-                DoConversion(inputFileName, item.xStart, item.yStart, item.numberOfChars, startCharNumber);
+                CreatePatternsFile(inputFileName, item.xStart, item.yStart, item.numberOfChars, startCharNumber);
                 startCharNumber += item.numberOfChars;
             }
+
+            CreateColorsFile();
         }
 
-        public static void DoConversion(string inputFileName, int xStart, int yStart, int numberOfChars, int startCharNumber)
+        public static void CreatePatternsFile(string inputFileName, int xStart, int yStart, int numberOfChars, int startCharNumber)
         {
             Console.WriteLine(String.Format("---Converting NeoGeo sprites to MSX 2 sprites: {2} chars, starting from ({0}, {1})", xStart, yStart, numberOfChars));
 
             var patternsFile = new StringBuilder();
-            var colorsFile = new StringBuilder();
 
             using (Bitmap bmpSource = new Bitmap(inputFileName))
             {
@@ -136,6 +138,14 @@ namespace MSXUtilities
                 }
             }
 
+            // save text file with patterns (append if already exists)
+            File.AppendAllText(OUTPUT_PATTERNS_FILE, patternsFile.ToString());
+        }
+
+        private static void CreateColorsFile()
+        {
+            var colorsFile = new StringBuilder();
+
             var color_0 = new StringBuilder("; ------ color 0" + Environment.NewLine);
             var color_1 = new StringBuilder("; ------ color 1" + Environment.NewLine);
             for (int y = 0; y < 16; y++)
@@ -145,11 +155,8 @@ namespace MSXUtilities
             }
             colorsFile.AppendLine(color_0.ToString() + color_1.ToString());
 
-            // save text file with patterns (append if already exists)
-            File.AppendAllText("patterns.s", patternsFile.ToString());
-
             // save text file with colors
-            File.WriteAllText("colors.s", colorsFile.ToString());
+            File.WriteAllText(OUTPUT_COLORS_FILE, colorsFile.ToString());
         }
     }
 }

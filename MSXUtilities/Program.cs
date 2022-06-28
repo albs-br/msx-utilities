@@ -210,72 +210,61 @@ namespace MSXUtilities
 
 
             var fileName = @"MsxWings\sonic wings font neo geo.png";
-
-            // 8x8 font
             IList<ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams> list = new List<ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams>();
-            list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams 
+
+            //// 8x8 font
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams 
+            //{
+            //    xStart = 410,
+            //    yStart = 90,
+            //    numberOfChars = 18
+            //});
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 174,
+            //    numberOfChars = 23
+            //});
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 258,
+            //    numberOfChars = 23
+            //});
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 342,
+            //    numberOfChars = 23
+            //});
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 426,
+            //    numberOfChars = 12
+            //});
+            //ConvertNeoGeoSpritesToMsx2Sprites.BatchConversion(fileName, list);
+
+            // 8x16 font
+            list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
             {
-                xStart = 410,
-                yStart = 90,
-                numberOfChars = 18
+                xStart = 1770,
+                yStart = 510,
+                numberOfChars = 1
             });
             list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
             {
                 xStart = 10,
-                yStart = 174,
+                yStart = 594,
                 numberOfChars = 23
             });
             list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
             {
                 xStart = 10,
-                yStart = 258,
+                yStart = 678,
                 numberOfChars = 23
-            });
-            list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
-            {
-                xStart = 10,
-                yStart = 342,
-                numberOfChars = 23
-            });
-            list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
-            {
-                xStart = 10,
-                yStart = 426,
-                numberOfChars = 12
             });
             ConvertNeoGeoSpritesToMsx2Sprites.BatchConversion(fileName, list);
-
-            //int xStart = 410, yStart = 90;
-            //int numberOfChars = 18;
-            //int startCharNumber = 0;
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
-
-            //int xStart = 10, yStart = 174;
-            //int numberOfChars = 23;
-            //int startCharNumber = 18;
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
-
-            //int xStart = 10, yStart = 258;
-            //int numberOfChars = 23;
-            //int startCharNumber = 41;
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
-
-            //int xStart = 10, yStart = 342;
-            //int numberOfChars = 23;
-            //int startCharNumber = 64;
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
-
-            //int xStart = 10, yStart = 426;
-            //int numberOfChars = 12;
-            //int startCharNumber = 87;
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
-
-
-            // 16x16 font
-            //int xStart = 1770, yStart = 510;
-            //int numberOfChars = 1;
-            //int startCharNumber = 0;
-            //ConvertNeoGeoSpritesToMsx2Sprites.DoConversion(fileName, xStart, yStart, numberOfChars, startCharNumber);
 
 
 
