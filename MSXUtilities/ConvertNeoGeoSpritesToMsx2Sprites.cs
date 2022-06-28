@@ -9,14 +9,38 @@ namespace MSXUtilities
 {
     public static class ConvertNeoGeoSpritesToMsx2Sprites
     {
-        public static void DoConversion(string fileName, int xStart, int yStart, int numberOfChars, int startCharNumber)
+        private const string OUTPUT_PATTERN_FILE = "patterns.s";
+
+        public struct ConversionParams
         {
-            Console.WriteLine("Converting NeoGeo sprites to MSX 2 sprites");
+            public int xStart;
+            public int yStart;
+            public int numberOfChars; 
+        }
+
+        public static void BatchConversion(string inputFileName, IList<ConversionParams> list)
+        {
+            Console.WriteLine("Batch converting NeoGeo sprites to MSX 2 sprites:");
+
+            // delete output file, if exists
+            if (File.Exists(OUTPUT_PATTERN_FILE)) File.Delete(OUTPUT_PATTERN_FILE);
+
+            int startCharNumber = 0;
+            foreach (var item in list)
+            {
+                DoConversion(inputFileName, item.xStart, item.yStart, item.numberOfChars, startCharNumber);
+                startCharNumber += item.numberOfChars;
+            }
+        }
+
+        public static void DoConversion(string inputFileName, int xStart, int yStart, int numberOfChars, int startCharNumber)
+        {
+            Console.WriteLine(String.Format("---Converting NeoGeo sprites to MSX 2 sprites: {2} chars, starting from ({0}, {1})", xStart, yStart, numberOfChars));
 
             var patternsFile = new StringBuilder();
             var colorsFile = new StringBuilder();
 
-            using (Bitmap bmpSource = new Bitmap(fileName))
+            using (Bitmap bmpSource = new Bitmap(inputFileName))
             {
                 for (int i = 0; i < numberOfChars; i++)
                 {
@@ -121,8 +145,8 @@ namespace MSXUtilities
             }
             colorsFile.AppendLine(color_0.ToString() + color_1.ToString());
 
-            // save text file with patterns
-            File.WriteAllText("patterns.s", patternsFile.ToString());
+            // save text file with patterns (append if already exists)
+            File.AppendAllText("patterns.s", patternsFile.ToString());
 
             // save text file with colors
             File.WriteAllText("colors.s", colorsFile.ToString());
