@@ -209,8 +209,8 @@ namespace MSXUtilities
 
 
 
-            var fileName = @"MsxWings\sonic wings font neo geo.png";
-            IList<ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams> list = new List<ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams>();
+            //var fileName = @"MsxWings\sonic wings font neo geo.png";
+            //IList<ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams> list = new List<ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams>();
 
             //// 8x8 font
             //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams 
@@ -245,27 +245,41 @@ namespace MSXUtilities
             //});
             //ConvertNeoGeoSpritesToMsx2Sprites.BatchConversion(fileName, list);
 
-            // 8x16 font
-            list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
-            {
-                xStart = 1770,
-                yStart = 510,
-                numberOfChars = 1
-            });
-            list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
-            {
-                xStart = 10,
-                yStart = 594,
-                numberOfChars = 23
-            });
-            list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
-            {
-                xStart = 10,
-                yStart = 678,
-                numberOfChars = 23
-            });
-            ConvertNeoGeoSpritesToMsx2Sprites.BatchConversion(fileName, list);
+            //// 8x16 font
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 1770,
+            //    yStart = 510,
+            //    numberOfChars = 1
+            //});
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 594,
+            //    numberOfChars = 23
+            //});
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 678,
+            //    numberOfChars = 23
+            //});
+            //ConvertNeoGeoSpritesToMsx2Sprites.BatchConversion(fileName, list);
 
+            //// 16x16 font
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 762,
+            //    numberOfChars = 23
+            //});
+            //list.Add(new ConvertNeoGeoSpritesToMsx2Sprites.ConversionParams
+            //{
+            //    xStart = 10,
+            //    yStart = 846,
+            //    numberOfChars = 23
+            //});
+            //ConvertNeoGeoSpritesToMsx2Sprites.BatchConversion(fileName, list);
 
 
 
@@ -284,7 +298,7 @@ namespace MSXUtilities
 
 
             // // ---- Go Penguin
-            //// Convert tiny sprite bkp data to tiles (4x4 pixel)
+            //// Convert tiny sprite bkp data to tiles (4x4, 8x8, 16x16 or 32x32 size pixel)
             //var filename = @"GoPenguin\Bkps from TinySprite\Tiles - Penguin - Enemies.txt";
             ////const int SPRITE_ON_SLOT_0 = 3;
             //const int SPRITE_ON_SLOT_1 = 20;
@@ -294,8 +308,65 @@ namespace MSXUtilities
             //ConvertTinySpriteBkpToTiles_32x32(filename, SPRITE_ON_SLOT_1);
 
 
+
+            // Create look up table for circle sprites movement
+
+            //Point centerPoint = new Point(128, 96);
+            //double angle = 359; // angle in degrees (0-359); 0 is eastmost point
+            //int distance = 80;
+            //var result = PointInCircumference(centerPoint, angle, distance);
+
+            Point centerPoint = new Point(128, 96); // middle of a 256x192 screen
+            const int STEP_IN_DEGREES = 5;
+            IList<Point> list = new List<Point>();
+            
+            const int RADIUS_1 = 96;
+            const int RADIUS_2 = 64;
+            const int RADIUS_3 = 32;
+
+            decimal radius = RADIUS_1;
+            for (int angle = 270; angle > 180; angle -= STEP_IN_DEGREES)
+            {
+                list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
+                decimal radiusStep = (decimal)(RADIUS_1 - RADIUS_2) / ((270 - 180) / STEP_IN_DEGREES);
+                radius -= radiusStep;
+            }
+            radius = RADIUS_2;
+            for (int angle = 180; angle > 0; angle -= STEP_IN_DEGREES)
+            {
+                list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
+                //radius -= (RADIUS_2 - RADIUS_3) / ((180 - 0) / STEP_IN_DEGREES);
+                decimal radiusStep = (decimal)(RADIUS_2 - RADIUS_3) / ((180 - 0) / STEP_IN_DEGREES);
+                radius -= radiusStep;
+            }
+            radius = RADIUS_3;
+            for (int angle = 359; angle > 180; angle -= STEP_IN_DEGREES)
+            {
+                list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
+            }
+
+            foreach (var item in list)
+            {
+                //Console.WriteLine(String.Format("Center: ({0}, {1}); Point: ({2}, {3})", centerPoint.X, centerPoint.Y, item.X, item.Y));
+                Console.WriteLine(String.Format("\tdb\t {1}, {0}", item.X, item.Y));
+            }
+
+
+
             Console.WriteLine("Done.");
             Console.ReadLine();
+        }
+
+        public static Point PointInCircumference(Point centerPoint, double angle, int radius)
+        {
+            var result = new Point(0, 0);
+            result.Y = centerPoint.Y + (int)Math.Round(radius * Math.Sin(angle * (Math.PI / 180)));
+            result.X = centerPoint.X + (int)Math.Round(radius * Math.Cos(angle * (Math.PI / 180)));
+
+            if (result.Y < 0) result.Y = 0;
+            if (result.X < 0) result.X = 0;
+
+            return result;
         }
 
         private static void ConvertTinySpriteBkpToTiles_4x4(string filename, int startLine)
