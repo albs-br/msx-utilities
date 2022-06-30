@@ -316,10 +316,12 @@ namespace MSXUtilities
             //int distance = 80;
             //var result = PointInCircumference(centerPoint, angle, distance);
 
-            Point centerPoint = new Point(128, 96 - 8); // middle of a 256x192 screen (subtract 8 from height to center a 16x16 sprite)
+            //Point centerPoint = new Point(128, 96 - 8); // middle of a 256x192 screen (subtract 8 from height to center a 16x16 sprite)
+            Point centerPoint = new Point(128 - ((7 * 16)/2) + 32, 96 - 8); // string 'LEVEL n' (7 chars long)
+
             IList<Point> list = new List<Point>();
             
-            const int RADIUS_1 = 96;
+            const int RADIUS_1 = 96 - 8 + 16;        // adjust for first position be -16 making the sprite sho progressively from top of screen
             const int STEP_IN_DEGREES_1 = 5;
             const int RADIUS_2 = 64;
             const int STEP_IN_DEGREES_2 = 7;
@@ -365,8 +367,8 @@ namespace MSXUtilities
             result.Y = centerPoint.Y + (int)Math.Round(radius * Math.Sin(angle * (Math.PI / 180)));
             result.X = centerPoint.X + (int)Math.Round(radius * Math.Cos(angle * (Math.PI / 180)));
 
-            if (result.Y < 0) result.Y = 0;
-            if (result.X < 0) result.X = 0;
+            //if (result.Y < 0) result.Y = 0;
+            //if (result.X < 0) result.X = 0;
 
             return result;
         }
