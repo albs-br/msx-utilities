@@ -72,7 +72,7 @@ namespace MSXUtilities
 
 
 
-            //var fileName = @"MsxWings\sprites - less colors.SC5";
+            var fileName = @"MsxWings\sprites - less colors.SC5";
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    0, 0, 16, 16,
@@ -134,6 +134,14 @@ namespace MSXUtilities
             //    "enemy_plane_5",
             //    false
             //    );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6, 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_0",
+                false
+                );
+
 
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
@@ -309,51 +317,51 @@ namespace MSXUtilities
 
 
 
-            // Create look up table for circle sprites movement
+            //// -------------- Create look up table for circle sprites movement
 
-            //Point centerPoint = new Point(128, 96);
-            //double angle = 359; // angle in degrees (0-359); 0 is eastmost point
-            //int distance = 80;
-            //var result = PointInCircumference(centerPoint, angle, distance);
+            ////Point centerPoint = new Point(128, 96);
+            ////double angle = 359; // angle in degrees (0-359); 0 is eastmost point
+            ////int distance = 80;
+            ////var result = PointInCircumference(centerPoint, angle, distance);
 
-            //Point centerPoint = new Point(128, 96 - 8); // middle of a 256x192 screen (subtract 8 from height to center a 16x16 sprite)
-            Point centerPoint = new Point(128 - ((7 * 16)/2) + 32, 96 - 8); // string 'LEVEL n' (7 chars long)
+            ////Point centerPoint = new Point(128, 96 - 8); // middle of a 256x192 screen (subtract 8 from height to center a 16x16 sprite)
+            //Point centerPoint = new Point(128 - ((7 * 16)/2) + 32, 96 - 8); // string 'LEVEL n' (7 chars long)
 
-            IList<Point> list = new List<Point>();
-            
-            const int RADIUS_1 = 96 - 8 + 16;        // adjust for first position be -16 making the sprite sho progressively from top of screen
-            const int STEP_IN_DEGREES_1 = 5;
-            const int RADIUS_2 = 64;
-            const int STEP_IN_DEGREES_2 = 7;
-            const int RADIUS_3 = 32;
-            const int STEP_IN_DEGREES_3 = 10;
+            //IList<Point> list = new List<Point>();
 
-            decimal radius = RADIUS_1;
-            for (int angle = 270; angle > 180; angle -= STEP_IN_DEGREES_1)
-            {
-                list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
-                decimal radiusStep = (decimal)(RADIUS_1 - RADIUS_2) / ((270 - 180) / STEP_IN_DEGREES_1);
-                radius -= radiusStep;
-            }
-            radius = RADIUS_2;
-            for (int angle = 180; angle > 0; angle -= STEP_IN_DEGREES_2)
-            {
-                list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
-                //radius -= (RADIUS_2 - RADIUS_3) / ((180 - 0) / STEP_IN_DEGREES);
-                decimal radiusStep = (decimal)(RADIUS_2 - RADIUS_3) / ((180 - 0) / STEP_IN_DEGREES_2);
-                radius -= radiusStep;
-            }
-            radius = RADIUS_3;
-            for (int angle = 359; angle > 180; angle -= STEP_IN_DEGREES_3)
-            {
-                list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
-            }
+            //const int RADIUS_1 = 96 - 8 + 16;        // adjust for first position be -16 making the sprite sho progressively from top of screen
+            //const int STEP_IN_DEGREES_1 = 5;
+            //const int RADIUS_2 = 64;
+            //const int STEP_IN_DEGREES_2 = 7;
+            //const int RADIUS_3 = 32;
+            //const int STEP_IN_DEGREES_3 = 10;
 
-            foreach (var item in list)
-            {
-                //Console.WriteLine(String.Format("Center: ({0}, {1}); Point: ({2}, {3})", centerPoint.X, centerPoint.Y, item.X, item.Y));
-                Console.WriteLine(String.Format("\tdb\t {1}, {0}", item.X, item.Y));
-            }
+            //decimal radius = RADIUS_1;
+            //for (int angle = 270; angle > 180; angle -= STEP_IN_DEGREES_1)
+            //{
+            //    list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
+            //    decimal radiusStep = (decimal)(RADIUS_1 - RADIUS_2) / ((270 - 180) / STEP_IN_DEGREES_1);
+            //    radius -= radiusStep;
+            //}
+            //radius = RADIUS_2;
+            //for (int angle = 180; angle > 0; angle -= STEP_IN_DEGREES_2)
+            //{
+            //    list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
+            //    //radius -= (RADIUS_2 - RADIUS_3) / ((180 - 0) / STEP_IN_DEGREES);
+            //    decimal radiusStep = (decimal)(RADIUS_2 - RADIUS_3) / ((180 - 0) / STEP_IN_DEGREES_2);
+            //    radius -= radiusStep;
+            //}
+            //radius = RADIUS_3;
+            //for (int angle = 359; angle > 180; angle -= STEP_IN_DEGREES_3)
+            //{
+            //    list.Add(PointInCircumference(centerPoint, angle, (int)Math.Round(radius)));
+            //}
+
+            //foreach (var item in list)
+            //{
+            //    //Console.WriteLine(String.Format("Center: ({0}, {1}); Point: ({2}, {3})", centerPoint.X, centerPoint.Y, item.X, item.Y));
+            //    Console.WriteLine(String.Format("\tdb\t {1}, {0}", item.X, item.Y));
+            //}
 
 
 
