@@ -1056,8 +1056,19 @@ namespace MSXUtilities
 
                 foreach (var color in line)
                 {
-                    Console.Write(color.ToString().PadLeft(2, ' ') + ", ");
+                    //if (color == 0)
+                    //{
+                    //    Console.BackgroundColor = ConsoleColor.Black;
+                    //}
+                    //else
+                    //{
+                    //    Console.BackgroundColor = ConsoleColor.Red;
+                    //}
+                    Console.BackgroundColor = (ConsoleColor)color;
+
+                    Console.Write(color.ToString().PadLeft(2, ' ') + ",");
                 }
+                Console.BackgroundColor = ConsoleColor.Black;
 
                 // get the distinct colors different than transparent on this line
                 var distinctColorsOnLine = line.Where(x => x != 0).Distinct().ToList();
