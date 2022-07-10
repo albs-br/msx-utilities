@@ -137,7 +137,7 @@ namespace MSXUtilities
 
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
-            //    6, 100, 16, 16,
+            //    6 + (32 * 0), 100, 16, 16,
             //    0, 9,
             //    "enemy_plane_turning_0",
             //    false
@@ -170,11 +170,18 @@ namespace MSXUtilities
             //    "enemy_plane_turning_4",
             //    false
             //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    6 + (32 * 5), 100, 16, 16,
+            //    0, 9,
+            //    "enemy_plane_turning_5",
+            //    false
+            //    );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                6 + (32 * 5), 100, 16, 16,
+                6 + (32 * 6), 100, 16, 16,
                 0, 9,
-                "enemy_plane_turning_5",
+                "enemy_plane_turning_6",
                 false
                 );
 
