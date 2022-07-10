@@ -308,6 +308,7 @@ namespace MSXUtilities
 
                 index++;
             }
+            Console.WriteLine();
 
 
             IList<IList<int>> newPixelsList = new List<IList<int>>();

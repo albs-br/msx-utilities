@@ -149,11 +149,18 @@ namespace MSXUtilities
             //    "enemy_plane_turning_1",
             //    false
             //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    6 + 64, 100, 16, 16,
+            //    0, 9,
+            //    "enemy_plane_turning_2",
+            //    false
+            //    );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                6 + 64, 100, 16, 16,
+                6 + 96, 100, 16, 16,
                 0, 9,
-                "enemy_plane_turning_2",
+                "enemy_plane_turning_3",
                 false
                 );
 
