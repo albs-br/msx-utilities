@@ -184,13 +184,13 @@ namespace MSXUtilities
             //    "enemy_plane_turning_6",
             //    false
             //    );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                6 + (32 * 7), 100, 16, 16,
-                0, 9,
-                "enemy_plane_turning_7",
-                false
-                );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    6 + (32 * 7), 100, 16, 16,
+            //    0, 9,
+            //    "enemy_plane_turning_7",
+            //    false
+            //    );
 
 
             //ConvertSc5ImageToSprites.Execute(
@@ -412,6 +412,14 @@ namespace MSXUtilities
             //    //Console.WriteLine(String.Format("Center: ({0}, {1}); Point: ({2}, {3})", centerPoint.X, centerPoint.Y, item.X, item.Y));
             //    Console.WriteLine(String.Format("\tdb\t {1}, {0}", item.X, item.Y));
             //}
+
+
+
+            var fileNameSrc = @"test.bmp";
+            var fileNameDest = @"test_new.bmp";
+            int lineToBeDuplicated = 4;
+
+            DuplicateLine_Class.DuplicateLine(fileNameSrc, lineToBeDuplicated, fileNameDest);
 
 
 
