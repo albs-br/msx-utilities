@@ -72,7 +72,7 @@ namespace MSXUtilities
 
 
 
-            var fileName = @"MsxWings\sprites - less colors.SC5";
+            //var fileName = @"MsxWings\sprites - less colors.SC5";
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    0, 0, 16, 16,
@@ -418,7 +418,6 @@ namespace MSXUtilities
             var fileNameSrc = @"test.bmp";
             var fileNameDest = @"test_new.bmp";
             int lineToBeDuplicated = 4;
-
             DuplicateLine_Class.DuplicateLine(fileNameSrc, lineToBeDuplicated, fileNameDest);
 
 
