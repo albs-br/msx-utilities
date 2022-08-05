@@ -52,14 +52,17 @@ namespace MSXUtilities
 
 
             ////Convert bmp image into smaller images that will later be 16kb chunks to be used as background scroll on MSX 2
-            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\AeroFighters2-Stage8-Tikal,Mexico.png";
-            ////var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
-            //var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8/11)
-            //SplitImageIn16KbChunks(image, heightSc8, "level8");
+            ////var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\AeroFighters2-Stage8-Tikal,Mexico.png";
+            //var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\msx-wings title screen 1.png";
+            //var heightSc5 = (16 * 1024) / 128;  // 128 bytes per line (e.g. screen 5)
+            ////var heightSc8 = (16 * 1024) / 256;  // 256 bytes per line (e.g. screen 8/11)
+            ////SplitImageIn16KbChunks(image, heightSc8, "level8");
+            //SplitImageIn16KbChunks(image, heightSc5, "title-screen");
 
-            //// Remove 7 byte header from file and keep only 16kb
+            // Remove 7 byte header from file and keep only 16kb
             //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level8_{0}.sra";
-            //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
+            var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\title-screen_{0}.sc5";
+            RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
 
             //// Create .asm code for INCBIN the files
             //var levelNumber = "8";
@@ -415,10 +418,10 @@ namespace MSXUtilities
 
 
 
-            var fileNameSrc = @"test.bmp";
-            var fileNameDest = @"test_new.bmp";
-            int lineToBeDuplicated = 4;
-            DuplicateLine_Class.DuplicateLine(fileNameSrc, lineToBeDuplicated, fileNameDest);
+            //var fileNameSrc = @"test.bmp";
+            //var fileNameDest = @"test_new.bmp";
+            //int lineToBeDuplicated = 4;
+            //DuplicateLine_Class.DuplicateLine(fileNameSrc, lineToBeDuplicated, fileNameDest);
 
 
 
