@@ -167,5 +167,45 @@ namespace MSXUtilities
             Console.WriteLine("Done.");
         }
 
+        static void Convert2ColorImageIntoImageForPaletteCycling()
+        {
+            const int SCR_WIDTH = 256;
+            const int SCR_HEIGHT = 192;
+            Color BG_COLOR = Color.Black;
+
+            var sourceImg = "img.bmp";
+            var imgCycling = "img_cycling.bmp";
+            var destImg = "dest.bmp";
+
+            Bitmap bmpSource = (Bitmap)Image.FromFile(sourceImg);
+            Bitmap bmpCycling = (Bitmap)Image.FromFile(imgCycling);
+            Bitmap bmpDestiny = new Bitmap(SCR_WIDTH, SCR_HEIGHT);
+
+            int xOffset = (bmpSource.Width - bmpCycling.Width) / 2;
+            int yOffset = (bmpSource.Height - bmpCycling.Height) / 2;
+
+            for (int y = 0; y < SCR_HEIGHT; y++)
+            {
+                for (int x = 0; x < SCR_WIDTH; x++)
+                {
+                    var pixel = bmpSource.GetPixel(x, y);
+
+                    if (pixel != BG_COLOR)
+                    {
+                        var pixelCycling = bmpCycling.GetPixel(x + xOffset, y + yOffset);
+                        bmpDestiny.SetPixel(x, y, pixelCycling);
+                    }
+                    else
+                    {
+                        bmpDestiny.SetPixel(x, y, pixel);
+                    }
+                }
+            }
+
+            bmpDestiny.Save(destImg);
+
+            Console.WriteLine("Done.");
+        }
     }
 }
+
