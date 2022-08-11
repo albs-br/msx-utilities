@@ -100,7 +100,13 @@
     <None Update="Msxmas21\window 1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="MsxWings\msx-wings title screen 1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="MsxWings\MsxWings BMP2MSX settings.B2M">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="MsxWings\palette cycling base.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="MsxWings\sonic wings font neo geo.png">

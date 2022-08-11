@@ -50,6 +50,9 @@ namespace MSXUtilities
 
 
 
+            // Take two images (msx wings title and a base for palette cycling) and merge them
+            CreateGradientImage.Convert2ColorImageIntoImageForPaletteCycling();
+
 
             ////Convert bmp image into smaller images that will later be 16kb chunks to be used as background scroll on MSX 2
             ////var image = @"C:\Users\albs_\OneDrive\Desktop\MSX development\Aero Fighters 3 screen tests\AeroFighters2-Stage8-Tikal,Mexico.png";
@@ -59,10 +62,10 @@ namespace MSXUtilities
             ////SplitImageIn16KbChunks(image, heightSc8, "level8");
             //SplitImageIn16KbChunks(image, heightSc5, "title-screen");
 
-            // Remove 7 byte header from file and keep only 16kb
-            //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level8_{0}.sra";
-            var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\title-screen_{0}.sc5";
-            RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
+            //// Remove 7 byte header from file and keep only 16kb
+            ////var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\level8_{0}.sra";
+            //var baseFileName = @"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1\title-screen_{0}.sc5";
+            //RemoveHeaderAndKeep16kbOfFiles(baseFileName, 7);
 
             //// Create .asm code for INCBIN the files
             //var levelNumber = "8";

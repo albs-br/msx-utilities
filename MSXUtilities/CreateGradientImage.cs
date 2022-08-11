@@ -6,7 +6,7 @@ namespace MSXUtilities
 {
     public static class CreateGradientImage
     {
-        static void Execute()
+        public static void Execute()
         {
             const int SCR_WIDTH = 256;
             const int SCR_HEIGHT = 192;
@@ -167,22 +167,22 @@ namespace MSXUtilities
             Console.WriteLine("Done.");
         }
 
-        static void Convert2ColorImageIntoImageForPaletteCycling()
+        public static void Convert2ColorImageIntoImageForPaletteCycling()
         {
             const int SCR_WIDTH = 256;
             const int SCR_HEIGHT = 192;
-            Color BG_COLOR = Color.Black;
+            string BG_COLOR = "ffffffff";
 
-            var sourceImg = "img.bmp";
-            var imgCycling = "img_cycling.bmp";
-            var destImg = "dest.bmp";
+            var sourceImgFileName = @"MsxWings\msx-wings title screen 1.png";
+            var imgCyclingFileName = @"MsxWings\palette cycling base.bmp";
+            var destImgFileName = @"msx-wings title with cycling palette.bmp";
 
-            Bitmap bmpSource = (Bitmap)Image.FromFile(sourceImg);
-            Bitmap bmpCycling = (Bitmap)Image.FromFile(imgCycling);
+            Bitmap bmpSource = (Bitmap)Image.FromFile(sourceImgFileName);
+            Bitmap bmpCycling = (Bitmap)Image.FromFile(imgCyclingFileName);
             Bitmap bmpDestiny = new Bitmap(SCR_WIDTH, SCR_HEIGHT);
 
-            int xOffset = (bmpSource.Width - bmpCycling.Width) / 2;
-            int yOffset = (bmpSource.Height - bmpCycling.Height) / 2;
+            //int xOffset = (bmpSource.Width - bmpCycling.Width) / 2;
+            int? yOffset = null;
 
             for (int y = 0; y < SCR_HEIGHT; y++)
             {
@@ -190,9 +190,13 @@ namespace MSXUtilities
                 {
                     var pixel = bmpSource.GetPixel(x, y);
 
-                    if (pixel != BG_COLOR)
+                    if (pixel.Name != BG_COLOR)
                     {
-                        var pixelCycling = bmpCycling.GetPixel(x + xOffset, y + yOffset);
+                        if (yOffset == null) yOffset = y;
+
+                        int yOffSetCapped = (y - (int)yOffset <= bmpCycling.Height - 1) ? y - (int)yOffset : bmpCycling.Height - 1;
+
+                        var pixelCycling = bmpCycling.GetPixel(x, yOffSetCapped);
                         bmpDestiny.SetPixel(x, y, pixelCycling);
                     }
                     else
@@ -202,9 +206,9 @@ namespace MSXUtilities
                 }
             }
 
-            bmpDestiny.Save(destImg);
+            bmpDestiny.Save(destImgFileName);
 
-            Console.WriteLine("Done.");
+            //Console.WriteLine("Done.");
         }
     }
 }
