@@ -1,49 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MSXUtilities
 {
-    public static class ExpandSprites_Class
-    {
-		/// <summary>
-		/// Expand a 16x16 MSX 2 sprite to a factor, e.g. factor 2 will return
-		/// a 32x32 sprite, factor 3 a 48x48, and so on
-		/// </summary>
-		/// <param name="factor">2, 3, 4, 5</param>
-		/// <exception cref="Exception"></exception>
-		public static IList<string> ExpandSprites(string input, int factor)
+	public static class ExpandSprites_Class
+	{
+        /*
+
+		size		factor	16x16 blocks		8x8 blocks	lines
+		=====		======	============		==========	=====
+		16x16		1		1					4			32
+		32x32		2		2*2=4				4*4=16		16*8 = 128
+		48x48		3		3*3=9				6*6=36		36*8 = 288
+		64x64		4		4*4=16				8*8=64		64*8 = 288
+		 
+		*/
+
+        /// <summary>
+        /// Expand a 16x16 MSX 2 sprite by a factor, e.g. factor 2 will return
+        /// a 32x32 sprite, factor 3 a 48x48, and so on
+        /// </summary>
+        /// <param name="factor">2, 3, 4, 5</param>
+        /// <exception cref="Exception"></exception>
+        public static ExpandSprites_Output ExpandSprites(string input, int factor)
 		{
-			
-			// convert input to list of strings with only the bits
+
+			// convert input to list of strings with only the pattern bits
 			var tempArray = input.Split(Environment.NewLine);
 			var listInput = new List<string>();
-            for (int i = 0; i < tempArray.Length; i++)
+			for (int i = 0; i < tempArray.Length; i++)
 			{
 				var tempItem = tempArray[i].Replace("db", "").Replace("b", "").Trim();
 
 				if (tempItem != "")
 				{
-                    if (tempItem.Length != 8) throw new Exception("Lines on input must be 8 bits long");
+					if (tempItem.Length != 8) throw new Exception("Lines on input must be 8 bits long");
 
-                    listInput.Add(tempItem); 
+					listInput.Add(tempItem);
 				}
 			}
 
 			if (listInput.Count != 32) throw new Exception("Number of lines on input must be 32");
 
 
-            // convert list from 32 lines of 8 bits to 16 lines of 16 bits
-            var listInput_16x16 = new List<string>();
-            for (int i = 0; i < 16; i++)
+			// convert list from 32 lines of 8 bits to 16 lines of 16 bits
+			var listInput_16x16 = new List<string>();
+			for (int i = 0; i < 16; i++)
 			{
-				listInput_16x16.Add(listInput[i] + listInput[i+16]);
+				listInput_16x16.Add(listInput[i] + listInput[i + 16]);
 			}
 
 
 
-            // do the scaling
-			var listaOutput = new List<string>();
+			// do the scaling
+			var listOutput = new List<string>();
 			for (int i = 0; i < 16; i++)
 			{
 
@@ -58,11 +70,37 @@ namespace MSXUtilities
 
 				for (int k = 0; k < factor; k++)
 				{
-					listaOutput.Add(tempOutputLine);
+					listOutput.Add(tempOutputLine);
 				}
 			}
 
-			return listaOutput;
-        }
+			// formatted lines (convert to a list of 8 pixels per line)
+			var formattedLines = new List<string>();
+			var lineFormat = "\tdb {0} b";
+			for (int i = 0; i < ((factor*2)*(factor*2)) * 8; i++)
+			{
+				formattedLines.Add("");
+			}
+			for (int j = 0; j < factor*2; j++)
+			{
+                for (int i = 0; i < factor * 16; i++)
+                {
+                    formattedLines[i + (j * (factor * 16))] += String.Format(lineFormat, listOutput[i].Substring(j * 8, 8));
+                }
+            }
+
+
+            return new ExpandSprites_Output
+			{
+				Lines = listOutput,
+				FormattedLines = formattedLines
+			};
+		}
+	}
+
+	public class ExpandSprites_Output
+	{
+		public IList<string> Lines { get; set; }
+		public IList<string> FormattedLines { get; set; }
     }
 }
