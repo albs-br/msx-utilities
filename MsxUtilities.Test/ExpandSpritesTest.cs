@@ -106,6 +106,27 @@ namespace MsxUtilities.Test
             Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[9]);
             Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[10]);
             Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[11]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[12]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[13]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[14]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[15]);
+
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[16]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[17]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[18]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[19]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[20]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[21]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[22]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[23]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[24]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[25]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[26]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[27]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[28]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[29]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[30]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[31]);
 
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[32]);
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[33]);
@@ -115,24 +136,31 @@ namespace MsxUtilities.Test
             Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[37]);
             Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[38]);
             Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[39]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[40]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[41]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[42]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[43]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[44]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[45]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[46]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[47]);
 
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[64]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[65]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[66]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[67]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[68]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[69]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[70]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[71]);
-
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[96]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[97]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[98]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[99]);
-            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[100]);
-            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[101]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[102]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[103]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[48]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[49]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[50]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[51]);
+            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[52]);
+            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[53]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[54]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[55]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[56]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[57]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[58]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[59]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[60]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[61]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[62]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[63]);
         }
 
         [TestMethod]

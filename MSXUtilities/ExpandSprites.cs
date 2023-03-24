@@ -81,12 +81,13 @@ namespace MSXUtilities
 			{
 				formattedLines.Add("");
 			}
-			for (int j = 0; j < factor*2; j++)
+			for (int j = 0; j < factor; j++)
 			{
-                for (int i = 0; i < factor * 16; i++)
-                {
-                    formattedLines[i + (j * (factor * 16))] += String.Format(lineFormat, listOutput[i].Substring(j * 8, 8));
-                }
+				for (int i = 0; i < 16; i++)
+				{
+					formattedLines[(j * 32) + i] = String.Format(lineFormat, listOutput[i].Substring(j * 16, 8));
+					formattedLines[(j * 32) + i + 16] = String.Format(lineFormat, listOutput[i].Substring((j * 16) + 8, 8));
+				}
             }
 
 
