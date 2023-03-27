@@ -85,13 +85,15 @@ namespace MSXUtilities
 			{
 				for (int i = 0; i < 16; i++)
 				{
-					formattedLines[(j * 32) + i] = String.Format(lineFormat, listOutput[i].Substring(j * 16, 8));
-					formattedLines[(j * 32) + i + 16] = String.Format(lineFormat, listOutput[i].Substring((j * 16) + 8, 8));
+					formattedLines[(j * 32) + i] = String.Format(lineFormat, listOutput[i].Substring(j * 16, 8));               //0-15	32-47
+					formattedLines[(j * 32) + i + 16] = String.Format(lineFormat, listOutput[i].Substring((j * 16) + 8, 8));    //16-31	48-63
 				}
-            }
+			}
 
 
-            return new ExpandSprites_Output
+
+
+			return new ExpandSprites_Output
 			{
 				Lines = listOutput,
 				FormattedLines = formattedLines

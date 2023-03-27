@@ -91,9 +91,9 @@ namespace MsxUtilities.Test
             Assert.AreEqual("00000000000000000000000000000000", output.Lines[30]);
             Assert.AreEqual("00000000000000000000000000000000", output.Lines[31]);
 
-            //TODO: fix it (the 16x16 sprites are not organized this way)
-
             Assert.AreEqual((factor*factor) * 32, output.FormattedLines.Count);			// number of lines on output
+            
+            // sprite #0
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[0]);
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[1]);
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[2]);
@@ -128,6 +128,7 @@ namespace MsxUtilities.Test
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[30]);
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[31]);
 
+            // sprite #1
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[32]);
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[33]);
             Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[34]);
@@ -161,6 +162,9 @@ namespace MsxUtilities.Test
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[61]);
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[62]);
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[63]);
+
+            // sprite #2
+            //Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[64]); TODO: fix it
         }
 
         [TestMethod]
