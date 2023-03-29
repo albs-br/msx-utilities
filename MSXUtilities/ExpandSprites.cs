@@ -74,26 +74,42 @@ namespace MSXUtilities
 				}
 			}
 
-			// formatted lines (convert to a list of 8 pixels per line)
-			var formattedLines = new List<string>();
+			// convert expanded sprite to 16x16 grids
+			var listOutput16x16 = new List<string>();
+			for (int j = 0; j < factor; j++) // values for factor = 2: 0-1
+			{
+                for (int i = 0; i < factor * 16; i++) // values for factor = 2: 0-31
+                {
+					listOutput16x16.Add(listOutput[i].Substring(j * 16, 16));
+                }
+            }
+
+            // lines formatted on asm syntax (convert to a list of 8 pixels per line)
+            var formattedLines = new List<string>();
 			var lineFormat = "\tdb {0} b";
 			for (int i = 0; i < ((factor*2)*(factor*2)) * 8; i++)
 			{
 				formattedLines.Add("");
 			}
-			for (int j = 0; j < factor; j++)
-			{
+            for (int j = 0; j < factor * factor; j++)
+            {
 				for (int i = 0; i < 16; i++)
 				{
-					formattedLines[(j * 32) + i] = String.Format(lineFormat, listOutput[i].Substring(j * 16, 8));               //0-15	32-47
-					formattedLines[(j * 32) + i + 16] = String.Format(lineFormat, listOutput[i].Substring((j * 16) + 8, 8));    //16-31	48-63
-				}
-			}
+					// ----- f = 0
+					// 0-15
+					// 16-31
+					// ----- f = 1
+					// 32-47
+					// 48-63
+                    formattedLines[(j * 32) + i] = String.Format(lineFormat, listOutput16x16[(j * 16) + i].Substring(0, 8));
+                    formattedLines[(j * 32) + i + 16] = String.Format(lineFormat, listOutput16x16[(j * 16) + i].Substring(8, 8));
+                }
+            }
 
 
 
 
-			return new ExpandSprites_Output
+            return new ExpandSprites_Output
 			{
 				Lines = listOutput,
 				FormattedLines = formattedLines

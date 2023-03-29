@@ -129,42 +129,75 @@ namespace MsxUtilities.Test
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[31]);
 
             // sprite #1
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[32]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[33]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[34]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[35]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[36]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[37]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[38]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[39]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[40]);
-            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[41]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[32]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[33]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[34]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[35]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[36]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[37]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[38]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[39]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[40]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[41]);
             Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[42]);
             Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[43]);
-            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[44]);
-            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[45]);
-            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[46]);
-            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[47]);
+            Assert.AreEqual("\tdb 00001111 b", output.FormattedLines[44]);
+            Assert.AreEqual("\tdb 00001111 b", output.FormattedLines[45]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[46]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[47]);
 
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[48]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[49]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[50]);
-            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[51]);
-            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[52]);
-            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[53]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[48]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[49]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[50]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[51]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[52]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[53]);
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[54]);
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[55]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[56]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[57]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[58]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[59]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[60]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[61]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[62]);
-            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[63]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[56]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[57]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[58]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[59]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[60]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[61]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[62]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[63]);
 
             // sprite #2
-            //Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[64]); TODO: fix it
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[64]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[65]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[66]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[67]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[68]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[69]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[70]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[71]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[72]);
+            Assert.AreEqual("\tdb 11111111 b", output.FormattedLines[73]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[74]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[75]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[76]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[77]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[78]);
+            Assert.AreEqual("\tdb 00111111 b", output.FormattedLines[79]);
+
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[80]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[81]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[82]);
+            Assert.AreEqual("\tdb 00000000 b", output.FormattedLines[83]);
+            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[84]);
+            Assert.AreEqual("\tdb 11000000 b", output.FormattedLines[85]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[86]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[87]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[88]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[89]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[90]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[91]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[92]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[93]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[94]);
+            Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[95]);
+
         }
 
         [TestMethod]
@@ -179,6 +212,9 @@ namespace MsxUtilities.Test
             // Assert
             Assert.AreEqual(factor * 16, output.Lines.Count);			// number of lines on output
             Assert.AreEqual(factor * 16, output.Lines[0].Length);		// number of columns on line
+
+            //TODO: check if bit patterns are ok
+            Assert.AreEqual((factor * factor) * 32, output.FormattedLines.Count);			// number of lines on output
         }
 
         [TestMethod]
@@ -193,6 +229,10 @@ namespace MsxUtilities.Test
             // Assert
             Assert.AreEqual(factor * 16, output.Lines.Count);			// number of lines on output
             Assert.AreEqual(factor * 16, output.Lines[0].Length);		// number of columns on line
+
+
+            //TODO: check if bit patterns are ok
+            Assert.AreEqual((factor * factor) * 32, output.FormattedLines.Count);			// number of lines on output
         }
     }
 }
