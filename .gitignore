@@ -6,6 +6,8 @@
 /MSXUtilities/obj
 /.vs
 /MsxUtilities.Test/bin/Debug/netcoreapp3.1
+/MsxUtilities.Test/obj
+/MsxUtilities.Test/obj/Debug/netcoreapp3.1
 /MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.csproj.FileListAbsolute.txt
 /MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.csproj.CoreCompileInputs.cache
 /MsxUtilities.Test/obj/Debug/netcoreapp3.1/MsxUtilities.Test.csproj.CopyComplete
