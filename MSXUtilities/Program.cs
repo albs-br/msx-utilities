@@ -17,7 +17,29 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            //var output = ExpandSprites_Class.ExpandSprites(input, 2).GetTextFile();
+            // --------- MSX Wings "Stage clear" fonts for animation
+            string inputColors = @"
+	                db	0x05
+	                db	0x05
+	                db	0x0f
+	                db	0x0f
+	                db	0x09
+	                db	0x09
+	                db	0x0d
+	                db	0x0d
+	                db	0x04
+	                db	0x04
+	                db	0x0c
+	                db	0x0c
+	                db	0x08
+	                db	0x08
+	                db	0x0d
+	                db	0x0d
+                 ";
+            var inputPattern_A = MsxWings.FontsLarge.MsxWings_FontsLarge.GetCharPatternByNumber('A');
+            var output = ExpandSprites_Class.ExpandSprites(inputPattern_A, inputColors, 2).GetTextFile();
+            // ------------------------------------------------------
+
 
 
 
