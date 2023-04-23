@@ -11,7 +11,7 @@ namespace MsxUtilities.Test
     {
         // ; -------------------------char #0 -------------------------
         // ; ------pattern 0
-        string input = @"
+        string inputPattern = @"
 					db	00000000 b
 					db	00000000 b
 					db	00111111 b
@@ -46,6 +46,25 @@ namespace MsxUtilities.Test
 					db	00000000 b
 				 ";
 
+        string inputColors = @"
+	                db	0x05
+	                db	0x05
+	                db	0x0f
+	                db	0x0f
+	                db	0x09
+	                db	0x09
+	                db	0x0d
+	                db	0x0d
+	                db	0x04
+	                db	0x04
+	                db	0x0c
+	                db	0x0c
+	                db	0x08
+	                db	0x08
+	                db	0x0d
+	                db	0x0d
+                 ";
+
         [TestMethod]
         public void Test_ExpandSprite_Factor_2()
         {
@@ -53,7 +72,7 @@ namespace MsxUtilities.Test
             int factor = 2;
 
             // Act
-            var output = ExpandSprites_Class.ExpandSprites(input, factor);
+            var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
 
             // Assert
             Assert.AreEqual(factor * 16, output.Lines.Count);			// number of lines on output
@@ -198,6 +217,7 @@ namespace MsxUtilities.Test
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[94]);
             Assert.AreEqual("\tdb 11110000 b", output.FormattedLines[95]);
 
+            Assert.AreEqual(factor * 16, output.ColorLines.Count);			// number of color lines on output
         }
 
         [TestMethod]
@@ -207,7 +227,7 @@ namespace MsxUtilities.Test
             int factor = 3;
 
             // Act
-            var output = ExpandSprites_Class.ExpandSprites(input, factor);
+            var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
 
             // Assert
             Assert.AreEqual(factor * 16, output.Lines.Count);			// number of lines on output
@@ -215,6 +235,8 @@ namespace MsxUtilities.Test
 
             //TODO: check if bit patterns are ok
             Assert.AreEqual((factor * factor) * 32, output.FormattedLines.Count);			// number of lines on output
+
+            Assert.AreEqual(factor * 16, output.ColorLines.Count);			// number of color lines on output
         }
 
         [TestMethod]
@@ -224,7 +246,7 @@ namespace MsxUtilities.Test
             int factor = 4;
 
             // Act
-            var output = ExpandSprites_Class.ExpandSprites(input, factor);
+            var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
 
             // Assert
             Assert.AreEqual(factor * 16, output.Lines.Count);			// number of lines on output
@@ -233,6 +255,8 @@ namespace MsxUtilities.Test
 
             //TODO: check if bit patterns are ok
             Assert.AreEqual((factor * factor) * 32, output.FormattedLines.Count);			// number of lines on output
+
+            Assert.AreEqual(factor * 16, output.ColorLines.Count);			// number of color lines on output
         }
     }
 }

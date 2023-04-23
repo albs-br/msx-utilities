@@ -24,11 +24,11 @@ namespace MSXUtilities
         /// </summary>
         /// <param name="factor">2, 3, 4, 5</param>
         /// <exception cref="Exception"></exception>
-        public static ExpandSprites_Output ExpandSprites(string input, int factor)
+        public static ExpandSprites_Output ExpandSprites(string inputPattern, string inputColors, int factor)
 		{
 
-			// convert input to list of strings with only the pattern bits
-			var tempArray = input.Split(Environment.NewLine);
+			// convert input pattern to list of strings with only the pattern bits
+			var tempArray = inputPattern.Split(Environment.NewLine);
 			var listInput = new List<string>();
 			for (int i = 0; i < tempArray.Length; i++)
 			{
@@ -106,13 +106,24 @@ namespace MSXUtilities
                 }
             }
 
+			// convert input colors to colors expanded
+			var colorLines = new List<string>();
+			foreach (var line in inputColors.Split(Environment.NewLine))
+            {
+				if (line.Trim() != "")
+				{
+					for (int i = 0; i < factor; i++)
+					{
+						colorLines.Add(line);
+					}
+				}
+			}
 
-
-
-            return new ExpandSprites_Output
+			return new ExpandSprites_Output
 			{
 				Lines = listOutput,
-				FormattedLines = formattedLines
+				FormattedLines = formattedLines,
+				ColorLines = colorLines
 			};
 		}
 	}
@@ -121,5 +132,20 @@ namespace MSXUtilities
 	{
 		public IList<string> Lines { get; set; }
 		public IList<string> FormattedLines { get; set; }
+		public IList<string> ColorLines { get; set; }
+
+		public string GetTextFile()
+		{
+			var sbText = new StringBuilder();
+			foreach (var line in FormattedLines)
+            {
+				sbText.AppendLine(line);
+            }
+			foreach (var line in ColorLines)
+			{
+				sbText.AppendLine(line);
+			}
+			return sbText.ToString();
+		}
     }
 }
