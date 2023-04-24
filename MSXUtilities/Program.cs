@@ -37,7 +37,13 @@ namespace MSXUtilities
 	                db	0x0d
                  ";
             var inputPattern_A = MsxWings.FontsLarge.MsxWings_FontsLarge.GetCharPatternByNumber('A');
-            var output = ExpandSprites_Class.ExpandSprites(inputPattern_A, inputColors, 2).GetTextFile();
+
+            var output = ExpandSprites_Class.ExpandSprites(inputPattern_A, inputColors, 2);
+            var colors = output.GetText_Colors();
+            File.WriteAllText("colors_factor_2.s", colors);
+
+            var patterns = ExpandSprites_Class.ExpandSprites(inputPattern_A, inputColors, 2).GetText_Pattern();
+            File.WriteAllText("patterns_a_factor_2.s", patterns);
             // ------------------------------------------------------
 
 

@@ -122,7 +122,7 @@ namespace MSXUtilities
 			return new ExpandSprites_Output
 			{
 				Lines = listOutput,
-				FormattedLines = formattedLines,
+				PatternLines = formattedLines,
 				ColorLines = colorLines
 			};
 		}
@@ -131,21 +131,27 @@ namespace MSXUtilities
 	public class ExpandSprites_Output
 	{
 		public IList<string> Lines { get; set; }
-		public IList<string> FormattedLines { get; set; }
+		public IList<string> PatternLines { get; set; }
 		public IList<string> ColorLines { get; set; }
 
-		public string GetTextFile()
+		public string GetText_Pattern()
 		{
 			var sbText = new StringBuilder();
-			foreach (var line in FormattedLines)
+			foreach (var line in PatternLines)
             {
 				sbText.AppendLine(line);
             }
+			return sbText.ToString();
+		}
+
+		public string GetText_Colors()
+		{
+			var sbText = new StringBuilder();
 			foreach (var line in ColorLines)
 			{
 				sbText.AppendLine(line);
 			}
 			return sbText.ToString();
 		}
-    }
+	}
 }
