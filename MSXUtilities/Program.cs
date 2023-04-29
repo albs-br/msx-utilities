@@ -36,14 +36,24 @@ namespace MSXUtilities
 	                db	0x0d
 	                db	0x0d
                  ";
-            var inputPattern_A = MsxWings.FontsLarge.MsxWings_FontsLarge.GetCharPatternByNumber('A');
+            char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'E', 'R' };
 
-            var output = ExpandSprites_Class.ExpandSprites(inputPattern_A, inputColors, 2);
-            var colors = output.GetText_Colors();
-            File.WriteAllText("colors_factor_2.s", colors);
+            for (int factor = 2; factor <= 5; factor++)
+            {
+                var outputColors = ExpandSprites_Class.ExpandSprites(null, inputColors, factor);
+                var colors = outputColors.GetText_Colors();
+                File.WriteAllText(String.Format("colors_factor_{0}.s", factor), colors);
 
-            var patterns = ExpandSprites_Class.ExpandSprites(inputPattern_A, inputColors, 2).GetText_Pattern();
-            File.WriteAllText("patterns_a_factor_2.s", patterns);
+                foreach (var item in charArray)
+                {
+                    var inputPattern = MsxWings.FontsLarge.MsxWings_FontsLarge.GetCharPatternByNumber(item);
+
+                    var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
+
+                    var patterns = output.GetText_Pattern();
+                    File.WriteAllText(String.Format("patterns_{0}_factor_{1}.s", item, factor), patterns);
+                }
+            }
             // ------------------------------------------------------
 
 
