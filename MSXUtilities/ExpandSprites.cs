@@ -109,15 +109,16 @@ namespace MSXUtilities
 					}
 				}
 
-				// convert input colors to colors expanded
-				foreach (var line in inputColors.Split(Environment.NewLine))
+			}
+
+			// convert input colors to colors expanded
+			foreach (var line in inputColors.Split(Environment.NewLine))
+			{
+				if (line.Trim() != "")
 				{
-					if (line.Trim() != "")
+					for (int i = 0; i < factor; i++)
 					{
-						for (int i = 0; i < factor; i++)
-						{
-							colorLines.Add(line);
-						}
+						colorLines.Add(line);
 					}
 				}
 			}
