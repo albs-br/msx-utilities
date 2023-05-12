@@ -17,6 +17,48 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //// --------- MSX Wings "Stage clear" fonts for animation
+            //string inputColors = @"
+	           //     db	0x05
+	           //     db	0x05
+	           //     db	0x0f
+	           //     db	0x0f
+	           //     db	0x09
+	           //     db	0x09
+	           //     db	0x0d
+	           //     db	0x0d
+	           //     db	0x04
+	           //     db	0x04
+	           //     db	0x0c
+	           //     db	0x0c
+	           //     db	0x08
+	           //     db	0x08
+	           //     db	0x0d
+	           //     db	0x0d
+            //     ";
+            //char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'E', 'R' };
+
+            //for (int factor = 2; factor <= 5; factor++)
+            //{
+            //    var outputColors = ExpandSprites_Class.ExpandSprites(null, inputColors, factor);
+            //    var colors = outputColors.GetText_Colors();
+            //    File.WriteAllText(String.Format("colors_factor_{0}.s", factor), colors);
+
+            //    foreach (var item in charArray)
+            //    {
+            //        var inputPattern = MsxWings.FontsLarge.MsxWings_FontsLarge.GetCharPatternByNumber(item);
+
+            //        var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
+
+            //        var patterns = output.GetText_Pattern();
+            //        File.WriteAllText(String.Format("patterns_{0}_factor_{1}.s", item, factor), patterns);
+            //    }
+            //}
+            // ------------------------------------------------------
+
+
+
+
             var fontImageFilePath = @"C:\Users\XDAD\OneDrive - PETROBRAS\Desktop\ATARIPL.png";
             ConvertFontPngImageToAsmSource.Execute(fontImageFilePath);
 
