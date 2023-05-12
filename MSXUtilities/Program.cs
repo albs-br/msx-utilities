@@ -17,6 +17,9 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            var fontImageFilePath = @"C:\Users\XDAD\OneDrive - PETROBRAS\Desktop\ATARIPL.png";
+            ConvertFontPngImageToAsmSource.Execute(fontImageFilePath);
+
             //var command = "OUTI";
             //var number = 128;
             //var unrolledCommands = MakeUnrolledCommands(command, number);
@@ -50,8 +53,8 @@ namespace MSXUtilities
 
 
 
-            // Take two images (msx wings title and a base for palette cycling) and merge them
-            CreateGradientImage.Convert2ColorImageIntoImageForPaletteCycling();
+            //// Take two images (msx wings title and a base for palette cycling) and merge them
+            //CreateGradientImage.Convert2ColorImageIntoImageForPaletteCycling();
 
 
             ////Convert bmp image into smaller images that will later be 16kb chunks to be used as background scroll on MSX 2
