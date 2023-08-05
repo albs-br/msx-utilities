@@ -3159,5 +3159,51 @@ namespace MSXUtilities.MsxWings.FontsLarge
 
 			return output.ToString(); //debug
 		}
-	}
+
+		public static void Create_SPRATR_Table()
+		{
+            var str = "STAGE CLEAR";
+
+            const int NUMBER_OF_FRAMES = 16;
+            int[] factorArray = { 1, 2, 3, 4, 5, 6, 8, 10 };
+            int[] numberOfSpritesPerSide = { 1, 2, 3, 4, 5, 3, 4, 5 };
+            //int[] charWidth = { 16, 32, 48, 64, 80, 96, 128, 160 };
+            var charNumber = 0;
+
+            for (int frame = NUMBER_OF_FRAMES - 1; frame >= 0; frame--)
+            {
+                Console.WriteLine("; --- frame #" + frame);
+
+                int index = frame / 2;
+				int factor = factorArray[index];
+				int charWidth = 16 * factor;
+
+				if (index > 4) charWidth = charWidth * 2; // sprites maximized
+
+                var charPos_TopLeft_X = ((256 / 2) - ((str.Length * charWidth) / 2)) + (charNumber * charWidth);
+                var charPos_TopLeft_Y = (192 / 2) - (charWidth / 2);
+				
+				int pattern = 0;
+
+				for (int j = 0; j < numberOfSpritesPerSide[index]; j++)
+				{
+					for (int i = 0; i < numberOfSpritesPerSide[index]; i++)
+					{
+						Console.WriteLine(String.Format("\tdb {0}, {1}, {2}, {3}",
+							charPos_TopLeft_Y + (i * charWidth),
+							charPos_TopLeft_X + (j * charWidth),
+							pattern * 4, // pattern
+							0  // not used
+							));
+
+						pattern++;
+					}
+				}
+                Console.WriteLine("\tdb 216, 0, 0, 0 ; hide all sprites from here onwards");
+
+            }
+
+
+        }
+    }
 }

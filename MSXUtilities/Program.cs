@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace MSXUtilities
@@ -19,22 +20,22 @@ namespace MSXUtilities
         {
             //// --------- MSX Wings "Stage clear" fonts for animation
             //string inputColors = @"
-	           //     db	0x05
-	           //     db	0x05
-	           //     db	0x0f
-	           //     db	0x0f
-	           //     db	0x09
-	           //     db	0x09
-	           //     db	0x0d
-	           //     db	0x0d
-	           //     db	0x04
-	           //     db	0x04
-	           //     db	0x0c
-	           //     db	0x0c
-	           //     db	0x08
-	           //     db	0x08
-	           //     db	0x0d
-	           //     db	0x0d
+            //     db	0x05
+            //     db	0x05
+            //     db	0x0f
+            //     db	0x0f
+            //     db	0x09
+            //     db	0x09
+            //     db	0x0d
+            //     db	0x0d
+            //     db	0x04
+            //     db	0x04
+            //     db	0x0c
+            //     db	0x0c
+            //     db	0x08
+            //     db	0x08
+            //     db	0x0d
+            //     db	0x0d
             //     ";
             //char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'E', 'R' };
 
@@ -56,16 +57,27 @@ namespace MSXUtilities
             //}
             // ------------------------------------------------------
 
+            // ------- SPRATR table for msx-wings 'STAGE CLEAR' animation
+            MsxWings.FontsLarge.MsxWings_FontsLarge.Create_SPRATR_Table();
 
 
 
-            var fontImageFilePath = @"C:\Users\XDAD\OneDrive - PETROBRAS\Desktop\ATARIPL.png";
-            ConvertFontPngImageToAsmSource.Execute(fontImageFilePath);
+
+            // ------------------------------------------------------
+
+            //var fontImageFilePath = @"C:\Users\XDAD\OneDrive - PETROBRAS\Desktop\ATARIPL.png";
+            //ConvertFontPngImageToAsmSource.Execute(fontImageFilePath);
+
+
+            // ------------------------------------------------------
+
 
             //var command = "OUTI";
             //var number = 128;
             //var unrolledCommands = MakeUnrolledCommands(command, number);
             //return;
+
+            // ------------------------------------------------------
 
             //PocMegaROM();
 
