@@ -3165,23 +3165,39 @@ namespace MSXUtilities.MsxWings.FontsLarge
             var str = "STAGE CLEAR";
 
             const int NUMBER_OF_FRAMES = 16;
-            int[] factorArray = { 1, 2, 3, 4, 5, 6, 8, 10 };
-            int[] numberOfSpritesPerSide = { 1, 2, 3, 4, 5, 3, 4, 5 };
-            //int[] charWidth = { 16, 32, 48, 64, 80, 96, 128, 160 };
-            var charNumber = 0;
+            int[] factorArray =            {  1,  2,  3,  4,  5,  6,   8,  10 };
+            int[] numberOfSpritesPerSide = {  1,  2,  3,  4,  5,  3,   4,   5 };
+            //int[] charWidth =            { 16, 32, 48, 64, 80, 96, 128, 160 };
+            
+			
+			
+			var charNumber = 0;
 
-            for (int frame = NUMBER_OF_FRAMES - 1; frame >= 0; frame--)
+			// x first frame (160 px side):
+			var firstFrame_CharPos_TopLeft_X = ((255 - (256 - 160))/NUMBER_OF_FRAMES) * charNumber;
+			var firstFrame_CharPos_Center_X = (((256 - 160)/ str.Length) * charNumber) + (160 / 2);
+
+			// x last frame (16 px side):
+			var lastFrame_CharPos_TopLeft_X = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16);
+			var lastFrame_CharPos_Center_X  = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16) + (16/2);
+
+			// x step from one frame to another
+			double stepX = (lastFrame_CharPos_TopLeft_X - firstFrame_CharPos_TopLeft_X) / (NUMBER_OF_FRAMES / 2);
+
+			var counter = 0;
+			for (int frame = NUMBER_OF_FRAMES - 1; frame >= 0; frame--)
             {
-                Console.WriteLine("; --- frame #" + frame);
+                Console.WriteLine("; --- frame #" + (15 - frame).ToString());
 
                 int index = frame / 2;
 				int factor = factorArray[index];
-				int charWidth = 16 * factor;
+				int metaSpriteWidth = 16 * factor;
+				int spriteWidth = 16;
 
-				if (index > 4) charWidth = charWidth * 2; // sprites maximized
+				if (index > 4) spriteWidth = 32; // sprites maximized
 
-                var charPos_TopLeft_X = ((256 / 2) - ((str.Length * charWidth) / 2)) + (charNumber * charWidth);
-                var charPos_TopLeft_Y = (192 / 2) - (charWidth / 2);
+                var charPos_TopLeft_X = firstFrame_CharPos_TopLeft_X + (stepX * (counter/2));
+                var charPos_TopLeft_Y = (192 / 2) - (metaSpriteWidth / 2);
 				
 				int pattern = 0;
 
@@ -3190,8 +3206,8 @@ namespace MSXUtilities.MsxWings.FontsLarge
 					for (int i = 0; i < numberOfSpritesPerSide[index]; i++)
 					{
 						Console.WriteLine(String.Format("\tdb {0}, {1}, {2}, {3}",
-							charPos_TopLeft_Y + (i * charWidth),
-							charPos_TopLeft_X + (j * charWidth),
+							charPos_TopLeft_Y + (i * spriteWidth),
+							charPos_TopLeft_X + (j * spriteWidth),
 							pattern * 4, // pattern
 							0  // not used
 							));
@@ -3199,8 +3215,9 @@ namespace MSXUtilities.MsxWings.FontsLarge
 						pattern++;
 					}
 				}
-                Console.WriteLine("\tdb 216, 0, 0, 0 ; hide all sprites from here onwards");
+                Console.WriteLine("\tdb 216 ; Y = 216: hide all sprites from here onwards");
 
+				counter++;
             }
 
 
