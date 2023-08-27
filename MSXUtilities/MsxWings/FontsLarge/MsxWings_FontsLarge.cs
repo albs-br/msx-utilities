@@ -3171,18 +3171,18 @@ namespace MSXUtilities.MsxWings.FontsLarge
             
 			
 			
-			var charNumber = 0;
+			int charNumber = 0;
 
 			// x first frame (160 px side):
-			var firstFrame_CharPos_TopLeft_X = ((255 - (256 - 160))/NUMBER_OF_FRAMES) * charNumber;
-			var firstFrame_CharPos_Center_X = (((256 - 160)/ str.Length) * charNumber) + (160 / 2);
+			int firstFrame_CharPos_TopLeft_X = ((255 - (256 - 160))/NUMBER_OF_FRAMES) * charNumber;
+			int firstFrame_CharPos_Center_X = (((256 - 160)/ str.Length) * charNumber) + (160 / 2);
 
 			// x last frame (16 px side):
-			var lastFrame_CharPos_TopLeft_X = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16);
-			var lastFrame_CharPos_Center_X  = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16) + (16/2);
+			int lastFrame_CharPos_TopLeft_X = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16);
+			int lastFrame_CharPos_Center_X  = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16) + (16/2);
 
 			// x step from one frame to another
-			double stepX = (lastFrame_CharPos_TopLeft_X - firstFrame_CharPos_TopLeft_X) / (NUMBER_OF_FRAMES / 2);
+			double stepX = (double)(lastFrame_CharPos_TopLeft_X - firstFrame_CharPos_TopLeft_X) / ((NUMBER_OF_FRAMES / 2) - 1);
 
 			var counter = 0;
 			for (int frame = NUMBER_OF_FRAMES - 1; frame >= 0; frame--)
@@ -3196,8 +3196,8 @@ namespace MSXUtilities.MsxWings.FontsLarge
 
 				if (index > 4) spriteWidth = 32; // sprites maximized
 
-                var charPos_TopLeft_X = firstFrame_CharPos_TopLeft_X + (stepX * (counter/2));
-                var charPos_TopLeft_Y = (192 / 2) - (metaSpriteWidth / 2);
+                int charPos_TopLeft_X = firstFrame_CharPos_TopLeft_X + (int)(stepX * (counter/2));
+                int charPos_TopLeft_Y = (192 / 2) - (metaSpriteWidth / 2);
 				
 				int pattern = 0;
 
