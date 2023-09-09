@@ -3167,58 +3167,69 @@ namespace MSXUtilities.MsxWings.FontsLarge
             const int NUMBER_OF_FRAMES = 16;
             int[] factorArray =            {  1,  2,  3,  4,  5,  6,   8,  10 };
             int[] numberOfSpritesPerSide = {  1,  2,  3,  4,  5,  3,   4,   5 };
-            //int[] charWidth =            { 16, 32, 48, 64, 80, 96, 128, 160 };
-            
-			
-			
-			int charNumber = 0;
+			//int[] charWidth =            { 16, 32, 48, 64, 80, 96, 128, 160 };
 
-			// x first frame (160 px side):
-			int firstFrame_CharPos_TopLeft_X = ((255 - (256 - 160))/NUMBER_OF_FRAMES) * charNumber;
-			int firstFrame_CharPos_Center_X = (((256 - 160)/ str.Length) * charNumber) + (160 / 2);
 
-			// x last frame (16 px side):
-			int lastFrame_CharPos_TopLeft_X = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16);
-			int lastFrame_CharPos_Center_X  = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16) + (16/2);
-
-			// x step from one frame to another
-			double stepX = (double)(lastFrame_CharPos_TopLeft_X - firstFrame_CharPos_TopLeft_X) / ((NUMBER_OF_FRAMES / 2) - 1);
-
-			var counter = 0;
-			for (int frame = NUMBER_OF_FRAMES - 1; frame >= 0; frame--)
-            {
-                Console.WriteLine("; --- frame #" + (15 - frame).ToString());
-
-                int index = frame / 2;
-				int factor = factorArray[index];
-				int metaSpriteWidth = 16 * factor;
-				int spriteWidth = 16;
-
-				if (index > 4) spriteWidth = 32; // sprites maximized
-
-                int charPos_TopLeft_X = firstFrame_CharPos_TopLeft_X + (int)(stepX * (counter/2));
-                int charPos_TopLeft_Y = (192 / 2) - (metaSpriteWidth / 2);
-				
-				int pattern = 0;
-
-				for (int j = 0; j < numberOfSpritesPerSide[index]; j++)
+			for (int charNumber = 0; charNumber < str.Length; charNumber++)
+			{
+				if (str[charNumber] != ' ')
 				{
-					for (int i = 0; i < numberOfSpritesPerSide[index]; i++)
-					{
-						Console.WriteLine(String.Format("\tdb {0}, {1}, {2}, {3}",
-							charPos_TopLeft_Y + (i * spriteWidth),
-							charPos_TopLeft_X + (j * spriteWidth),
-							pattern * 4, // pattern
-							0  // not used
-							));
+					Console.WriteLine(String.Format("; ------------- char #{0}", charNumber));
+					Console.WriteLine(String.Format("StageClearAnimation_SPRATR_Char_{0}:", charNumber));
+					Console.WriteLine();
 
-						pattern++;
+					// x first frame (160 px side):
+					int firstFrame_CharPos_TopLeft_X = ((255 - (256 - 160)) / NUMBER_OF_FRAMES) * charNumber;
+					int firstFrame_CharPos_Center_X = (((256 - 160) / str.Length) * charNumber) + (160 / 2);
+
+					// x last frame (16 px side):
+					int lastFrame_CharPos_TopLeft_X = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16);
+					int lastFrame_CharPos_Center_X = ((256 / 2) - ((str.Length * 16) / 2)) + (charNumber * 16) + (16 / 2);
+
+					// x step from one frame to another
+					double stepX = (double)(lastFrame_CharPos_TopLeft_X - firstFrame_CharPos_TopLeft_X) / ((NUMBER_OF_FRAMES / 2) - 1);
+
+					var counter = 0;
+					for (int frame = NUMBER_OF_FRAMES - 1; frame >= 0; frame -= 2)
+					{
+						var currentFrame = 15 - frame;
+						Console.WriteLine(String.Format("; --- frame #{0}", currentFrame));
+						Console.WriteLine(String.Format(".frame_{0}:", currentFrame));
+
+						int index = frame / 2;
+						int factor = factorArray[index];
+						int metaSpriteWidth = 16 * factor;
+						int spriteWidth = 16;
+
+						if (index > 4) spriteWidth = 32; // sprites maximized
+
+						int charPos_TopLeft_X = firstFrame_CharPos_TopLeft_X + (int)(stepX * counter);
+						int charPos_TopLeft_Y = (192 / 2) - (metaSpriteWidth / 2);
+
+						int pattern = 0;
+
+						for (int j = 0; j < numberOfSpritesPerSide[index]; j++)
+						{
+							for (int i = 0; i < numberOfSpritesPerSide[index]; i++)
+							{
+								Console.WriteLine(String.Format("\tdb {0}, {1}, {2}, {3}",
+									charPos_TopLeft_Y + (i * spriteWidth),
+									charPos_TopLeft_X + (j * spriteWidth),
+									pattern * 4, // pattern
+									0  // not used
+									));
+
+								pattern++;
+							}
+						}
+						Console.WriteLine("\tdb 216 ; Y = 216: hide all sprites from here onwards");
+						Console.WriteLine(String.Format(".frame_{0}_size: equ $ - .frame_{0}", currentFrame));
+						Console.WriteLine();
+
+						counter++;
 					}
 				}
-                Console.WriteLine("\tdb 216 ; Y = 216: hide all sprites from here onwards");
-
-				counter++;
-            }
+			}
 
 
         }

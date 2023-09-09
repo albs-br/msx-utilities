@@ -134,13 +134,19 @@ namespace MSXUtilities
 
 	public class ExpandSprites_Output
 	{
+		public char? Item { get; set; }
+		public int Factor { get; set; }
+
 		public IList<string> Lines { get; set; }
 		public IList<string> PatternLines { get; set; }
 		public IList<string> ColorLines { get; set; }
 
-		public string GetText_Pattern()
+		public string GetText_Pattern(char item, int factor)
 		{
 			var sbText = new StringBuilder();
+
+			sbText.AppendLine(String.Format("StageClear_Patterns_{0}_factor_{1}:", item, factor));
+
 			var counter = 0;
 			foreach (var line in PatternLines)
             {
@@ -152,6 +158,9 @@ namespace MSXUtilities
 				sbText.AppendLine(line);
 				counter++;
             }
+
+			sbText.AppendLine(String.Format(".size:  equ $ - StageClear_Patterns_{0}_factor_{1}", item, factor));
+
 			return sbText.ToString();
 		}
 

@@ -37,7 +37,7 @@ namespace MSXUtilities
             //     db	0x0d
             //     db	0x0d
             //     ";
-            //char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'E', 'R' };
+            //char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'R' }; // stage clear string without repeated chars
 
             //for (int factor = 2; factor <= 5; factor++)
             //{
@@ -51,11 +51,11 @@ namespace MSXUtilities
 
             //        var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
 
-            //        var patterns = output.GetText_Pattern();
+            //        var patterns = output.GetText_Pattern(item, factor);
             //        File.WriteAllText(String.Format("patterns_{0}_factor_{1}.s", item, factor), patterns);
             //    }
             //}
-            // ------------------------------------------------------
+            //// ------------------------------------------------------
 
             // ------- SPRATR table for msx-wings 'STAGE CLEAR' animation
             MsxWings.FontsLarge.MsxWings_FontsLarge.Create_SPRATR_Table();

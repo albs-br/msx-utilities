@@ -39,8 +39,8 @@ namespace MSXUtilities
                     int chunkWidth = chunkSize;
                     int chunkHeight = chunkSize;
 
-                    // Create a new byte to hold the pixel data for the current chunk
-                    byte chunkData = 0;
+                    //// Create a new byte to hold the pixel data for the current chunk
+                    //byte chunkData = 0;
 
                     // Loop through each pixel in the chunk and set the corresponding bit in the chunkData byte
                     for (int dy = 0; dy < chunkHeight; dy++)
