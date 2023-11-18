@@ -192,6 +192,18 @@ namespace MSXUtilities
                 false
                 );
         }
+
+        public static void EnemyChopper()
+        {
+            var fileName = @"MsxWings\chopper_all.SC5";
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                0, 16, 16, 16,
+                0, 0,
+                "enemy_chopper_bottom_left"
+                );
+
+        }
     }
 
     public static class ConvertSc5ImageToSprites

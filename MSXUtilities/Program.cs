@@ -58,7 +58,7 @@ namespace MSXUtilities
             //// ------------------------------------------------------
 
             // ------- SPRATR table for msx-wings 'STAGE CLEAR' animation
-            MsxWings.FontsLarge.MsxWings_FontsLarge.Create_SPRATR_Table();
+            //MsxWings.FontsLarge.MsxWings_FontsLarge.Create_SPRATR_Table();
 
 
 
@@ -134,7 +134,11 @@ namespace MSXUtilities
             //var output = RepeatText(text, lastPage);
 
 
+
             //ConvertSc5ImageToSprites_Jobs.PlayerAndEnemyPlanes();
+            ConvertSc5ImageToSprites_Jobs.EnemyChopper();
+
+
 
             //var filename = @"Msxmas21\conveyor belt 1.txt";
             //ConvertTinySpriteBkpToSc5Format(filename);

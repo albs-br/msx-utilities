@@ -100,6 +100,9 @@
     <None Update="Msxmas21\window 1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="MsxWings\chopper_all.SC5">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="MsxWings\msx-wings title screen 1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
