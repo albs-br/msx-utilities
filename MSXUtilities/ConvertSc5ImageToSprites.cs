@@ -9,6 +9,191 @@ using System.Threading.Tasks;
 
 namespace MSXUtilities
 {
+    public static class ConvertSc5ImageToSprites_Jobs
+    {
+        public static void PlayerAndEnemyPlanes()
+        {
+            var fileName = @"MsxWings\sprites - less colors.SC5";
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                0, 0, 16, 16,
+                0, 0,
+                "player_plane_top"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                0, 16, 16, 16,
+                5, 0,                       // x: 0-4: spr0 ; 5-20 spr1
+                "player_plane_bottom",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                40, 0, 16, 16,
+                0, 0,
+                "player_shot"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                21, 0, 16, 16,
+                0, 8,
+                "enemy_plane_0",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                38, 36, 16, 16,
+                1, 4,
+                "enemy_plane_1",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                70, 39, 16, 16,
+                1, 0,
+                "enemy_plane_2",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                102, 39, 16, 16,
+                1, 0,
+                "enemy_plane_3",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                134, 38, 16, 16,
+                1, 0,
+                "enemy_plane_4",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                166, 34, 16, 16,
+                1, 8,
+                "enemy_plane_5",
+                false
+                );
+
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 0), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_0",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 1), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_1",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 2), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_2",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 3), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_3",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 4), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_4",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 5), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_5",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 6), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_6",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                6 + (32 * 7), 100, 16, 16,
+                0, 9,
+                "enemy_plane_turning_7",
+                false
+                );
+
+
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                1, 64, 16, 16,
+                0, 0,
+                "player_plane_left_0_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                1, 64 + 16, 16, 16,
+                0, 0,
+                "player_plane_left_0_bottom",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                35, 64, 16, 16,
+                0, 0,
+                "player_plane_left_1_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                35, 64 + 16, 16, 16,
+                0, 0,
+                "player_plane_left_1_bottom",
+                false
+                );
+
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                99, 64, 16, 16,
+                0, 0,
+                "player_plane_right_1_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                99, 64 + 16, 16, 16,
+                0, 0,
+                "player_plane_right_1_bottom",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                132, 64, 16, 16,
+                0, 0,
+                "player_plane_right_0_top",
+                false
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                132, 64 + 16, 16, 16,
+                0, 0,
+                "player_plane_right_0_bottom",
+                false
+                );
+        }
+    }
+
     public static class ConvertSc5ImageToSprites
     {
         const int HEADER_SIZE = 7; // 7 bytes header
