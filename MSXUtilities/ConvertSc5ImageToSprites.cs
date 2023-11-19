@@ -198,9 +198,21 @@ namespace MSXUtilities
             var fileName = @"MsxWings\chopper_all.SC5";
             ConvertSc5ImageToSprites.Execute(
                 fileName,
+                0, 0, 16, 16,
+                8, 0,
+                "enemy_chopper_0_top_left"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
                 0, 16, 16, 16,
                 0, 0,
-                "enemy_chopper_bottom_left"
+                "enemy_chopper_0_bottom_left"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                16, 16, 16, 16,
+                0, 0,
+                "enemy_chopper_0_bottom_right"
                 );
 
         }
@@ -216,6 +228,8 @@ namespace MSXUtilities
             string outputFileBaseName,
             bool bruteForcePalette = true)
         {
+            Console.WriteLine();
+            Console.WriteLine("--------------------------------------");
             Console.WriteLine("Converting sprite: " + outputFileBaseName);
 
             var paletteBytes = new byte[32];
