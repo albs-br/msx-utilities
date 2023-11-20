@@ -215,23 +215,42 @@ namespace MSXUtilities
             //    "enemy_chopper_0_bottom_right"
             //    );
 
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    32, 0, 16, 16,
+            //    8, 0,
+            //    "enemy_chopper_1_top_left"
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    32, 16, 16, 16,
+            //    0, 0,
+            //    "enemy_chopper_1_bottom_left"
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    32+16, 16, 16, 16,
+            //    0, 0,
+            //    "enemy_chopper_1_bottom_right"
+            //    );
+
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                32, 0, 16, 16,
+                64, 0, 16, 16,
                 8, 0,
-                "enemy_chopper_1_top_left"
+                "enemy_chopper_2_top_left"
                 );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                32, 16, 16, 16,
+                64, 16, 16, 16,
                 0, 0,
-                "enemy_chopper_1_bottom_left"
+                "enemy_chopper_2_bottom_left"
                 );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                32+16, 16, 16, 16,
+                64 + 16, 16, 16, 16,
                 0, 0,
-                "enemy_chopper_1_bottom_right"
+                "enemy_chopper_2_bottom_right"
                 );
         }
     }
