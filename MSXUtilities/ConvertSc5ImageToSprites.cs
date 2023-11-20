@@ -196,25 +196,43 @@ namespace MSXUtilities
         public static void EnemyChopper()
         {
             var fileName = @"MsxWings\chopper_all.SC5";
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                0, 0, 16, 16,
-                8, 0,
-                "enemy_chopper_0_top_left"
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                0, 16, 16, 16,
-                0, 0,
-                "enemy_chopper_0_bottom_left"
-                );
-            ConvertSc5ImageToSprites.Execute(
-                fileName,
-                16, 16, 16, 16,
-                0, 0,
-                "enemy_chopper_0_bottom_right"
-                );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    0, 0, 16, 16,
+            //    8, 0,
+            //    "enemy_chopper_0_top_left"
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    0, 16, 16, 16,
+            //    0, 0,
+            //    "enemy_chopper_0_bottom_left"
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    16, 16, 16, 16,
+            //    0, 0,
+            //    "enemy_chopper_0_bottom_right"
+            //    );
 
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                32, 0, 16, 16,
+                8, 0,
+                "enemy_chopper_1_top_left"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                32, 16, 16, 16,
+                0, 0,
+                "enemy_chopper_1_bottom_left"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                32+16, 16, 16, 16,
+                0, 0,
+                "enemy_chopper_1_bottom_right"
+                );
         }
     }
 
@@ -1166,7 +1184,7 @@ namespace MSXUtilities
                         color0 = colorsInTheAreaOnlyFirstSprite[0];
                         colorOfFirstSpriteIsFixed = true;
                     }
-                    if (colorsInTheAreaOnlyFirstSprite.Count > 1) throw new InvalidDataException("More than one color on first sprite only part if line #" + lineNumber);
+                    if (colorsInTheAreaOnlyFirstSprite.Count > 1) throw new InvalidDataException("More than one color on first sprite only part in line #" + lineNumber);
 
 
                     var colorsInTheAreaOnlySecondSprite = new List<int>();
@@ -1181,7 +1199,7 @@ namespace MSXUtilities
                         color1 = colorsInTheAreaOnlySecondSprite[0];
                         colorOfSecondSpriteIsFixed = true;
                     }
-                    if (colorsInTheAreaOnlySecondSprite.Count > 1) throw new InvalidDataException("More than one color on second sprite only part if line #" + lineNumber);
+                    if (colorsInTheAreaOnlySecondSprite.Count > 1) throw new InvalidDataException("More than one color on second sprite only part in line #" + lineNumber);
 
 
                     var colorsInTheIntersection = new List<int>();
