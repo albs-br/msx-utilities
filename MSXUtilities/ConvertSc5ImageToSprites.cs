@@ -195,7 +195,7 @@ namespace MSXUtilities
 
         public static void EnemyChopper()
         {
-            var fileName = @"MsxWings\chopper_all.SC5";
+            var fileName = @"MsxWings\32x32_enemies_all.SC5";
             //ConvertSc5ImageToSprites.Execute(
             //    fileName,
             //    0, 0, 16, 16,
@@ -234,24 +234,44 @@ namespace MSXUtilities
             //    "enemy_chopper_1_bottom_right"
             //    );
 
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    64, 0, 16, 16,
+            //    8, 0,
+            //    "enemy_chopper_2_top_left"
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    64, 16, 16, 16,
+            //    0, 0,
+            //    "enemy_chopper_2_bottom_left"
+            //    );
+            //ConvertSc5ImageToSprites.Execute(
+            //    fileName,
+            //    64 + 16, 16, 16, 16,
+            //    0, 0,
+            //    "enemy_chopper_2_bottom_right"
+            //    );
+
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                64, 0, 16, 16,
+                0, 64, 16, 16,
                 8, 0,
-                "enemy_chopper_2_top_left"
+                "tank_top_left"
                 );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                64, 16, 16, 16,
+                0, 64+16, 16, 16,
                 0, 0,
-                "enemy_chopper_2_bottom_left"
+                "tank_bottom_left"
                 );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
-                64 + 16, 16, 16, 16,
+                16, 64+16, 16, 16,
                 0, 0,
-                "enemy_chopper_2_bottom_right"
+                "tank_bottom_right"
                 );
+
         }
     }
 
