@@ -276,19 +276,38 @@ namespace MSXUtilities
                 fileName,
                 4 + 0, 128, 16, 16,
                 0, 0,
-                "hovercraft_frame_0_top_left"
+                "enemy_hovercraft_frame_0_top_left"
                 );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
                 4 + 16, 128, 16, 16,
                 0, 0,
-                "hovercraft_frame_0_top_right"
+                "enemy_hovercraft_frame_0_top_right"
                 );
             ConvertSc5ImageToSprites.Execute(
                 fileName,
                 6 + 0, 128 + 16, 16, 16,
                 0, 0,
-                "hovercraft_frame_0_bottom_left"
+                "enemy_hovercraft_frame_0_bottom_left"
+                );
+
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                32 + 4 + 0, 128, 16, 16,
+                0, 0,
+                "enemy_hovercraft_frame_1_top_left"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                32 + 4 + 16, 128, 16, 16,
+                0, 0,
+                "enemy_hovercraft_frame_1_top_right"
+                );
+            ConvertSc5ImageToSprites.Execute(
+                fileName,
+                32 + 6 + 0, 128 + 16, 16, 16,
+                0, 0,
+                "enemy_hovercraft_frame_1_bottom_left"
                 );
 
         }
