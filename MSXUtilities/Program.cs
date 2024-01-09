@@ -18,44 +18,46 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            //// --------- MSX Wings "Stage clear" fonts for animation
-            //string inputColors = @"
-            //     db	0x05
-            //     db	0x05
-            //     db	0x0f
-            //     db	0x0f
-            //     db	0x09
-            //     db	0x09
-            //     db	0x0d
-            //     db	0x0d
-            //     db	0x04
-            //     db	0x04
-            //     db	0x0c
-            //     db	0x0c
-            //     db	0x08
-            //     db	0x08
-            //     db	0x0d
-            //     db	0x0d
-            //     ";
-            //char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'R' }; // stage clear string without repeated chars
+            // --------- MSX Wings "Stage clear" fonts for animation
+            string inputColors = @"
+                 db	0x05
+                 db	0x05
+                 db	0x0f
+                 db	0x0f
+                 db	0x09
+                 db	0x09
+                 db	0x0d
+                 db	0x0d
+                 db	0x04
+                 db	0x04
+                 db	0x0c
+                 db	0x0c
+                 db	0x08
+                 db	0x08
+                 db	0x0d
+                 db	0x0d
+                 ";
+            //char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'R' }; // "STAGE CLEAR" string without repeated chars
+            char[] charArray = { 'G', 'M', 'O', 'V' }; // "GAME OVER" string without previous/repeated chars
 
             //for (int factor = 2; factor <= 5; factor++)
-            //{
-            //    var outputColors = ExpandSprites_Class.ExpandSprites(null, inputColors, factor);
-            //    var colors = outputColors.GetText_Colors();
-            //    File.WriteAllText(String.Format("colors_factor_{0}.s", factor), colors);
+            int factor = 2;
+            {
+                var outputColors = ExpandSprites_Class.ExpandSprites(null, inputColors, factor);
+                var colors = outputColors.GetText_Colors();
+                File.WriteAllText(String.Format("colors_factor_{0}.s", factor), colors);
 
-            //    foreach (var item in charArray)
-            //    {
-            //        var inputPattern = MsxWings.FontsLarge.MsxWings_FontsLarge.GetCharPatternByNumber(item);
+                foreach (var item in charArray)
+                {
+                    var inputPattern = MsxWings.FontsLarge.MsxWings_FontsLarge.GetCharPatternByNumber(item);
 
-            //        var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
+                    var output = ExpandSprites_Class.ExpandSprites(inputPattern, inputColors, factor);
 
-            //        var patterns = output.GetText_Pattern(item, factor);
-            //        File.WriteAllText(String.Format("patterns_{0}_factor_{1}.s", item, factor), patterns);
-            //    }
-            //}
-            //// ------------------------------------------------------
+                    var patterns = output.GetText_Pattern(item, factor);
+                    File.WriteAllText(String.Format("patterns_{0}_factor_{1}.s", item, factor), patterns);
+                }
+            }
+            // ------------------------------------------------------
 
             // ------- SPRATR table for msx-wings 'STAGE CLEAR' animation
             //MsxWings.FontsLarge.MsxWings_FontsLarge.Create_SPRATR_Table();
@@ -136,7 +138,7 @@ namespace MSXUtilities
 
 
             //ConvertSc5ImageToSprites_Jobs.PlayerAndEnemyPlanes();
-            ConvertSc5ImageToSprites_Jobs.EnemyChopper();
+            //ConvertSc5ImageToSprites_Jobs.EnemyChopper();
 
 
 
