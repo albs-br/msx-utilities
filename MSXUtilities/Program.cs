@@ -38,7 +38,7 @@ namespace MSXUtilities
                  db	0x0d
                  ";
             //char[] charArray = { 'S', 'T', 'A', 'G', 'E', 'C', 'L', 'R' }; // "STAGE CLEAR" string without repeated chars
-            char[] charArray = { 'G', 'M', 'O', 'V' }; // "GAME OVER" string without previous/repeated chars
+            char[] charArray = { 'M', 'O', 'V' }; // "GAME OVER" string without previous/repeated chars
 
             //for (int factor = 2; factor <= 5; factor++)
             int factor = 2;
