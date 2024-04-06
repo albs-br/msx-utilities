@@ -72,21 +72,57 @@ namespace MSXUtilities.MsxWings
                         }
                         if (Xend_Dest == null) { throw new Exception("Xend not found"); };
 
+                        // find horizontal start of split image (first line with some pixel != bgColor)
+                        int Ystart_Dest = 0;
+                        bool endLoop_1 = false;
+                        for (int y = Ystart_Dest; y < endY_SplitImg; y++)
+                        {
+                            for (int x = (int)Xstart_Dest; x < (int)Xend_Dest; x++)
+                            {
+                                if (bitmap.GetPixel(x, y) != bgColor)
+                                {
+                                    Ystart_Dest = y;
+                                    endLoop_1 = true;
+                                    break;
+                                }
+                            }
+
+                            if (endLoop_1) break;
+                        }
+
+                        // find horizontal end of split image (last line with some pixel != bgColor)
+                        int YEnd_Dest = endY_SplitImg;
+                        bool endLoop_2 = false;
+                        for (int y = YEnd_Dest; y > Ystart_Dest; y--)
+                        {
+                            for (int x = (int)Xstart_Dest; x < (int)Xend_Dest; x++)
+                            {
+                                if (bitmap.GetPixel(x, y) != bgColor)
+                                {
+                                    YEnd_Dest = y;
+                                    endLoop_2 = true;
+                                    break;
+                                }
+                            }
+
+                            if (endLoop_2) break;
+                        }
+
+                        var destBitmap = new Bitmap((int)Xend_Dest - (int)Xstart_Dest + 1, YEnd_Dest - Ystart_Dest + 1);
 
 
-                        var destBitmap = new Bitmap((int)Xend_Dest - (int)Xstart_Dest + 1, endY_SplitImg + 1);
-
-
-                        var srcRegion = new Rectangle((int)Xstart_Dest, 0, destBitmap.Width, destBitmap.Height);
+                        var srcRegion = new Rectangle((int)Xstart_Dest, Ystart_Dest, destBitmap.Width, destBitmap.Height);
                         var destRegion = new Rectangle(0, 0, destBitmap.Width, destBitmap.Height);
                         DuplicateLine_Class.CopyRegionIntoImage(bitmap, srcRegion, ref destBitmap, destRegion);
 
 
                         var fileNameDest = String.Format(
-                            @"plane_rotating_{0}_{1}x{2}.bmp",
+                            @"plane_rotating_{0}_size_{1}x{2}_position_{3}_{4}.bmp",
                             imageIndex,
                             destBitmap.Width,
-                            destBitmap.Height
+                            destBitmap.Height,
+                            Xstart_Dest,
+                            Ystart_Dest
                             );
 
                         // save destiny bmp
