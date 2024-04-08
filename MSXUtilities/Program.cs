@@ -18,7 +18,8 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage();
+            //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage();
+            MSXUtilities.MsxWings.PlaneRotatingImg.List_PrepareSC5Image();
 
             //// --------- MSX Wings "Stage clear" fonts for animation
             //string inputColors = @"

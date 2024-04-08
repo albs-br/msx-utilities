@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Text;
+using System.IO;
 
 namespace MSXUtilities.MsxWings
 {
@@ -134,6 +135,49 @@ namespace MSXUtilities.MsxWings
                     }
                 }
             }
+        }
+
+        public static void List_PrepareSC5Image()
+        {
+            PrepareSC5Image(@"plane_rotating_0_size_103x71_position_5_3.sc5");
+        }
+
+        public static void PrepareSC5Image(string filename)
+        {
+            // open SC5 file
+            byte[] byteArraySource = File.ReadAllBytes(filename);
+            //byte[] byteArrayDestiny = new byte[] { };
+            IList<byte> byteListDestiny = new List<byte>();
+
+            // get image width and height from file name
+            var temp = filename.Split('_')[4].Split('x');
+            int widthInPixels = int.Parse(temp[0]);
+            int widthInBytes = (int)Math.Ceiling(((decimal)widthInPixels / 2));
+            int heightInPixels = int.Parse(temp[1]);
+
+            // remove first 7 bytes (header)
+            int columnCounter = 0;
+            int lineCounter = 0;
+            for (int i = 7; i < byteArraySource.Length; i++)
+            {
+                if (columnCounter == 128)
+                {
+                    columnCounter = 0; // 128 bytes per line (SC 5)
+                    lineCounter++;
+                }
+
+                // keep only source width bytes (div by 2) per line from SC5
+                // keep only source height from SC5
+                if ((columnCounter < widthInBytes) && (lineCounter < heightInPixels))
+                {
+                    byteListDestiny.Add(byteArraySource[i]);
+                }
+
+                columnCounter++;
+            }
+
+
+
         }
     }
 }
