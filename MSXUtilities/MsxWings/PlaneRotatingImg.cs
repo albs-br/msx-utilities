@@ -13,8 +13,11 @@ namespace MSXUtilities.MsxWings
         {
             var fileNameSrc = @"MsxWings\PlaneRotating.bmp";
 
+            StringBuilder sbCommands = new StringBuilder();
+
             using (Bitmap bitmap = (Bitmap)Image.FromFile(fileNameSrc))
             {
+
                 int width = bitmap.Width;
                 int height = bitmap.Height;
 
@@ -118,7 +121,7 @@ namespace MSXUtilities.MsxWings
 
 
                         var fileNameDest = String.Format(
-                            @"plane_rotating_{0}_size_{1}x{2}_position_{3}_{4}.bmp",
+                            @"plane_rotating_{0}_size_{1}x{2}_position_{3}_{4}",
                             imageIndex,
                             destBitmap.Width,
                             destBitmap.Height,
@@ -127,27 +130,32 @@ namespace MSXUtilities.MsxWings
                             );
 
                         // save destiny bmp
-                        Console.WriteLine("Saving file: " + fileNameDest);
+                        Console.WriteLine("Saving file: " + fileNameDest + ".bmp");
                         destBitmap.Save(fileNameDest, ImageFormat.Bmp);
+
+                        sbCommands.AppendLine(fileNameDest + ".sc5");
 
                         imageIndex++;
                         xStart_Source = (int)Xend_Dest;
                     }
                 }
             }
+
+            Console.WriteLine("---------------");
+            Console.WriteLine(sbCommands.ToString());
         }
 
         public static void List_PrepareSC5Image()
         {
-            PrepareSC5Image(@"plane_rotating_0_size_103x71_position_5_3.sc5");
+            PrepareSC5Image(@"plane_rotating_0_size_103x71_position_5_3");
         }
 
         public static void PrepareSC5Image(string filename)
         {
             // open SC5 file
-            byte[] byteArraySource = File.ReadAllBytes(filename);
+            byte[] byteArraySource = File.ReadAllBytes(filename + ".sc5");
             //byte[] byteArrayDestiny = new byte[] { };
-            IList<byte> byteListDestiny = new List<byte>();
+            List<byte> byteListDestiny = new List<byte>();
 
             // get image width and height from file name
             var temp = filename.Split('_')[4].Split('x');
@@ -176,7 +184,7 @@ namespace MSXUtilities.MsxWings
                 columnCounter++;
             }
 
-
+            File.WriteAllBytes(filename + ".sc5_small", byteListDestiny.ToArray());
 
         }
     }
