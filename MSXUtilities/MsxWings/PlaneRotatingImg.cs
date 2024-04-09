@@ -147,7 +147,17 @@ namespace MSXUtilities.MsxWings
 
         public static void List_PrepareSC5Image()
         {
-            PrepareSC5Image(@"plane_rotating_0_size_103x71_position_5_3");
+            DirectoryInfo d = new DirectoryInfo(@"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1");
+
+            FileInfo[] Files = d.GetFiles("plane_rotating_*.sc5");
+
+            foreach (FileInfo file in Files)
+            {
+                PrepareSC5Image(file.Name.ToLower().Replace(".sc5", ""));
+            }
+
+
+            //PrepareSC5Image(@"plane_rotating_0_size_103x71_position_5_3");
         }
 
         public static void PrepareSC5Image(string filename)
@@ -185,7 +195,7 @@ namespace MSXUtilities.MsxWings
             }
 
             File.WriteAllBytes(filename + ".sc5_small", byteListDestiny.ToArray());
-
+            Console.WriteLine(filename + ".sc5_small");
         }
     }
 }
