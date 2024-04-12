@@ -14,6 +14,7 @@ namespace MSXUtilities.MsxWings
             var fileNameSrc = @"MsxWings\PlaneRotating.bmp";
 
             StringBuilder sbCommands = new StringBuilder();
+            StringBuilder sbCommands1 = new StringBuilder();
 
             using (Bitmap bitmap = (Bitmap)Image.FromFile(fileNameSrc))
             {
@@ -133,7 +134,15 @@ namespace MSXUtilities.MsxWings
                         Console.WriteLine("Saving file: " + fileNameDest + ".bmp");
                         destBitmap.Save(fileNameDest, ImageFormat.Bmp);
 
-                        sbCommands.AppendLine(fileNameDest + ".sc5");
+                        sbCommands.AppendLine(String.Format(".frame_{0}:", imageIndex));
+                        sbCommands.AppendLine(String.Format("	INCBIN \"ChooseInputScreen/zx0_images/{0}.sc5_small.zx0\"", fileNameDest));
+
+                        sbCommands1.AppendLine(String.Format("  dw	PlaneRotating_Images.frame_{0} 	db {1}, {2}	dw {3} * 128", 
+                            imageIndex,
+                            (int)Math.Ceiling(((decimal)destBitmap.Width / 2)), // width in bytes
+                            destBitmap.Height,
+                            Ystart_Dest
+                            ));
 
                         imageIndex++;
                         xStart_Source = (int)Xend_Dest;
@@ -143,6 +152,8 @@ namespace MSXUtilities.MsxWings
 
             Console.WriteLine("---------------");
             Console.WriteLine(sbCommands.ToString());
+            Console.WriteLine("---------------");
+            Console.WriteLine(sbCommands1.ToString());
         }
 
         public static void List_PrepareSC5Image()
