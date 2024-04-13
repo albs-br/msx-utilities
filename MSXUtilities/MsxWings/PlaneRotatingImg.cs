@@ -9,7 +9,7 @@ namespace MSXUtilities.MsxWings
 {
     public static class PlaneRotatingImg
     {
-        public static void SplitImage()
+        public static void SplitImage(int startY_SplitImg, int endY_SplitImg, int imageIndex)
         {
             var fileNameSrc = @"MsxWings\PlaneRotating.bmp";
 
@@ -23,11 +23,11 @@ namespace MSXUtilities.MsxWings
                 int height = bitmap.Height;
 
 
-                int endY_SplitImg = 78;
+                //int endY_SplitImg = 78;
 
                 Color bgColor = bitmap.GetPixel(0, 0);
 
-                var imageIndex = 0;
+                //var imageIndex = 0;
                 int xStart_Source = 0;
                 bool endLoop = false;
 
@@ -39,7 +39,7 @@ namespace MSXUtilities.MsxWings
                     {
                         if (Xstart_Dest != null) break;
 
-                        for (int y = 0; y < endY_SplitImg; y++)
+                        for (int y = startY_SplitImg; y < endY_SplitImg; y++)
                         {
                             if (bitmap.GetPixel(x, y) != bgColor)
                             {
@@ -60,7 +60,7 @@ namespace MSXUtilities.MsxWings
                         for (int x = (int)Xstart_Dest; x < width; x++)
                         {
                             bool allPixelsEqualBgColor = true;
-                            for (int y = 0; y < endY_SplitImg; y++)
+                            for (int y = startY_SplitImg; y < endY_SplitImg; y++)
                             {
                                 if (bitmap.GetPixel(x, y) != bgColor)
                                 {
@@ -78,7 +78,7 @@ namespace MSXUtilities.MsxWings
                         if (Xend_Dest == null) { throw new Exception("Xend not found"); };
 
                         // find horizontal start of split image (first line with some pixel != bgColor)
-                        int Ystart_Dest = 0;
+                        int Ystart_Dest = startY_SplitImg;
                         bool endLoop_1 = false;
                         for (int y = Ystart_Dest; y < endY_SplitImg; y++)
                         {
@@ -127,21 +127,21 @@ namespace MSXUtilities.MsxWings
                             destBitmap.Width,
                             destBitmap.Height,
                             Xstart_Dest,
-                            Ystart_Dest
+                            Ystart_Dest - startY_SplitImg
                             );
 
                         // save destiny bmp
                         Console.WriteLine("Saving file: " + fileNameDest + ".bmp");
-                        destBitmap.Save(fileNameDest, ImageFormat.Bmp);
+                        destBitmap.Save(fileNameDest + ".bmp", ImageFormat.Bmp);
 
                         sbCommands.AppendLine(String.Format(".frame_{0}:", imageIndex));
                         sbCommands.AppendLine(String.Format("	INCBIN \"ChooseInputScreen/zx0_images/{0}.sc5_small.zx0\"", fileNameDest));
 
-                        sbCommands1.AppendLine(String.Format("  dw	PlaneRotating_Images.frame_{0} 	db {1}, {2}	dw {3} * 128", 
+                        sbCommands1.AppendLine(String.Format("  dw	PlaneRotating_Images_?.frame_{0} 	db {1}, {2}	dw {3} * 128", 
                             imageIndex,
                             (int)Math.Ceiling(((decimal)destBitmap.Width / 2)), // width in bytes
                             destBitmap.Height,
-                            Ystart_Dest
+                            Ystart_Dest - startY_SplitImg
                             ));
 
                         imageIndex++;
@@ -156,7 +156,7 @@ namespace MSXUtilities.MsxWings
             Console.WriteLine(sbCommands1.ToString());
         }
 
-        public static void List_PrepareSC5Image()
+        public static void List_PrepareSC5Image(int firstIndex, int lastIndex)
         {
             DirectoryInfo d = new DirectoryInfo(@"C:\Users\albs_\source\repos\msx-utilities\MSXUtilities\bin\Debug\netcoreapp3.1");
 
@@ -164,7 +164,11 @@ namespace MSXUtilities.MsxWings
 
             foreach (FileInfo file in Files)
             {
-                PrepareSC5Image(file.Name.ToLower().Replace(".sc5", ""));
+                int imageIndex = int.Parse(file.Name.Split('_')[2]);
+                if (imageIndex >= firstIndex && imageIndex <= lastIndex)
+                {
+                    PrepareSC5Image(file.Name.ToLower().Replace(".sc5", ""));
+                }
             }
 
 
