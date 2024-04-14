@@ -20,8 +20,11 @@ namespace MSXUtilities
         {
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(85 - 12 + 1, 147, 13);
+            //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(172 - 20, 222, 27);
+            //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(228, 308, 39);
             //MSXUtilities.MsxWings.PlaneRotatingImg.List_PrepareSC5Image(0, 12);
-            MSXUtilities.MsxWings.PlaneRotatingImg.List_PrepareSC5Image(13, 26);
+            //MSXUtilities.MsxWings.PlaneRotatingImg.List_PrepareSC5Image(13, 26);
+            //MSXUtilities.MsxWings.PlaneRotatingImg.List_PrepareSC5Image(27, 44);
 
             //// --------- MSX Wings "Stage clear" fonts for animation
             //string inputColors = @"

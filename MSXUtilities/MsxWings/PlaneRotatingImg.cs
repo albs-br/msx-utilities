@@ -175,6 +175,9 @@ namespace MSXUtilities.MsxWings
             //PrepareSC5Image(@"plane_rotating_0_size_103x71_position_5_3");
         }
 
+        /// <summary>
+        /// Remove 7-byte header and unused columns (from 256 cols to the size of image)
+        /// </summary>
         public static void PrepareSC5Image(string filename)
         {
             // open SC5 file
