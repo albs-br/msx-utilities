@@ -18,6 +18,34 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            IDictionary<byte[], int> dict = new Dictionary<byte[], int>();
+
+            byte[] input = File.ReadAllBytes(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level1_0.sra.new");
+
+            for (int i = 0; i < input.Length; i += 4)
+            {
+                var found = dict.FirstOrDefault(x =>
+                    x.Key[0] == input[i] &&
+                    x.Key[1] == input[i + 1] &&
+                    x.Key[2] == input[i + 2] &&
+                    x.Key[3] == input[i + 3]
+                    );
+
+                if (found.Key == null)
+                {
+                    dict.Add(new byte[] { input[i], input[i + 1], input[i + 2], input[i + 3] }, 1);
+                }
+                else
+                {
+                    int qtd = found.Value + 1;
+                    dict[found.Key] = qtd;
+                }
+
+            }
+
+            var result = dict.OrderByDescending(x => x.Value).ToList();
+
+
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(85 - 12 + 1, 147, 13);
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(172 - 20, 222, 27);
