@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSXUtilities.MsxWings;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -18,67 +19,8 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            IDictionary<byte[], int> dict = new Dictionary<byte[], int>();
+            SC11_Compressor.Method_1();
 
-            int inputSize = 0;
-
-            for (int n = 0; n <= 15; n++)
-            {
-                byte[] input = File.ReadAllBytes(String.Format(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level1_{0}.sra.new", n));
-                inputSize += input.Length;
-
-                for (int i = 0; i < input.Length; i += 4)
-                {
-                    var found = dict.FirstOrDefault(x =>
-                        x.Key[0] == input[i] &&
-                        x.Key[1] == input[i + 1] &&
-                        x.Key[2] == input[i + 2] &&
-                        x.Key[3] == input[i + 3]
-                        );
-
-                    if (found.Key == null)
-                    {
-                        dict.Add(new byte[] { input[i], input[i + 1], input[i + 2], input[i + 3] }, 1);
-                    }
-                    else
-                    {
-                        int qtd = found.Value + 1;
-                        dict[found.Key] = qtd;
-                    }
-
-                }
-            }
-
-            var result = dict.OrderByDescending(x => x.Value).ToList();
-
-            //byte[] output = Array.Empty<byte>();
-            int outputSize = 0;
-            for (int i = 0; i < result.Count; i++)
-            {
-                // first 254 index (the ones with most repetitions) will become one-byte indexes
-                if (i <= 254) outputSize += result[i].Value;
-
-                // two-byte indexes
-                else if (i > 254 && i <= (255 + 254)) outputSize += result[i].Value * 2;
-
-                // literals
-                else {
-                    outputSize += result[i].Value * 4;
-                }
-
-            }
-
-            Console.WriteLine("inputSize: " + inputSize);
-            Console.WriteLine("outputSize: " + outputSize);
-            Console.WriteLine("dict size: " + (result.Count * 4));
-
-            /*
-            0-254       one-byte index      (255 values)
-
-            255, 0-254  two-byte index      (255 values)
-
-            255, 255, 
-            */
 
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(85 - 12 + 1, 147, 13);

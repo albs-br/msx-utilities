@@ -1,0 +1,110 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+
+namespace MSXUtilities.MsxWings
+{
+    public static class SC11_Compressor
+    {
+        /// <summary>
+        /// Chunk size: 4 bytes
+        /// Dictionary:
+        ///    1-254       one-byte index      (254 values)
+        ///    255, 0-254  two-byte index(255 values)
+        /// Literals: 5 bytes
+        ///     0, 4 bytes literal
+        /// </summary>
+        public static void Method_1()
+        {
+            const int CHUNK_SIZE = 4;
+            const int ONE_BYTE_INDEX_MAX = 254;
+            const int TWO_BYTES_INDEX_MAX = 255;
+
+            IDictionary<byte[], int> dict = new Dictionary<byte[], int>();
+
+            int inputSize = 0;
+
+            for (int n = 0; n <= 15; n++)
+            {
+                byte[] input = File.ReadAllBytes(String.Format(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level1_{0}.sra.new", n));
+                inputSize += input.Length;
+
+                for (int i = 0; i < input.Length; i += CHUNK_SIZE)
+                {
+                    var found = dict.FirstOrDefault(x =>
+                        x.Key[0] == input[i] &&
+                        x.Key[1] == input[i + 1] &&
+                        x.Key[2] == input[i + 2] &&
+                        x.Key[3] == input[i + 3]
+                        );
+
+                    //IList<byte[], int> list = new List<byte[], int>();
+                    //list = dict.Where(x => x.Key[0] == input[i]);
+                    //for (int j = 1; j < CHUNK_SIZE; j++)
+                    //{
+                    //    list = list.Where(x => x.Key[j] == input[i+j]);
+                    //}
+
+                    //var found = list.FirstOrDefault();
+
+                    if (found.Key == null)
+                    {
+                        //dict.Add(new byte[] { input[i], input[i + 1], input[i + 2], input[i + 3] }, 1);
+
+                        byte[] temp = new byte[CHUNK_SIZE];
+                        for (int j = 0; j < CHUNK_SIZE; j++)
+                        {
+                            temp[j] = input[i + j];
+                        }
+
+                        dict.Add(temp, 1);
+                    }
+                    else
+                    {
+                        int qtd = found.Value + 1;
+                        dict[found.Key] = qtd;
+                    }
+
+                }
+            }
+
+            var result = dict.OrderByDescending(x => x.Value).ToList();
+
+            //byte[] output = Array.Empty<byte>();
+            int outputSize = 0;
+            for (int i = 0; i < result.Count; i++)
+            {
+                // first 253 indexes (the ones with most repetitions) will become one-byte indexes
+                if (i <= ONE_BYTE_INDEX_MAX - 1)
+                {
+                    outputSize += result[i].Value;
+                }
+
+                // two-byte indexes
+                else if (i > (ONE_BYTE_INDEX_MAX - 1) && i <= (TWO_BYTES_INDEX_MAX + ONE_BYTE_INDEX_MAX - 1))
+                {
+                    outputSize += result[i].Value * 2;
+                }
+
+                // literals
+                else
+                {
+                    outputSize += result[i].Value * (CHUNK_SIZE + 1);
+                }
+
+            }
+
+            var resultWithotQtd_1 = result.Where(x => x.Value > 1).ToList();
+            int dictSize = resultWithotQtd_1.Count * 4;
+            double ratio = (outputSize + dictSize) / (double)inputSize;
+
+
+            Console.WriteLine("inputSize: " + inputSize);
+            Console.WriteLine("outputSize: " + outputSize);
+            Console.WriteLine("dict size: " + dictSize);
+            Console.WriteLine("ratio: " + ratio);
+        }
+    }
+}
