@@ -106,5 +106,50 @@ namespace MSXUtilities.MsxWings
             Console.WriteLine("dict size: " + dictSize);
             Console.WriteLine("ratio: " + ratio);
         }
+
+        public static void Method_2()
+        {
+            // 16 pages of 16 kb each
+            byte[] input = File.ReadAllBytes(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level1_all.sra.new");
+
+            int windowStart = 16 * 1024 * 12;       // start of page 12
+            int windowEnd = (16 * 1024 * 16) - 1;   // end of last page
+            
+
+            //TODO: test just on line
+
+            int inputCurrenPosition = windowStart - 256; // start of last line of page 11
+            while (inputCurrenPosition >= 0)
+            {
+                for (int blockSize = 127; blockSize >= 4; blockSize--) // size of block
+                {
+                    byte[] block = new byte[blockSize];
+
+                    //populate block array
+                    for (int i = 0; i < blockSize; i++)
+                    {
+                        block[i] = input[inputCurrenPosition + i];
+                    }
+
+                    // loop through all window looking for a sequence equal block array
+                    for (int i = windowStart; i < windowEnd; i++)
+                    {
+                        bool found = true;
+                        for (int j = 0; j < blockSize; j++)
+                        {
+                            if (!found && block[j] != input[inputCurrenPosition + i + j])
+                            {
+                                found = false;
+                            }
+                        }
+
+                        if(!found) 
+                        { 
+                            // populate output, update vars
+                        }
+                    }
+                }
+            }
+        }
     }
 }
