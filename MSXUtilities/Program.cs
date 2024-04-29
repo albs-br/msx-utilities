@@ -19,7 +19,7 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            SC11_Compressor.Method_1();
+            SC11_Compressor.Method_2();
 
 
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);

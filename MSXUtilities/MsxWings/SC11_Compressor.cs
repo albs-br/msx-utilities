@@ -110,7 +110,7 @@ namespace MSXUtilities.MsxWings
         public static void Method_2()
         {
             // 16 pages of 16 kb each
-            byte[] input = File.ReadAllBytes(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level1_all.sra.new");
+            byte[] input = File.ReadAllBytes(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level_1_all.sca");
 
             int windowStart = 16 * 1024 * 12;       // start of page 12
             int windowEnd = (16 * 1024 * 16) - 1;   // end of last page
@@ -118,33 +118,54 @@ namespace MSXUtilities.MsxWings
 
             //TODO: test just on line
 
-            int inputCurrenPosition = windowStart - 256; // start of last line of page 11
-            while (inputCurrenPosition >= 0)
+            int inputCurrentPosition = windowStart - 256; // start of last line of page 11
+            //while (inputCurrentPosition >= 0)
             {
-                for (int blockSize = 127; blockSize >= 4; blockSize--) // size of block
+
+                Console.WriteLine("Input current position: " + inputCurrentPosition);
+
+                for (int blockSize = 127; blockSize >= 4; blockSize--)
                 {
+                    Console.WriteLine("Block size: " + blockSize);
+
                     byte[] block = new byte[blockSize];
 
                     //populate block array
                     for (int i = 0; i < blockSize; i++)
                     {
-                        block[i] = input[inputCurrenPosition + i];
+                        block[i] = input[inputCurrentPosition + i];
                     }
 
                     // loop through all window looking for a sequence equal block array
-                    for (int i = windowStart; i < windowEnd; i++)
+                    for (int i = windowStart; i < windowEnd - blockSize; i++)
                     {
+                        //Console.WriteLine("  searching window position: " + i);
+
                         bool found = true;
                         for (int j = 0; j < blockSize; j++)
                         {
-                            if (!found && block[j] != input[inputCurrenPosition + i + j])
+                            if (block[j] != input[i + j])
                             {
                                 found = false;
                             }
                         }
 
-                        if(!found) 
-                        { 
+                        if(found)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("    Found: input position: " + i);
+                            for (int j = 0; j < blockSize; j++)
+                            {
+                                Console.Write(input[i + j] + ",");
+                            }
+
+                            Console.WriteLine();
+                            Console.WriteLine("    new line block: " + inputCurrentPosition);
+                            for (int j = 0; j < blockSize; j++)
+                            {
+                                Console.Write(block[j] + ",");
+                            }
+
                             // populate output, update vars
                         }
                     }
