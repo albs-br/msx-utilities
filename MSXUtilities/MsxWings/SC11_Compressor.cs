@@ -134,8 +134,6 @@ namespace MSXUtilities.MsxWings
         {
             // 16 pages of 16 kb each
             byte[] input = File.ReadAllBytes(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level_1_all.sca");
-            //byte[] output = Array.Empty<byte>();
-            IList<byte> output = new List<byte>();
 
             int windowStart = 16 * 1024 * 12;       // start of page 12
             int windowEnd = (16 * 1024 * 16) - 1;   // end of last page
@@ -144,98 +142,162 @@ namespace MSXUtilities.MsxWings
             // provisory; debug: testing just one line compression
 
             int inputCurrentPosition = windowStart - 256; // start of last line of page 11
-            while (inputCurrentPosition < windowStart)
+
+            while (inputCurrentPosition >= 0)
             {
-                Console.WriteLine();
-                Console.WriteLine("Input current position: " + inputCurrentPosition);
-                Console.WriteLine("Input current position (inside window): " + (inputCurrentPosition - (windowStart - 256)));
+                //byte[] output = Array.Empty<byte>();
+                IList<byte> outputCurrentLine = new List<byte>();
 
-                // calc block size max (check end of line)
-                int remainingBytesInInput = windowStart - inputCurrentPosition;
-                int blockMaxSize = (remainingBytesInInput > 127) ? 127 : remainingBytesInInput;
+                int saveInputCurrentPosition = inputCurrentPosition;
 
-
-                bool found_2 = false;
-                for (int blockSize = blockMaxSize; blockSize >= 4; blockSize--)
+                while (inputCurrentPosition < windowStart)
                 {
-                    //Console.WriteLine("  Block size: " + blockSize);
-
-                    byte[] block = new byte[blockSize];
-
-                    //populate block array
-                    for (int i = 0; i < blockSize; i++)
-                    {
-                        block[i] = input[inputCurrentPosition + i];
-                    }
-
-                    // loop through all window looking for a sequence equal block array
-                    bool found_1 = false;
-                    for (int i = windowStart; i < windowEnd - blockSize; i++)
-                    {
-                        //Console.WriteLine("  searching window position: " + i);
-
-                        bool found = true;
-                        for (int j = 0; j < blockSize; j++)
-                        {
-                            if (block[j] != input[i + j])
-                            {
-                                found = false;
-                            }
-                        }
-
-                        if(found)
-                        {
-                            Console.WriteLine("  Block size: " + blockSize);
-
-                            Console.WriteLine();
-                            Console.WriteLine("    Found: input position: " + i);
-                            Console.Write("      ");
-                            for (int j = 0; j < blockSize; j++)
-                            {
-                                Console.Write(input[i + j] + ",");
-                            }
-
-                            Console.WriteLine();
-                            Console.WriteLine("    new line block: " + inputCurrentPosition);
-                            Console.Write("      ");
-                            for (int j = 0; j < blockSize; j++)
-                            {
-                                Console.Write(block[j] + ",");
-                            }
-
-                            // populate output, update vars
-                            output.Add((byte)block.Length); // block header
-                            output.Add((byte)(i & 0x000ff)); // address low byte
-                            output.Add((byte)((i & 0x0ff00) >> 8)); // address hi byte
-                            inputCurrentPosition += blockSize;
-                            found_1 = true;
-                            found_2 = true;
-
-                            Console.WriteLine();
-                            Console.WriteLine("    output current size: " + output.Count);
-
-                            break;
-                        }
-                    }
-                    if (found_1) break;
-                }
-                if (!found_2)
-                {
-                    // not found, make it literal of 4 bytes
-                    //int literalSize = 4;
-
-                    output.Add(0b10000000 & 4); // block header (bit 7 set, bits 6-0: size of literal)
-                    output.Add(input[inputCurrentPosition]);
-                    output.Add(input[inputCurrentPosition + 1]);
-                    output.Add(input[inputCurrentPosition + 2]);
-                    output.Add(input[inputCurrentPosition + 3]);
-                    inputCurrentPosition += 1 + 4;
-
                     Console.WriteLine();
-                    Console.WriteLine("  not found, literal of 4 bytes");
-                    Console.WriteLine("    output current size: " + output.Count);
+                    Console.WriteLine("Input current position: " + inputCurrentPosition);
+                    Console.WriteLine("Input current position (inside current line): " + (inputCurrentPosition - (windowStart - 256)));
+
+                    // calc block size max (check end of line)
+                    int remainingBytesInInput = windowStart - inputCurrentPosition;
+                    int blockMaxSize = (remainingBytesInInput > 127) ? 127 : remainingBytesInInput;
+
+
+                    bool found_2 = false;
+                    for (int blockSize = blockMaxSize; blockSize >= 4; blockSize--)
+                    {
+                        //Console.WriteLine("  Block size: " + blockSize);
+
+                        byte[] block = new byte[blockSize];
+
+                        //populate block array
+                        for (int i = 0; i < blockSize; i++)
+                        {
+                            block[i] = input[inputCurrentPosition + i];
+                        }
+
+                        // loop through all window looking for a sequence equal block array
+                        bool found_1 = false;
+                        for (int i = windowStart; i < windowEnd - blockSize; i++)
+                        {
+                            //Console.WriteLine("  searching window position: " + i);
+
+                            bool found = true;
+                            for (int j = 0; j < blockSize; j++)
+                            {
+                                if (block[j] != input[i + j])
+                                {
+                                    found = false;
+                                }
+                            }
+
+                            if (found)
+                            {
+                                Console.WriteLine("  Block size: " + blockSize);
+
+                                Console.WriteLine();
+                                Console.WriteLine("  Found!");
+                                Console.WriteLine("    input position: " + i);
+                                Console.WriteLine("    input position inside window: " + (i- windowStart));
+                                Console.Write("      ");
+                                for (int j = 0; j < blockSize; j++)
+                                {
+                                    Console.Write(input[i + j] + ",");
+                                }
+
+                                Console.WriteLine();
+                                Console.WriteLine("    new line position: " + inputCurrentPosition);
+                                Console.Write("      ");
+                                for (int j = 0; j < blockSize; j++)
+                                {
+                                    Console.Write(block[j] + ",");
+                                }
+
+                                // populate output, update vars
+                                outputCurrentLine.Add((byte)block.Length); // block header
+                                outputCurrentLine.Add((byte)((i - windowStart) & 0x000ff)); // address low byte
+                                outputCurrentLine.Add((byte)(((i - windowStart) & 0x0ff00) >> 8)); // address hi byte
+                                inputCurrentPosition += blockSize;
+                                found_1 = true;
+                                found_2 = true;
+
+                                Console.WriteLine();
+                                Console.WriteLine("    output current size: " + outputCurrentLine.Count);
+
+                                break;
+                            }
+                        }
+                        if (found_1) break;
+                    }
+                    if (!found_2)
+                    {
+                        // not found, make it literal of 4 bytes
+                        //int literalSize = 4;
+
+                        outputCurrentLine.Add(0b10000000 & 4); // block header (bit 7 set, bits 6-0: size of literal)
+                        outputCurrentLine.Add(input[inputCurrentPosition]);
+                        outputCurrentLine.Add(input[inputCurrentPosition + 1]);
+                        outputCurrentLine.Add(input[inputCurrentPosition + 2]);
+                        outputCurrentLine.Add(input[inputCurrentPosition + 3]);
+                        inputCurrentPosition += 1 + 4;
+
+                        Console.WriteLine();
+                        Console.WriteLine("  not found, useing literal of 4 bytes:");
+                        Console.Write("      ");
+                        for (int j = 0; j < 4; j++)
+                        {
+                            Console.Write(input[inputCurrentPosition + j] + ",");
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("    output current size: " + outputCurrentLine.Count);
+                    }
                 }
+
+                //// validate compressed data (unpack and compare to input)
+                //{
+                //    IList<byte> unpackedLine = new List<byte>();
+                //    int i = 0;
+                //    //for (int i = 0; i < outputCurrentLine.Count; i++)
+                //    while (i < outputCurrentLine.Count)
+                //    {
+                //        if ((outputCurrentLine[i] & 0b10000000) == 0x00)
+                //        {
+                //            // compressed data
+                //            int size = outputCurrentLine[i];
+                //            int address = (outputCurrentLine[i + 2] << 8) | outputCurrentLine[i + 1];
+
+                //            for (int j = address; j < address + size; j++)
+                //            {
+                //                unpackedLine.Add(input[j]);
+                //            }
+
+                //            i += 3;
+                //        }
+                //        else
+                //        {
+                //            // literal
+                //            int literalSize = (outputCurrentLine[i] & 0b01111111);
+
+                //            for (int j = 0; j < literalSize; j++)
+                //            {
+                //                unpackedLine.Add(outputCurrentLine[i + 1 + j]);
+                //            }
+
+                //            i += literalSize + 1;
+                //        }
+                //    }
+                //}
+
+
+                inputCurrentPosition = saveInputCurrentPosition - 256;
+                windowStart -= 256;
+                windowEnd -= 256;
+
+                Console.WriteLine();
+                Console.WriteLine("--------------------------------------------");
+
+                Console.ReadKey();
             }
+
+
         }
 
         /// <summary>
