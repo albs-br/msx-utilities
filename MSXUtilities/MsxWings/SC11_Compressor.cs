@@ -111,6 +111,8 @@ namespace MSXUtilities.MsxWings
         {
             // 16 pages of 16 kb each
             byte[] input = File.ReadAllBytes(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level_1_all.sca");
+            //byte[] output = Array.Empty<byte>();
+            IList<byte> output = new List<byte>();
 
             int windowStart = 16 * 1024 * 12;       // start of page 12
             int windowEnd = (16 * 1024 * 16) - 1;   // end of last page
@@ -123,10 +125,15 @@ namespace MSXUtilities.MsxWings
             {
                 Console.WriteLine();
                 Console.WriteLine("Input current position: " + inputCurrentPosition);
+                Console.WriteLine("Input current position (inside window): " + (inputCurrentPosition - (windowStart - 256)));
 
-                // TODO: calc block size max (check end of line)
+                // calc block size max (check end of line)
+                int remainingBytesInInput = windowStart - inputCurrentPosition;
+                int blockMaxSize = (remainingBytesInInput > 127) ? 127 : remainingBytesInInput;
 
-                for (int blockSize = 127; blockSize >= 4; blockSize--)
+
+                bool found_2 = false;
+                for (int blockSize = blockMaxSize; blockSize >= 4; blockSize--)
                 {
                     //Console.WriteLine("  Block size: " + blockSize);
 
@@ -174,13 +181,36 @@ namespace MSXUtilities.MsxWings
                             }
 
                             // populate output, update vars
-                            // TODO: populate output
+                            output.Add((byte)block.Length); // block header
+                            output.Add((byte)(i & 0x00ff)); // address low byte
+                            output.Add((byte)((i & 0xff00) >> 8)); // address hi byte
                             inputCurrentPosition += blockSize;
                             found_1 = true;
+                            found_2 = true;
+
+                            Console.WriteLine();
+                            Console.WriteLine("    output current size: " + output.Count);
+
                             break;
                         }
                     }
                     if (found_1) break;
+                }
+                if (!found_2)
+                {
+                    // not found, make it literal of 4 bytes
+                    //int literalSize = 4;
+
+                    output.Add(0b10000000 & 4); // block header (bit 7 set, bits 6-0: size of literal)
+                    output.Add(input[inputCurrentPosition]);
+                    output.Add(input[inputCurrentPosition + 1]);
+                    output.Add(input[inputCurrentPosition + 2]);
+                    output.Add(input[inputCurrentPosition + 3]);
+                    inputCurrentPosition += 1 + 4;
+
+                    Console.WriteLine();
+                    Console.WriteLine("  not found, literal of 4 bytes");
+                    Console.WriteLine("    output current size: " + output.Count);
                 }
             }
         }
