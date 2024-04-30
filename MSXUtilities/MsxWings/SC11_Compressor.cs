@@ -119,14 +119,16 @@ namespace MSXUtilities.MsxWings
             //TODO: test just on line
 
             int inputCurrentPosition = windowStart - 256; // start of last line of page 11
-            //while (inputCurrentPosition >= 0)
+            while (inputCurrentPosition < windowStart)
             {
-
+                Console.WriteLine();
                 Console.WriteLine("Input current position: " + inputCurrentPosition);
+
+                // TODO: calc block size max (check end of line)
 
                 for (int blockSize = 127; blockSize >= 4; blockSize--)
                 {
-                    Console.WriteLine("Block size: " + blockSize);
+                    //Console.WriteLine("  Block size: " + blockSize);
 
                     byte[] block = new byte[blockSize];
 
@@ -137,6 +139,7 @@ namespace MSXUtilities.MsxWings
                     }
 
                     // loop through all window looking for a sequence equal block array
+                    bool found_1 = false;
                     for (int i = windowStart; i < windowEnd - blockSize; i++)
                     {
                         //Console.WriteLine("  searching window position: " + i);
@@ -152,8 +155,11 @@ namespace MSXUtilities.MsxWings
 
                         if(found)
                         {
+                            Console.WriteLine("  Block size: " + blockSize);
+
                             Console.WriteLine();
                             Console.WriteLine("    Found: input position: " + i);
+                            Console.Write("      ");
                             for (int j = 0; j < blockSize; j++)
                             {
                                 Console.Write(input[i + j] + ",");
@@ -161,14 +167,20 @@ namespace MSXUtilities.MsxWings
 
                             Console.WriteLine();
                             Console.WriteLine("    new line block: " + inputCurrentPosition);
+                            Console.Write("      ");
                             for (int j = 0; j < blockSize; j++)
                             {
                                 Console.Write(block[j] + ",");
                             }
 
                             // populate output, update vars
+                            // TODO: populate output
+                            inputCurrentPosition += blockSize;
+                            found_1 = true;
+                            break;
                         }
                     }
+                    if (found_1) break;
                 }
             }
         }
