@@ -134,22 +134,35 @@ namespace MSXUtilities.MsxWings
         {
             // 16 pages of 16 kb each
             byte[] input = File.ReadAllBytes(@"C:\Users\XDAD\source\repos\msx-wings\Graphics\Bitmaps\Level_1\level_1_all.sca");
+            IList<byte> output = new List<byte>();
 
             int windowStart = 16 * 1024 * 12;       // start of page 12
             int windowEnd = (16 * 1024 * 16) - 1;   // end of last page
-            
 
-            // provisory; debug: testing just one line compression
+
+            //// testing
+            //int addrLargerThan4096 = 0;
+            //int addrSmallerThan4096 = 0;
+
 
             int inputCurrentPosition = windowStart - 256; // start of last line of page 11
+            int inputCounter = 0;
+
+            IList<byte> outputCurrentLine;
 
             while (inputCurrentPosition >= 0)
             {
                 //byte[] output = Array.Empty<byte>();
-                IList<byte> outputCurrentLine = new List<byte>();
+                outputCurrentLine = new List<byte>();
 
-                int saveInputCurrentPosition = inputCurrentPosition;
+                int compressedBlocks = 0;
+                int literalBlocks = 0;
+                bool lastBlockWasLiteral = false;
+                int consecutiveLiteralBlocks = 0;
 
+                int savedInputCurrentPosition = inputCurrentPosition;
+
+                // compress new line
                 while (inputCurrentPosition < windowStart)
                 {
                     Console.WriteLine();
@@ -191,12 +204,14 @@ namespace MSXUtilities.MsxWings
 
                             if (found)
                             {
+                                //if ((i - windowStart) < 4096) addrSmallerThan4096++; else addrLargerThan4096++;
+
                                 Console.WriteLine("  Block size: " + blockSize);
 
                                 Console.WriteLine();
                                 Console.WriteLine("  Found!");
                                 Console.WriteLine("    input position: " + i);
-                                Console.WriteLine("    input position inside window: " + (i- windowStart));
+                                Console.WriteLine("    input position inside window: " + (i - windowStart));
                                 Console.Write("      ");
                                 for (int j = 0; j < blockSize; j++)
                                 {
@@ -219,6 +234,10 @@ namespace MSXUtilities.MsxWings
                                 found_1 = true;
                                 found_2 = true;
 
+                                compressedBlocks++;
+
+                                lastBlockWasLiteral = false;
+
                                 Console.WriteLine();
                                 Console.WriteLine("    output current size: " + outputCurrentLine.Count);
 
@@ -229,20 +248,35 @@ namespace MSXUtilities.MsxWings
                     }
                     if (!found_2)
                     {
-                        // not found, make it literal of 4 bytes
-                        //int literalSize = 4;
+                        // not found, make it literal of 4 bytes (or less bytes, in case of end of line)
+                        int literalSize = 4;
+                        if (remainingBytesInInput < 4)
+                        {
+                            literalSize = remainingBytesInInput;
+                        }
 
-                        outputCurrentLine.Add(0b10000000 & 4); // block header (bit 7 set, bits 6-0: size of literal)
-                        outputCurrentLine.Add(input[inputCurrentPosition]);
-                        outputCurrentLine.Add(input[inputCurrentPosition + 1]);
-                        outputCurrentLine.Add(input[inputCurrentPosition + 2]);
-                        outputCurrentLine.Add(input[inputCurrentPosition + 3]);
-                        inputCurrentPosition += 1 + 4;
+                        outputCurrentLine.Add((byte)(0b10000000 | literalSize)); // block header (bit 7 set, bits 6-0: size of literal)
+                        //outputCurrentLine.Add(input[inputCurrentPosition + 0]);
+                        //outputCurrentLine.Add(input[inputCurrentPosition + 1]);
+                        //outputCurrentLine.Add(input[inputCurrentPosition + 2]);
+                        //outputCurrentLine.Add(input[inputCurrentPosition + 3]);
+                        for (int j = 0; j < literalSize; j++)
+                        {
+                            outputCurrentLine.Add(input[inputCurrentPosition + j]);
+                        }
+                        inputCurrentPosition += literalSize;
+
+
+                        literalBlocks++;
+
+                        if (lastBlockWasLiteral) consecutiveLiteralBlocks++;
+                        lastBlockWasLiteral = true;
+
 
                         Console.WriteLine();
-                        Console.WriteLine("  not found, useing literal of 4 bytes:");
+                        Console.WriteLine("  not found, using literal of " + literalSize + " bytes:");
                         Console.Write("      ");
-                        for (int j = 0; j < 4; j++)
+                        for (int j = 0; j < literalSize; j++)
                         {
                             Console.Write(input[inputCurrentPosition + j] + ",");
                         }
@@ -251,50 +285,100 @@ namespace MSXUtilities.MsxWings
                     }
                 }
 
-                //// validate compressed data (unpack and compare to input)
-                //{
-                //    IList<byte> unpackedLine = new List<byte>();
-                //    int i = 0;
-                //    //for (int i = 0; i < outputCurrentLine.Count; i++)
-                //    while (i < outputCurrentLine.Count)
-                //    {
-                //        if ((outputCurrentLine[i] & 0b10000000) == 0x00)
-                //        {
-                //            // compressed data
-                //            int size = outputCurrentLine[i];
-                //            int address = (outputCurrentLine[i + 2] << 8) | outputCurrentLine[i + 1];
+                // validate compressed data (unpack and compare to input)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("--------------------------------------------");
+                    Console.WriteLine("Validating line");
+                    
+                    IList<byte> unpackedLine = new List<byte>();
+                    int i = 0;
+                    //for (int i = 0; i < outputCurrentLine.Count; i++)
+                    while (i < outputCurrentLine.Count)
+                    {
+                        if ((outputCurrentLine[i] & 0b10000000) == 0x00)
+                        {
+                            // compressed data
+                            int size = outputCurrentLine[i];
+                            int address = (outputCurrentLine[i + 2] << 8) | outputCurrentLine[i + 1];
 
-                //            for (int j = address; j < address + size; j++)
-                //            {
-                //                unpackedLine.Add(input[j]);
-                //            }
+                            for (int j = address; j < address + size; j++)
+                            {
+                                unpackedLine.Add(input[j + windowStart]);
+                            }
 
-                //            i += 3;
-                //        }
-                //        else
-                //        {
-                //            // literal
-                //            int literalSize = (outputCurrentLine[i] & 0b01111111);
+                            i += 3;
+                        }
+                        else
+                        {
+                            // literal
+                            int literalSize = (outputCurrentLine[i] & 0b01111111);
 
-                //            for (int j = 0; j < literalSize; j++)
-                //            {
-                //                unpackedLine.Add(outputCurrentLine[i + 1 + j]);
-                //            }
+                            for (int j = 0; j < literalSize; j++)
+                            {
+                                unpackedLine.Add(outputCurrentLine[i + 1 + j]);
+                            }
 
-                //            i += literalSize + 1;
-                //        }
-                //    }
-                //}
+                            i += literalSize + 1;
+                        }
+                    }
+
+                    bool lineValid = true;
+                    if (unpackedLine.Count != 256)
+                    {
+                        lineValid = false;
+                    }
+                    else
+                    {
+                        for (int j = 0; j < 256; j++)
+                        {
+                            if (unpackedLine[j] != input[savedInputCurrentPosition + j])
+                            {
+                                lineValid = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!lineValid)
+                    {
+                        Console.WriteLine("  LINE INVALID!");
+                        Console.ReadKey();
+                    }
+                    else
+                    {
+                        Console.WriteLine("  line valid");
+                    }
+                }
 
 
-                inputCurrentPosition = saveInputCurrentPosition - 256;
+                inputCurrentPosition = savedInputCurrentPosition - 256;
                 windowStart -= 256;
                 windowEnd -= 256;
+
+                inputCounter += 256;
+                output = output.Concat(outputCurrentLine).ToList();
+
+                Console.WriteLine();
+                Console.WriteLine("--------------------------------------------");
+                Console.WriteLine("Line completed");
+                Console.WriteLine("line ratio: " + ((double)outputCurrentLine.Count / 256));
+                Console.WriteLine();
+                Console.WriteLine("compressed blocks: " + compressedBlocks);
+                Console.WriteLine("literal blocks: " + literalBlocks);
+                Console.WriteLine("consecutive literal blocks: " + consecutiveLiteralBlocks);
+                Console.WriteLine("bytes compressed so far: " + inputCounter);
+                Console.WriteLine("output size: " + output.Count);
+                Console.WriteLine("ratio: " + ((double)output.Count / (double)inputCounter));
+
+                //Console.WriteLine("addr smaller than 4096: " + addrSmallerThan4096);
+                //Console.WriteLine("addr larger than 4096: " + addrLargerThan4096);
+
 
                 Console.WriteLine();
                 Console.WriteLine("--------------------------------------------");
 
-                Console.ReadKey();
+                //Console.ReadKey();
             }
 
 
