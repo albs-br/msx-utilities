@@ -158,6 +158,7 @@ namespace MSXUtilities.MsxWings
                 int compressedBlocks = 0;
                 int literalBlocks = 0;
                 bool lastBlockWasLiteral = false;
+                int indexOfLastLitearlBLockHeader = 0;
                 int consecutiveLiteralBlocks = 0;
 
                 int savedInputCurrentPosition = inputCurrentPosition;
@@ -204,6 +205,8 @@ namespace MSXUtilities.MsxWings
 
                             if (found)
                             {
+                                // --- Found! create block ponting to input address equal to input block
+
                                 //if ((i - windowStart) < 4096) addrSmallerThan4096++; else addrLargerThan4096++;
 
                                 Console.WriteLine("  Block size: " + blockSize);
@@ -248,14 +251,29 @@ namespace MSXUtilities.MsxWings
                     }
                     if (!found_2)
                     {
-                        // not found, make it literal of 4 bytes (or less bytes, in case of end of line)
+                        // --- Not found, make it literal of 4 bytes (or less bytes, in case of end of line)
+
                         int literalSize = 4;
                         if (remainingBytesInInput < 4)
                         {
                             literalSize = remainingBytesInInput;
                         }
 
-                        outputCurrentLine.Add((byte)(0b10000000 | literalSize)); // block header (bit 7 set, bits 6-0: size of literal)
+                        if (lastBlockWasLiteral)
+                        {
+                            consecutiveLiteralBlocks++;
+
+                            // update block header of the previous literal block to include this one
+                            //int indexPreviousHeader = (outputCurrentLine.Count - 1) - 4; // previous literal block is always 4 bytes long
+                            int previousSize = outputCurrentLine[indexOfLastLitearlBLockHeader] & 0b01111111;
+                            outputCurrentLine[indexOfLastLitearlBLockHeader] = (byte)(0b10000000 | (previousSize + literalSize));
+                        }
+                        else
+                        {
+                            indexOfLastLitearlBLockHeader = outputCurrentLine.Count;
+                            outputCurrentLine.Add((byte)(0b10000000 | literalSize)); // block header (bit 7 set, bits 6-0: size of literal)
+                        }
+
                         //outputCurrentLine.Add(input[inputCurrentPosition + 0]);
                         //outputCurrentLine.Add(input[inputCurrentPosition + 1]);
                         //outputCurrentLine.Add(input[inputCurrentPosition + 2]);
@@ -267,14 +285,11 @@ namespace MSXUtilities.MsxWings
                         inputCurrentPosition += literalSize;
 
 
-                        literalBlocks++;
-
-                        if (lastBlockWasLiteral) consecutiveLiteralBlocks++;
-                        lastBlockWasLiteral = true;
 
 
                         Console.WriteLine();
                         Console.WriteLine("  not found, using literal of " + literalSize + " bytes:");
+                        if (lastBlockWasLiteral) Console.WriteLine("  (merged with previous literal block)");
                         Console.Write("      ");
                         for (int j = 0; j < literalSize; j++)
                         {
@@ -282,6 +297,9 @@ namespace MSXUtilities.MsxWings
                         }
                         Console.WriteLine();
                         Console.WriteLine("    output current size: " + outputCurrentLine.Count);
+
+                        literalBlocks++;
+                        lastBlockWasLiteral = true;
                     }
                 }
 
