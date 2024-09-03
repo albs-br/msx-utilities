@@ -19,7 +19,7 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            MsxDoom.Precalc_LUTs.CreateCosTable();
+            MsxDoom.Precalc_LUTs.CreateSinTable();
 
 
 
