@@ -44,5 +44,31 @@ namespace MSXUtilities.MsxDoom
                     );
             }
         }
+
+        public static void CreatePowerOf2Table()
+        {
+            for (int i = 0; i < 4096; i++)
+            {
+                var strFormat = "\tdb \t{0}, \t{1}, \t{2}\t; {3} ^ 2 = {4}";
+
+                int power = (int)(Math.Pow(i, 2));
+
+
+                int highByte = (power & 0b11111111_00000000_00000000) >> 16;
+                int middleByte = (power & 0b00000000_11111111_00000000) >> 8;
+                int lowByte = (power & 0b00000000_0000000011111111);
+
+                Console.WriteLine(
+                    String.Format(
+                        strFormat,
+                        lowByte,
+                        middleByte,
+                        highByte,
+                        i,
+                        power
+                        )
+                    );
+            }
+        }
     }
 }
