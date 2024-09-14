@@ -20,7 +20,8 @@ namespace MSXUtilities
         static void Main(string[] args)
         {
             //MsxDoom.Precalc_LUTs.CreateSinTable();
-            MsxDoom.Precalc_LUTs.CreatePowerOf2Table();
+            //MsxDoom.Precalc_LUTs.CreatePowerOf2Table();
+            MsxDoom.Precalc_LUTs.CreateSquareRootTable();
 
 
 

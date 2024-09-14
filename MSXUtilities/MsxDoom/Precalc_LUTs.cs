@@ -49,7 +49,7 @@ namespace MSXUtilities.MsxDoom
         {
             for (int i = 0; i < 4096; i++)
             {
-                var strFormat = "\tdw \t{0} \t; {1} ^ 2 = {2}, two higher bytes value = {0}";
+                var strFormat = "\tdw \t{0} \t; {1} ^ 2 = {2}, value >> 9 = {0}";
 
                 int power = (int)(Math.Pow(i, 2));
 
@@ -58,7 +58,7 @@ namespace MSXUtilities.MsxDoom
                 //int middleByte = (power & 0b00000000_11111111_00000000) >> 8;
                 //int lowByte = (power & 0b00000000_0000000011111111); // ignore less significant byte
 
-                int twoHigherBytes = (power & 0b11111111_11111111_00000000) >> 8;
+                int twoHigherBytes = (power & 0b11111111_11111111_00000000) >> (8 + 1); // +1 to use 15 bits instead of 16
 
                 Console.WriteLine(
                     String.Format(
@@ -66,6 +66,26 @@ namespace MSXUtilities.MsxDoom
                         twoHigherBytes,
                         i,
                         power
+                        )
+                    );
+            }
+        }
+
+        public static void CreateSquareRootTable()
+        {
+            for (int i = 0; i < 256; i++)
+            {
+                var strFormat = "\tdb \t{0} \t; sqrt(0x{1}) = sqrt({2}) = {0}, high byte of input: {3}";
+
+                int result = (int)(Math.Sqrt(i * 256));
+
+                Console.WriteLine(
+                    String.Format(
+                        strFormat,
+                        result,
+                        (i * 256).ToString("X4"),
+                        (i * 256),
+                        i
                         )
                     );
             }
