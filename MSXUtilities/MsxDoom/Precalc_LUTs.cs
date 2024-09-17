@@ -15,10 +15,14 @@ namespace MSXUtilities.MsxDoom
 
                 var cos = Math.Cos(i * Math.PI / 180.0);
 
+                var cosFixedPoint = Convert.ToInt16(cos / (1 / Math.Pow(2, 8))); // convert cos value to binary fixed point 8.8
+
+                var cosFixedPoint_1 = Convert.ToInt16(cosFixedPoint >> 1); // right right one bit (divide by 2)
+
                 Console.WriteLine(
                     String.Format(
                         strFormat,
-                        Convert.ToString(Convert.ToInt16(cos / (1/Math.Pow(2, 8))), 2),
+                        Convert.ToString(cosFixedPoint_1, 2),
                         i,
                         cos
                         )
@@ -34,10 +38,14 @@ namespace MSXUtilities.MsxDoom
 
                 var sin = Math.Sin(i * Math.PI / 180.0) * (-1);  // * (-1) because coordinate system of screen is on fourth quadrant (Y grows from top to bottom)
 
+                var sinFixedPoint = Convert.ToInt16(sin / (1 / Math.Pow(2, 8))); // convert sin value to binary fixed point 8.8
+
+                var sinFixedPoint_1 = Convert.ToInt16(sinFixedPoint >> 1); // right right one bit (divide by 2)
+
                 Console.WriteLine(
                     String.Format(
                         strFormat,
-                        Convert.ToString(Convert.ToInt16(sin / (1 / Math.Pow(2, 8))), 2),
+                        Convert.ToString(sinFixedPoint_1, 2),
                         i,
                         sin
                         )
