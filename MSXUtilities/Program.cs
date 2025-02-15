@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSXUtilities.MsxWings;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -18,6 +19,16 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            //MsxDoom.Precalc_LUTs.CreateSinTable();
+            //MsxDoom.Precalc_LUTs.CreateCosTable();
+            //MsxDoom.Precalc_LUTs.CreatePowerOf2Table();
+            //MsxDoom.Precalc_LUTs.CreateSquareRootTable();
+
+
+
+            //SC11_Compressor.Method_2();
+
+
             var mk = new MK.MK_Class(@"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\scorpion-1.sc5");
             mk.Run(
                 startX: 0, // x in bytes
