@@ -18,6 +18,23 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            var mk = new MK.MK_Class(@"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\scorpion-1.sc5");
+            mk.Run(
+                startX: 0, // x in bytes
+                startY: 0, // y in pixels
+                width: 28,
+                height: 104,
+                name: "scorpion_frame_0"
+                );
+            mk.Run(
+                startX: 30, // x in bytes
+                startY: 0, // y in pixels
+                width: 28,
+                height: 104,
+                name: "scorpion_frame_1"
+                );
+
+
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(85 - 12 + 1, 147, 13);
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(172 - 20, 222, 27);
