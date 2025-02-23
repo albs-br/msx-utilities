@@ -33,16 +33,51 @@ namespace MSXUtilities
             mk.Run(
                 startX: 0, // x in bytes
                 startY: 0, // y in pixels
-                width: 28,
-                height: 104,
-                name: "scorpion_frame_0"
+                width: 28, // in bytes
+                height: 104, // in pixels
+                name: @"C:\Users\albs_\source\repos\msx-tests\Images\scorpion_frame_0"
                 );
             mk.Run(
                 startX: 30, // x in bytes
                 startY: 0, // y in pixels
-                width: 28,
-                height: 104,
-                name: "scorpion_frame_1"
+                width: 28, // in bytes
+                height: 104, // in pixels
+                name: @"C:\Users\albs_\source\repos\msx-tests\Images\scorpion_frame_1"
+                );
+            mk.Run(
+                startX: (130-12)/2, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                name: @"C:\Users\albs_\source\repos\msx-tests\Images\scorpion_frame_2"
+                );
+            mk.Run(
+                startX: (188-12)/2, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                name: @"C:\Users\albs_\source\repos\msx-tests\Images\scorpion_frame_3"
+                );
+            mk.Run(
+                startX: 0, // x in bytes
+                startY: 110, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                name: @"C:\Users\albs_\source\repos\msx-tests\Images\scorpion_frame_4"
+                );
+            mk.Run(
+                startX: (70-12)/2, // x in bytes
+                startY: 110, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                name: @"C:\Users\albs_\source\repos\msx-tests\Images\scorpion_frame_5"
+                );
+            mk.Run(
+                startX: (130 - 12) / 2, // x in bytes
+                startY: 110, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                name: @"C:\Users\albs_\source\repos\msx-tests\Images\scorpion_frame_6"
                 );
 
 

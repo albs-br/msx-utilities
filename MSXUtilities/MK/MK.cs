@@ -22,11 +22,12 @@ namespace MSXUtilities.MK
             int endX = startX + width;
             int endY = startY + height;
 
-            int currentPosition = 0;
+            int currentPosition;
             int currentIncrement = 0;
             int lastPosition = 0;
             int dataAddress = 0; // 0x8000; // base address
             bool newSlice = true;
+            bool firstListEntry = true;
 
             StringBuilder outputList = new StringBuilder();
             StringBuilder outputData = new StringBuilder();
@@ -91,12 +92,19 @@ namespace MSXUtilities.MK
                     {
                         if (!newSlice)
                         {
-                            // set increment, length, and address
+                            // --------- set increment, length, and address
+                            
+                            
                             if (currentIncrement > 255)
                             {
-                                currentIncrement = 0xff & currentIncrement;
-
+                                currentIncrement = 0b01111111 & currentIncrement; // each line is 128 bytes long
                                 //throw new Exception("currentIncrement should be less than 256");
+                            }
+
+                            if (firstListEntry)
+                            {
+                                currentIncrement -= startX;
+                                firstListEntry = false;
                             }
 
                             outputList.AppendLine(String.Format("\tdb\t{0},\t{1}\tdw\t{2}",
