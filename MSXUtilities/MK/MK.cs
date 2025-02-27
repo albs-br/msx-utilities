@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace MSXUtilities.MK
@@ -16,6 +17,7 @@ namespace MSXUtilities.MK
 
         public void Run(int startX, int startY, int width, int height, string name)
         {
+            Console.WriteLine("Starting frame " + name);
 
             //int startX = 0; // x in bytes // second frame: 0x1e (30)
             //int startY = 0; // y in pixels
@@ -31,6 +33,8 @@ namespace MSXUtilities.MK
 
             StringBuilder outputList = new StringBuilder();
             StringBuilder outputData = new StringBuilder();
+
+            IList<int> colorsUsed = new List<int>();
 
             byte[] file = File.ReadAllBytes(inputFile);
 
@@ -77,6 +81,10 @@ namespace MSXUtilities.MK
                         {
                             b = (byte)(hiNibble | 0x03);
                         }
+
+                        var hiNibbleAdjusted = hiNibble >> 4;
+                        if (!colorsUsed.Contains(hiNibbleAdjusted)) colorsUsed.Add(hiNibbleAdjusted);
+                        if (!colorsUsed.Contains(lowNibble)) colorsUsed.Add(lowNibble);
 
                         currentSlice.Add(b);
 
@@ -137,7 +145,12 @@ namespace MSXUtilities.MK
             File.WriteAllText(name + "_list.s", outputList.ToString());
             File.WriteAllText(name + "_data.s", outputData.ToString());
 
+            Console.Write("Colors used:");
+            foreach (var color in colorsUsed.OrderBy(x => x)) Console.Write(" " + color);
+            Console.WriteLine();
+
             Console.WriteLine(name +  " done.");
+            Console.WriteLine();
         }
     }
 }
