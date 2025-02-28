@@ -15,7 +15,7 @@ namespace MSXUtilities.MK
             this.inputFile = _inputFile;
         }
 
-        public void Run(int startX, int startY, int width, int height, string name)
+        public void Run(int startX, int startY, int width, int height, int megaROMpage, string name)
         {
             Console.WriteLine("Starting frame " + name);
 
@@ -31,6 +31,7 @@ namespace MSXUtilities.MK
             bool newSlice = true;
             bool firstListEntry = true;
 
+            StringBuilder outputHeader = new StringBuilder();
             StringBuilder outputList = new StringBuilder();
             StringBuilder outputData = new StringBuilder();
 
@@ -101,13 +102,31 @@ namespace MSXUtilities.MK
                         if (!newSlice)
                         {
                             // --------- set increment, length, and address
-                            
-                            
-                            if (currentIncrement > 255)
+
+                            if (firstListEntry)
                             {
-                                currentIncrement = 0b01111111 & currentIncrement; // each line is 128 bytes long
-                                //throw new Exception("currentIncrement should be less than 256");
+                                int blankLines = (currentIncrement - (startY * 128)) / 128;
+                                int yOffset = blankLines * 128;
+
+                                //dw yOffset; db width; db height; db MEgaROM page number
+                                outputHeader.AppendLine(";\t\tyOffset\twidth\theight\tmegaROM page");
+                                outputHeader.AppendLine(String.Format("\tdw\t{0}\tdb\t{1},\t{2},\t{3}",
+                                    yOffset,
+                                    width * 2, // width in pixels
+                                    height,
+                                    megaROMpage
+                                    )
+                                );
                             }
+
+                            // get only 8 lower bits
+                            currentIncrement = 0b11111111 & currentIncrement;
+
+                            //if (currentIncrement > 255)
+                            //{
+                            //    currentIncrement = 0b01111111 & currentIncrement; // each line is 128 bytes long
+                            //    //throw new Exception("currentIncrement should be less than 256");
+                            //}
 
                             if (firstListEntry)
                             {
@@ -142,6 +161,7 @@ namespace MSXUtilities.MK
 
             outputList.AppendLine("db  0 ; end of frame");
 
+            File.WriteAllText(name + "_header.s", outputHeader.ToString());
             File.WriteAllText(name + "_list.s", outputList.ToString());
             File.WriteAllText(name + "_data.s", outputData.ToString());
 

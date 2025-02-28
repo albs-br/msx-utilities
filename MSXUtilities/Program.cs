@@ -34,7 +34,8 @@ namespace MSXUtilities
                 startX: 0, // x in bytes
                 startY: 0, // y in pixels
                 width: 28, // in bytes
-                height: 104, // in pixels
+                height: 104, // in pixels,
+                megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_0"
                 );
             mk.Run(
@@ -42,6 +43,7 @@ namespace MSXUtilities
                 startY: 0, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
+                megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_1"
                 );
             mk.Run(
@@ -49,6 +51,7 @@ namespace MSXUtilities
                 startY: 0, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
+                megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_2"
                 );
             mk.Run(
@@ -56,6 +59,7 @@ namespace MSXUtilities
                 startY: 0, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
+                megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_3"
                 );
             mk.Run(
@@ -63,6 +67,7 @@ namespace MSXUtilities
                 startY: 110, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
+                megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_4"
                 );
             mk.Run(
@@ -70,6 +75,7 @@ namespace MSXUtilities
                 startY: 110, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
+                megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_5"
                 );
             mk.Run(
@@ -77,6 +83,7 @@ namespace MSXUtilities
                 startY: 110, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
+                megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_6"
                 );
 
