@@ -39,7 +39,7 @@ namespace MSXUtilities
                 name: destinyFolder + "scorpion_frame_0"
                 );
             mk.Run(
-                startX: 30, // x in bytes
+                startX: (72-12)/2, // x in bytes
                 startY: 0, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
@@ -64,15 +64,15 @@ namespace MSXUtilities
                 );
             mk.Run(
                 startX: 0, // x in bytes
-                startY: 110, // y in pixels
+                startY: (208- 103) + 1, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
                 megaROMpage: 1,
                 name: destinyFolder + "scorpion_frame_4"
                 );
             mk.Run(
-                startX: (70-12)/2, // x in bytes
-                startY: 110, // y in pixels
+                startX: (72 - 12) /2, // x in bytes
+                startY: (208 - 103) + 1, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
                 megaROMpage: 1,
@@ -80,7 +80,7 @@ namespace MSXUtilities
                 );
             mk.Run(
                 startX: (130 - 12) / 2, // x in bytes
-                startY: 110, // y in pixels
+                startY: (208 - 103) + 1, // y in pixels
                 width: 28, // in bytes
                 height: 104, // in pixels
                 megaROMpage: 1,

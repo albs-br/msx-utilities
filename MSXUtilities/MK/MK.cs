@@ -9,10 +9,33 @@ namespace MSXUtilities.MK
     public class MK_Class
     {
         string inputFile;
+        byte[] file;
 
         public MK_Class(string _inputFile)
         {
             this.inputFile = _inputFile;
+            
+            this.file = File.ReadAllBytes(inputFile);
+
+            /*
+                Byte: #FE (Type of file)
+                Word: Begin address of file
+                Word: End address of file
+                Word: Start address of file (Only important when ",R" parameter is defined with BLOAD)             
+            */
+
+            // remove the 7 bytes header, if present
+            if (file[0] == 0xfe)
+            {
+                var temp = file.ToList<byte>();
+                for (int i = 0; i < 7; i++)
+                {
+                    temp.RemoveAt(0);
+                }
+
+                this.file = temp.ToArray<byte>();
+            }
+
         }
 
         public void Run(int startX, int startY, int width, int height, int megaROMpage, string name)
@@ -37,7 +60,6 @@ namespace MSXUtilities.MK
 
             IList<int> colorsUsed = new List<int>();
 
-            byte[] file = File.ReadAllBytes(inputFile);
 
             IList<byte> currentSlice = new List<byte>();
 
@@ -117,10 +139,15 @@ namespace MSXUtilities.MK
                                     megaROMpage
                                     )
                                 );
-                            }
 
-                            // get only 8 lower bits
-                            currentIncrement = 0b11111111 & currentIncrement;
+                                // get only 7 lower bits
+                                currentIncrement = 0b01111111 & currentIncrement;
+                            }
+                            else
+                            {
+                                // get only 8 lower bits
+                                currentIncrement = 0b11111111 & currentIncrement;
+                            }
 
                             //if (currentIncrement > 255)
                             //{
