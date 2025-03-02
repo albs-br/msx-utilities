@@ -28,64 +28,11 @@ namespace MSXUtilities
 
             //SC11_Compressor.Method_2();
 
-            var destinyFolder = @"C:\Users\albs_\source\repos\msx-tests\Images\tmp\";
-            var mk = new MK.MK_Class(@"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\scorpion-1.sc5");
-            mk.Run(
-                startX: 0, // x in bytes
-                startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels,
-                megaROMpage: 1,
-                name: destinyFolder + "scorpion_frame_0"
-                );
-            mk.Run(
-                startX: (72-12)/2, // x in bytes
-                startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: 1,
-                name: destinyFolder + "scorpion_frame_1"
-                );
-            mk.Run(
-                startX: (130-12)/2, // x in bytes
-                startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: 1,
-                name: destinyFolder + "scorpion_frame_2"
-                );
-            mk.Run(
-                startX: (188-12)/2, // x in bytes
-                startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: 1,
-                name: destinyFolder + "scorpion_frame_3"
-                );
-            mk.Run(
-                startX: 0, // x in bytes
-                startY: (208- 103) + 1, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: 1,
-                name: destinyFolder + "scorpion_frame_4"
-                );
-            mk.Run(
-                startX: (72 - 12) /2, // x in bytes
-                startY: (208 - 103) + 1, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: 1,
-                name: destinyFolder + "scorpion_frame_5"
-                );
-            mk.Run(
-                startX: (130 - 12) / 2, // x in bytes
-                startY: (208 - 103) + 1, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: 1,
-                name: destinyFolder + "scorpion_frame_6"
-                );
+            var sourceImage = @"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\scorpion-1.sc5";
+            var destinyFolder = @"C:\Users\albs_\source\repos\msx-mk\Data\tmp\";
+            var mk = new MK.MK_Main(sourceImage, destinyFolder);
+            //MK.MK_Runner.Make_Scorpion_Stance_Left(mk);
+            MK.MK_Runner.Make_Scorpion_Stance_Right(mk);
 
 
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);

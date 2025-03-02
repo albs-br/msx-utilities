@@ -6,14 +6,16 @@ using System.Text;
 
 namespace MSXUtilities.MK
 {
-    public class MK_Class
+    public class MK_Main
     {
         string inputFile;
+        string destinyFolder;
         byte[] file;
 
-        public MK_Class(string _inputFile)
+        public MK_Main(string _inputFile, string _destinyFolder)
         {
             this.inputFile = _inputFile;
+            this.destinyFolder = _destinyFolder;
             
             this.file = File.ReadAllBytes(inputFile);
 
@@ -38,7 +40,7 @@ namespace MSXUtilities.MK
 
         }
 
-        public void Run(int startX, int startY, int width, int height, int megaROMpage, string name)
+        public void Run(int startX, int startY, int width, int height, string megaROMpage, string name, bool mirror = false)
         {
             Console.WriteLine("Starting frame " + name);
 
@@ -46,6 +48,38 @@ namespace MSXUtilities.MK
             //int startY = 0; // y in pixels
             int endX = startX + width;
             int endY = startY + height;
+
+            if (mirror)
+            {
+                for (int y = startY; y < endY; y++)
+                {
+                    IList<byte> lineReversed = new List<byte>();
+                    for (int x = startX; x < endX; x++)
+                    {
+                        //get byte, invert nibbles and add to the start of the new line
+                        int current = (y * 128) + x;
+                        var b = file[current];
+
+                        var hiNibble = b & 0b11110000;
+                        var lowNibble = b & 0b00001111;
+
+                        b = (byte)((lowNibble << 4) | (hiNibble >> 4));
+
+                        lineReversed.Insert(0, b);
+                    }
+
+                    // replace old line with the new one
+                    var index = 0;
+                    for (int x = startX; x < endX; x++)
+                    {
+                        int current = (y * 128) + x;
+                        file[current] = lineReversed[index];
+                        index++;
+                    }
+
+                }
+            }
+
 
             int currentPosition;
             int currentIncrement = 0;
@@ -130,7 +164,7 @@ namespace MSXUtilities.MK
                                 int blankLines = (currentIncrement - (startY * 128)) / 128;
                                 int yOffset = blankLines * 128;
 
-                                //dw yOffset; db width; db height; db MEgaROM page number
+                                //dw yOffset; db width; db height; db MegaROM page number
                                 outputHeader.AppendLine(";\t\tyOffset\twidth\theight\tmegaROM page");
                                 outputHeader.AppendLine(String.Format("\tdw\t{0}\tdb\t{1},\t{2},\t{3}",
                                     yOffset,
@@ -186,11 +220,11 @@ namespace MSXUtilities.MK
                 }
             }
 
-            outputList.AppendLine("db  0 ; end of frame");
+            outputList.AppendLine("\tdb  0 ; end of frame");
 
-            File.WriteAllText(name + "_header.s", outputHeader.ToString());
-            File.WriteAllText(name + "_list.s", outputList.ToString());
-            File.WriteAllText(name + "_data.s", outputData.ToString());
+            File.WriteAllText(destinyFolder + name + "_header.s", outputHeader.ToString());
+            File.WriteAllText(destinyFolder + name + "_list.s", outputList.ToString());
+            File.WriteAllText(destinyFolder + name + "_data.s", outputData.ToString());
 
             Console.Write("Colors used:");
             foreach (var color in colorsUsed.OrderBy(x => x)) Console.Write(" " + color);
