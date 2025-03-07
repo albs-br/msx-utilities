@@ -28,11 +28,13 @@ namespace MSXUtilities
 
             //SC11_Compressor.Method_2();
 
-            var sourceImage = @"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\scorpion-1.sc5";
+            //var sourceImage = @"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\scorpion-1.sc5";
+            var sourceImage = @"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\sub-zero-1.sc5";
             var destinyFolder = @"C:\Users\albs_\source\repos\msx-mk\Data\tmp\";
             var mk = new MK.MK_Main(sourceImage, destinyFolder);
-            //MK.MK_Runner.Make_Scorpion_Stance_Left(mk);
-            MK.MK_Runner.Make_Scorpion_Stance_Right(mk);
+            //MK.MK_Runner.Make_Scorpion_Stance(mk, "scorpion", mirror: false);
+            //MK.MK_Runner.Make_Scorpion_Stance(mk, "scorpion", mirror: true);
+            MK.MK_Runner.Make_Subzero_Stance(mk, "subzero", mirror: true);
 
 
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);
