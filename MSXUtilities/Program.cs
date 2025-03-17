@@ -28,13 +28,27 @@ namespace MSXUtilities
 
             //SC11_Compressor.Method_2();
 
-            //var sourceImage = @"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\scorpion-1.sc5";
-            var sourceImage = @"C:\Users\albs_\OneDrive\Desktop\MSX development\MK\sub-zero-1.sc5";
+
+
+
+            var sourceImagePath = @"C:\Users\albs_\source\repos\msx-mk\Assets\";
             var destinyFolder = @"C:\Users\albs_\source\repos\msx-mk\Data\tmp\";
-            var mk = new MK.MK_Main(sourceImage, destinyFolder);
-            //MK.MK_Runner.Make_Scorpion_Stance(mk, "scorpion", mirror: false);
-            //MK.MK_Runner.Make_Scorpion_Stance(mk, "scorpion", mirror: true);
-            MK.MK_Runner.Make_Subzero_Stance(mk, "subzero", mirror: true);
+
+            //var sourceImage_Scorpion = sourceImagePath + "scorpion-1.sc5";
+            //var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion, destinyFolder);
+            //MK.MK_Runner.Make_Scorpion_Stance(mk_Scorpion, "scorpion", mirror: false);
+            ////MK.MK_Runner.Make_Scorpion_Stance(mk_Scorpion, "scorpion_R", mirror: true);
+
+            //var sourceImage_Subzero_1 = sourceImagePath + "sub-zero-1.sc5";
+            //var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_1, destinyFolder);
+            //MK.MK_Runner.Make_Subzero_Stance_Frames_0_to_8(mk_Subzero, "subzero", mirror: true);
+
+            var sourceImage_Subzero_2 = sourceImagePath + "subzero-2.sc5";
+            var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_2, destinyFolder);
+            MK.MK_Runner.Make_Subzero_Stance_Frames_9_to_12(mk_Subzero, "subzero", mirror: true);
+
+
+
 
 
             //MSXUtilities.MsxWings.PlaneRotatingImg.SplitImage(0, 78, 0);

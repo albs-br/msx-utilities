@@ -67,7 +67,75 @@ namespace MSXUtilities.MK
 
         //}
 
-        public static void Make_Subzero_Stance(MK_Main mk, string name, bool mirror)
+        public static void Make_Scorpion_Stance(MK_Main mk, string name, bool mirror)
+        {
+            mk.Run(
+                startX: 0, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+                name: name + "_frame_0",
+                mirror: mirror
+                );
+            mk.Run(
+                startX: (72 - 12) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+                name: name + "_frame_1",
+                mirror: mirror
+                );
+            mk.Run(
+                startX: (130 - 12) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+                name: name + "_frame_2",
+                mirror: mirror
+                );
+            mk.Run(
+                startX: (188 - 12) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+                name: name + "_frame_3",
+                mirror: mirror
+                );
+            mk.Run(
+                startX: 0, // x in bytes
+                startY: (208 - 103) + 1, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+                name: name + "_frame_4",
+                mirror: mirror
+                );
+            mk.Run(
+                startX: (72 - 12) / 2, // x in bytes
+                startY: (208 - 103) + 1, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+                name: name + "_frame_5",
+                mirror: mirror
+                );
+            mk.Run(
+                startX: (130 - 12) / 2, // x in bytes
+                startY: (208 - 103) + 1, // y in pixels
+                width: 28, // in bytes
+                height: 104, // in pixels
+                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+                name: name + "_frame_6",
+                mirror: mirror
+                );
+
+        }
+
+        public static void Make_Subzero_Stance_Frames_0_to_8(MK_Main mk, string name, bool mirror)
         {
             mk.Run(
                 startX: 0, // x in bytes
@@ -151,111 +219,55 @@ namespace MSXUtilities.MK
                 name: name + "_frame_8",
                 mirror: mirror
                 );
-            mk.Run(
-                startX: 100, // x in bytes
-                startY: 110, // y in pixels
-                width: 25, // in bytes
-                height: 107, // in pixels,
-                megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
-                name: name + "_frame_9",
-                mirror: mirror
-                );
 
-            //mk.Run(
-            //    startX: 0, // x in bytes
-            //    startY: 223, // y in pixels
-            //    width: 25, // in bytes
-            //    height: 107, // in pixels,
-            //    megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
-            //    name: name + "_frame_10",
-            //    mirror: mirror
-            //    );
-            //mk.Run(
-            //    startX: 25, // x in bytes
-            //    startY: 223, // y in pixels
-            //    width: 25, // in bytes
-            //    height: 107, // in pixels,
-            //    megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
-            //    name: name + "_frame_11",
-            //    mirror: mirror
-            //    );
-            //mk.Run(
-            //    startX: 50, // x in bytes
-            //    startY: 223, // y in pixels
-            //    width: 25, // in bytes
-            //    height: 107, // in pixels,
-            //    megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
-            //    name: name + "_frame_12",
-            //    mirror: mirror
-            //    );
+            mk.SaveDataFile(name + "_frames_0_to_8");
         }
 
-        public static void Make_Scorpion_Stance(MK_Main mk, string name, bool mirror)
+        public static void Make_Subzero_Stance_Frames_9_to_12(
+            MK_Main mk,
+            string name,
+            bool mirror
+            )
         {
             mk.Run(
                 startX: 0, // x in bytes
                 startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels,
-                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
-                name: name + "_frame_0",
+                width: 25, // in bytes
+                height: 107, // in pixels,
+                megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+                name: name + "_frame_9",
                 mirror: mirror
                 );
             mk.Run(
-                startX: (72 - 12) / 2, // x in bytes
+                startX: 25, // x in bytes
                 startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
-                name: name + "_frame_1",
+                width: 25, // in bytes
+                height: 107, // in pixels,
+                megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+                name: name + "_frame_10",
                 mirror: mirror
                 );
             mk.Run(
-                startX: (130 - 12) / 2, // x in bytes
+                startX: 50, // x in bytes
                 startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
-                name: name + "_frame_2",
+                width: 25, // in bytes
+                height: 107, // in pixels,
+                megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+                name: name + "_frame_11",
                 mirror: mirror
                 );
             mk.Run(
-                startX: (188 - 12) / 2, // x in bytes
+                startX: 75, // x in bytes
                 startY: 0, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
-                name: name + "_frame_3",
-                mirror: mirror
-                );
-            mk.Run(
-                startX: 0, // x in bytes
-                startY: (208 - 103) + 1, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
-                name: name + "_frame_4",
-                mirror: mirror
-                );
-            mk.Run(
-                startX: (72 - 12) / 2, // x in bytes
-                startY: (208 - 103) + 1, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
-                name: name + "_frame_5",
-                mirror: mirror
-                );
-            mk.Run(
-                startX: (130 - 12) / 2, // x in bytes
-                startY: (208 - 103) + 1, // y in pixels
-                width: 28, // in bytes
-                height: 104, // in pixels
-                megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
-                name: name + "_frame_6",
+                width: 25, // in bytes
+                height: 107, // in pixels,
+                megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+                name: name + "_frame_12",
                 mirror: mirror
                 );
 
+            mk.SaveDataFile(name + "_frames_9_to_12");
         }
+
     }
 }
