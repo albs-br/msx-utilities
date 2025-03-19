@@ -167,6 +167,10 @@ namespace MSXUtilities.MK
                                 var tempArray = name.Split('_');
                                 var frameNumber = tempArray[tempArray.Length - 1];
 
+                                var characterName = tempArray[0].ToPascalCase();
+
+                                var side = (mirror) ? "Right" : "Left";
+
                                 //dw yOffset; db width; db height; db MegaROM page number; dw List Address
                                 outputHeader.AppendLine(";\t\tyOffset\twidth\theight\tmegaROM page\tList Address");
                                 outputHeader.AppendLine(String.Format("\tdw\t{0}\tdb\t{1},\t{2},\t{3}\tdw\t{4}",
@@ -174,7 +178,7 @@ namespace MSXUtilities.MK
                                     width * 2, // width in pixels
                                     height,
                                     megaROMpage,
-                                    "Subzero_Stance_Right_Frame_" + frameNumber + ".List"
+                                    characterName + "_Stance_" + side + "_Frame_" + frameNumber + ".List"
                                     )
                                 );
 
@@ -272,7 +276,7 @@ namespace MSXUtilities.MK
             //File.WriteAllText(destinyFolder + name + "_data.s", outputData.ToString());
 
             Console.WriteLine("--- Stats for this frame:");
-            Console.Write("Colors used:");
+            Console.Write("Colors used (" + colorsUsed.Count + " colors):");
             foreach (var color in colorsUsed.OrderBy(x => x)) Console.Write(" " + color);
             Console.WriteLine();
 
@@ -311,6 +315,9 @@ namespace MSXUtilities.MK
             }
             outputData.AppendLine();
             File.WriteAllText(destinyFolder + name + "_data.s", outputData.ToString());
+            
+            Console.WriteLine("Data saved to file: " + name + ".s");
+            Console.WriteLine();
         }
     }
 }

@@ -30,23 +30,25 @@ namespace MSXUtilities
 
 
 
+            #region msx-mk
 
             var sourceImagePath = @"C:\Users\albs_\source\repos\msx-mk\Assets\";
             var destinyFolder = @"C:\Users\albs_\source\repos\msx-mk\Data\tmp\";
 
-            //var sourceImage_Scorpion = sourceImagePath + "scorpion-1.sc5";
-            //var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion, destinyFolder);
-            //MK.MK_Runner.Make_Scorpion_Stance(mk_Scorpion, "scorpion", mirror: false);
-            ////MK.MK_Runner.Make_Scorpion_Stance(mk_Scorpion, "scorpion_R", mirror: true);
+            var sourceImage_Scorpion = sourceImagePath + "scorpion-1.sc5";
+            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion, destinyFolder);
+            MK.MK_Runner.Make_Scorpion_Stance(mk_Scorpion, "scorpion", mirror: false);
+            //MK.MK_Runner.Make_Scorpion_Stance(mk_Scorpion, "scorpion_R", mirror: true);
 
             //var sourceImage_Subzero_1 = sourceImagePath + "sub-zero-1.sc5";
             //var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_1, destinyFolder);
             //MK.MK_Runner.Make_Subzero_Stance_Frames_0_to_8(mk_Subzero, "subzero", mirror: true);
 
-            var sourceImage_Subzero_2 = sourceImagePath + "subzero-2.sc5";
-            var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_2, destinyFolder);
-            MK.MK_Runner.Make_Subzero_Stance_Frames_9_to_12(mk_Subzero, "subzero", mirror: true);
+            //var sourceImage_Subzero_2 = sourceImagePath + "subzero-2.sc5";
+            //var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_2, destinyFolder);
+            //MK.MK_Runner.Make_Subzero_Stance_Frames_9_to_12(mk_Subzero, "subzero", mirror: true);
 
+            #endregion msx-mk
 
 
 

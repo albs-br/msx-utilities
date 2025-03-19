@@ -16,5 +16,15 @@ namespace MSXUtilities
             chars[index] = newChar;
             return new string(chars);
         }
+
+        public static string ToPascalCase(this string input)
+        {
+            string c0 = "";
+            if (input.Length > 0) { c0 = input.Substring(0, 1).ToUpper(); }
+            string cn = "";
+            if (input.Length > 1) { cn = input.Substring(1).ToLower(); }
+
+            return c0 + cn;
+        }
     }
 }

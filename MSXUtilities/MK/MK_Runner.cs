@@ -133,6 +133,7 @@ namespace MSXUtilities.MK
                 mirror: mirror
                 );
 
+            mk.SaveDataFile(name + "_frames_0_to_6");
         }
 
         public static void Make_Subzero_Stance_Frames_0_to_8(MK_Main mk, string name, bool mirror)
