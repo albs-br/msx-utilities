@@ -391,7 +391,11 @@ namespace MSXUtilities.MK
 
 
             var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(), side.ToPascalCase());
-            mk.SaveReferenceFiles(temp, 0, 8);
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0, 
+                lastFrame: 8, 
+                animationRepeatFrames: 3);
         }
     }
 }

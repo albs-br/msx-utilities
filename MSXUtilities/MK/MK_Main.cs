@@ -307,7 +307,7 @@ namespace MSXUtilities.MK
             Console.WriteLine();
         }
 
-        public void SaveReferenceFiles(string name, int firstFrame, int lastFrame)
+        public void SaveReferenceFiles(string name, int firstFrame, int lastFrame, int animationRepeatFrames)
         {
             StringBuilder outputData = new StringBuilder();
 
@@ -358,7 +358,15 @@ namespace MSXUtilities.MK
                 outputDataAndList.AppendLine(String.Format("\t\t.List:      INCLUDE \"Data/{0}/{1}_frame_{2}_list.s\"", folderName, name.ToLower(), i));
                 outputDataAndList.AppendLine();
 
-                outputAnimation.AppendLine(String.Format("\tdw {0}_Frame_{1}_Header", name, i));
+                outputAnimation.Append(String.Format("\tdw {0}_Frame_{1}_Header", name, i));
+                if (animationRepeatFrames > 1)
+                {
+                    for (int j = 1; j < animationRepeatFrames; j++)
+                    {
+                        outputAnimation.Append(String.Format(", {0}_Frame_{1}_Header", name, i));
+                    }
+                }
+                outputAnimation.AppendLine();
                 //outputAnimation.AppendLine();
             }
 
