@@ -54,16 +54,24 @@ namespace MSXUtilities.MK
             int width,
             int height,
             string megaROMpage,
-            string name,
-            bool mirror
+            string characterName,
+            string position,
+            string side,
+            int frameNumber
             )
         {
-            Console.WriteLine("Starting frame " + name);
+            if ((startX + width) > 128) throw new ArgumentException("startX + width cannot be over 128 bytes (256 pixels)");
+
+            var frameFullName_underscores = String.Format("{0}_{1}_{2}_frame_{3}", characterName, position, side, frameNumber);
+            var frameFullName_underscores_pascalCase = String.Format("{0}_{1}_{2}_Frame_{3}", characterName.ToPascalCase(), position.ToPascalCase(), side.ToPascalCase(), frameNumber);
+            
+            Console.WriteLine("Starting frame " + frameFullName_underscores);
 
             int endX = startX + width;
             int endY = startY + height;
 
-            if (mirror)
+
+            if (side == "right")
             {
                 for (int y = startY; y < endY; y++)
                 {
@@ -164,12 +172,10 @@ namespace MSXUtilities.MK
                                 int blankLines = (currentIncrement - (startY * 128)) / 128;
                                 int yOffset = blankLines * 128;
 
-                                var tempArray = name.Split('_');
-                                var frameNumber = tempArray[tempArray.Length - 1];
+                                //var tempArray = name.Split('_');
+                                ////var frameNumber = tempArray[tempArray.Length - 1];
 
-                                var characterName = tempArray[0].ToPascalCase();
-
-                                var side = (mirror) ? "Right" : "Left";
+                                //var characterName = tempArray[0].ToPascalCase();
 
                                 //dw yOffset; db width; db height; db MegaROM page number; dw List Address
                                 outputHeader.AppendLine(";\t\tyOffset\twidth\theight\tmegaROM page\tList Address");
@@ -178,7 +184,8 @@ namespace MSXUtilities.MK
                                     width * 2, // width in pixels
                                     height,
                                     megaROMpage,
-                                    characterName + "_Stance_" + side + "_Frame_" + frameNumber + ".List"
+                                    //characterName + "_" + position + "_" + side + "_Frame_" + frameNumber + ".List"
+                                    frameFullName_underscores_pascalCase + ".List"
                                     )
                                 );
 
@@ -199,7 +206,7 @@ namespace MSXUtilities.MK
 
                             outputList.AppendLine(String.Format("\tdb\t{0},\t{1}\tdw\t{2}",
                                 currentIncrement,
-                                currentSlice.Count,
+                                currentSlice.Count, // TODO: low byte of address of unroleld OUTIs list 
                                 DATA_BASE_ADDRESS + " + "  + dataAddress));
 
                             slicesCount++;
@@ -260,8 +267,8 @@ namespace MSXUtilities.MK
 
             outputList.AppendLine("\tdb  0 ; end of frame");
 
-            File.WriteAllText(destinyFolder + name + "_header.s", outputHeader.ToString());
-            File.WriteAllText(destinyFolder + name + "_list.s", outputList.ToString());
+            File.WriteAllText(destinyFolder + frameFullName_underscores + "_header.s", outputHeader.ToString());
+            File.WriteAllText(destinyFolder + frameFullName_underscores + "_list.s", outputList.ToString());
 
             //outputData.Append("\tdb");
             //var first = true;
@@ -288,7 +295,7 @@ namespace MSXUtilities.MK
             Console.WriteLine("Data all size: " + outputDataBytesAll.Count + " bytes");
 
             Console.WriteLine("Total list size: " + outputListTotalSize + " bytes");
-            Console.WriteLine("Space remeining on a MegaROM page: " + (16384 - (outputDataBytesAll.Count + outputListTotalSize)) + " bytes");
+            Console.WriteLine("Space remaining on a MegaROM page: " + (16384 - (outputDataBytesAll.Count + outputListTotalSize)) + " bytes");
 
             if ((outputDataBytesAll.Count + outputListTotalSize) > 16384)
             {
@@ -296,11 +303,11 @@ namespace MSXUtilities.MK
             }
 
 
-            Console.WriteLine(name +  " done.");
+            Console.WriteLine(characterName +  " done.");
             Console.WriteLine();
         }
 
-        public void SaveDataFile(string name)
+        public void SaveReferenceFiles(string name, int firstFrame, int lastFrame)
         {
             StringBuilder outputData = new StringBuilder();
 
@@ -314,9 +321,60 @@ namespace MSXUtilities.MK
                     item));
             }
             outputData.AppendLine();
-            File.WriteAllText(destinyFolder + name + "_data.s", outputData.ToString());
-            
-            Console.WriteLine("Data saved to file: " + name + ".s");
+
+
+            var data_fileName = destinyFolder + name.ToLower() + String.Format("_frames_{0}_to_{1}_data.s", firstFrame, lastFrame);
+            File.WriteAllText(data_fileName, outputData.ToString());
+
+            Console.WriteLine("Data saved to file: " + data_fileName);
+            Console.WriteLine();
+
+            //-------------------------------------------------------------
+
+            StringBuilder outputHeaders = new StringBuilder();
+            StringBuilder outputDataAndList = new StringBuilder();
+            StringBuilder outputAnimation = new StringBuilder();
+
+            outputDataAndList.AppendLine(String.Format("{0}_Frames_{1}_to_{2}_Data:", name, firstFrame, lastFrame));
+
+            var folderName = name.ToLower().Replace('_', '/');
+
+            outputDataAndList.AppendLine(String.Format("\tINCLUDE \"Data/{0}/{1}_frames_{2}_to_{3}_data.s\"", folderName, name.ToLower(), firstFrame, lastFrame));
+
+            outputDataAndList.AppendLine("; ------------------------------------------------------------------------");
+
+
+
+            outputAnimation.AppendLine(String.Format("{0}_Animation_Headers:", name));
+
+
+
+            for (int i = firstFrame; i <= lastFrame; i++)
+            {
+                outputHeaders.AppendLine(String.Format("{0}_Frame_{1}_Header:      INCLUDE \"Data/{2}/{3}_frame_{1}_header.s\"", name, i, folderName, name.ToLower()));
+                outputHeaders.AppendLine();
+
+                outputDataAndList.AppendLine(String.Format("{0}_Frame_{1}:", name, i));
+                outputDataAndList.AppendLine(String.Format("\t\t.List:      INCLUDE \"Data/{0}/{1}_frame_{2}_list.s\"", folderName, name.ToLower(), i));
+                outputDataAndList.AppendLine();
+
+                outputAnimation.AppendLine(String.Format("\tdw {0}_Frame_{1}_Header", name, i));
+                //outputAnimation.AppendLine();
+            }
+
+            outputAnimation.AppendLine("\tdw 0x0000 ; end of data");
+
+            var dataAndList_fileName = destinyFolder + name.ToLower() + String.Format("_frames_{0}_to_{1}_data_and_list.s", firstFrame, lastFrame);
+            var header_fileName = destinyFolder + name.ToLower() + "_frame_headers.s";
+            var animation_fileName = destinyFolder + name.ToLower() + "_animation.s";
+
+            File.WriteAllText(dataAndList_fileName, outputDataAndList.ToString());
+            File.WriteAllText(header_fileName, outputHeaders.ToString());
+            File.WriteAllText(animation_fileName, outputAnimation.ToString());
+
+            Console.WriteLine("Data and List saved to file: " + dataAndList_fileName);
+            Console.WriteLine("Headers saved to file: " + header_fileName);
+            Console.WriteLine("Animation saved to file: " + animation_fileName);
             Console.WriteLine();
         }
     }
