@@ -146,6 +146,8 @@ namespace MSXUtilities.MK
             int totalSliceData = 0;
 
 
+            IDictionary<int, int> colorsCount = new Dictionary<int, int>();
+
             IList<byte> currentSlice = new List<byte>();
 
             for (int y = startY; y < endY; y++)
@@ -176,6 +178,24 @@ namespace MSXUtilities.MK
 
                         if (!colorsUsed.Contains(hiNibbleAdjusted)) colorsUsed.Add(hiNibbleAdjusted);
                         if (!colorsUsed.Contains(lowNibble)) colorsUsed.Add(lowNibble);
+
+                        if (!colorsCount.Keys.Contains(hiNibbleAdjusted))
+                        {
+                            colorsCount.Add(hiNibbleAdjusted, 1);
+                        }
+                        else
+                        {
+                            colorsCount[hiNibbleAdjusted]++;
+                        }
+
+                        if (!colorsCount.Keys.Contains(lowNibble))
+                        {
+                            colorsCount.Add(lowNibble, 1);
+                        }
+                        else
+                        {
+                            colorsCount[lowNibble]++;
+                        }
 
                         currentSlice.Add(b);
 
@@ -312,6 +332,10 @@ namespace MSXUtilities.MK
             Console.Write("Colors used (" + colorsUsed.Count + " colors):");
             foreach (var color in colorsUsed.OrderBy(x => x)) Console.Write(" " + color);
             Console.WriteLine();
+            foreach (var item in colorsCount.OrderBy(x => x.Key))
+            {
+                Console.WriteLine(item.Key + ": " + item.Value);
+            }
 
             Console.WriteLine("Slices count: " + slicesCount);
             Console.WriteLine("Average slice size: " + ((double)totalSliceData / (double)slicesCount));
