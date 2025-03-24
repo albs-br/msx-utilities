@@ -48,8 +48,9 @@ namespace MSXUtilities
             //var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_2, destinyFolder);
             //MK.MK_Runner.Make_Subzero_Stance_Frames_9_to_12(mk_Subzero, "subzero", mirror: true);
 
-            var sourceImage_Subzero_Walking = sourceImagePath + "subzero-walking.sc5";
-            var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_Walking, destinyFolder);
+            var sourceImage_Subzero_Walking_Frames_0_to_7 = sourceImagePath + "subzero-walking-frames_0_to_7.sc5";
+            var sourceImage_Subzero_Walking_Frame_8 = sourceImagePath + "subzero-walking-frame_8.sc5";
+            var mk_Subzero = new MK.MK_Main(new string[] { sourceImage_Subzero_Walking_Frames_0_to_7, sourceImage_Subzero_Walking_Frame_8 }, destinyFolder);
             MK.MK_Runner.Make_Subzero_Walking_Frames_0_to_8(mk_Subzero, "subzero", "walking", "right");
 
             #endregion msx-mk

@@ -11,22 +11,47 @@ namespace MSXUtilities.MK
         string inputFile;
         string destinyFolder;
         byte[] file;
-        IList<byte> outputDataBytesOptimized;
-        IList<byte> outputDataBytesAll;
-        int outputListTotalSize;
+        IList<byte> outputDataBytesOptimized = new List<byte>();
+        IList<byte> outputDataBytesAll = new List<byte>();
+        int outputListTotalSize = 0;
+
+        #region constructors
 
         public MK_Main(string _inputFile, string _destinyFolder)
         {
             this.inputFile = _inputFile;
-            this.destinyFolder = _destinyFolder;
-
-
-            this.outputDataBytesOptimized = new List<byte>();
-            this.outputDataBytesAll = new List<byte>();
-            this.outputListTotalSize = 0;
 
             this.file = File.ReadAllBytes(inputFile);
 
+            this.file = RemoveFileHeader(this.file);
+
+            this.destinyFolder = _destinyFolder;
+        }
+
+        public MK_Main(string[] _inputFiles, string _destinyFolder)
+        {
+            List<byte> tempList = new List<byte>();
+
+            foreach (var item in _inputFiles)
+            {
+                var temp = File.ReadAllBytes(item);
+
+                temp = RemoveFileHeader(temp);
+
+                IList<byte> t = (IList<byte>)temp;
+
+                tempList.AddRange(t);
+            }
+
+            this.file = tempList.ToArray();
+
+            this.destinyFolder = _destinyFolder;
+        }
+
+        #endregion constructors
+
+        private byte[] RemoveFileHeader(byte[] _file)
+        {
             /*
                 Byte: #FE (Type of file)
                 Word: Begin address of file
@@ -35,17 +60,18 @@ namespace MSXUtilities.MK
             */
 
             // remove the 7 bytes header, if present
-            if (file[0] == 0xfe)
+            if (_file[0] == 0xfe)
             {
-                var temp = file.ToList<byte>();
+                var temp = _file.ToList<byte>();
                 for (int i = 0; i < 7; i++)
                 {
                     temp.RemoveAt(0);
                 }
-
-                this.file = temp.ToArray<byte>();
+                
+                return temp.ToArray<byte>();
             }
 
+            return _file;
         }
 
         public void Run(

@@ -280,9 +280,9 @@ namespace MSXUtilities.MK
             var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.ToUpper(), side.ToUpper());
 
             mk.Run(
-                startX: 26 * 0, // x in bytes
+                startX: 28 * 0, // x in bytes
                 startY: 0, // y in pixels
-                width: 26, // in bytes
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -292,9 +292,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 26 * 1, // x in bytes
+                startX: 28 * 1, // x in bytes
                 startY: 0, // y in pixels
-                width: 26, // in bytes
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -304,9 +304,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 26 * 2, // x in bytes
+                startX: 28 * 2, // x in bytes
                 startY: 0, // y in pixels
-                width: 26, // in bytes
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -316,9 +316,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 26 * 3, // x in bytes
+                startX: 28 * 3, // x in bytes
                 startY: 0, // y in pixels
-                width: 26, // in bytes
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -327,10 +327,12 @@ namespace MSXUtilities.MK
                 frameNumber: 3
                 );
 
+
+
             mk.Run(
-                startX: 26 * 4, // x in bytes
-                startY: 0, // y in pixels
-                width: 24, // in bytes
+                startX: 28 * 0, // x in bytes
+                startY: 105, // y in pixels
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -339,12 +341,10 @@ namespace MSXUtilities.MK
                 frameNumber: 4
                 );
 
-
-
             mk.Run(
-                startX: 26 * 0, // x in bytes
+                startX: 28 * 1, // x in bytes
                 startY: 105, // y in pixels
-                width: 26, // in bytes
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -354,9 +354,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 26 * 1, // x in bytes
+                startX: 28 * 2, // x in bytes
                 startY: 105, // y in pixels
-                width: 26, // in bytes
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -366,9 +366,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 26 * 2, // x in bytes
+                startX: 28 * 3, // x in bytes
                 startY: 105, // y in pixels
-                width: 26, // in bytes
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -378,9 +378,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 26 * 3, // x in bytes
-                startY: 105, // y in pixels
-                width: 26, // in bytes
+                startX: 28 * 0, // x in bytes
+                startY: 256, // y in pixels
+                width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -393,8 +393,8 @@ namespace MSXUtilities.MK
             var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(), side.ToPascalCase());
             mk.SaveReferenceFiles(
                 name: temp,
-                firstFrame: 0, 
-                lastFrame: 8, 
+                firstFrame: 0,
+                lastFrame: 8,
                 animationRepeatFrames: 3);
         }
     }
