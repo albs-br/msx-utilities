@@ -17,14 +17,29 @@ namespace MSXUtilities
             return new string(chars);
         }
 
-        public static string ToPascalCase(this string input)
+        public static string ToPascalCase(this string input, bool keepUnderscores = false)
         {
-            string c0 = "";
-            if (input.Length > 0) { c0 = input.Substring(0, 1).ToUpper(); }
-            string cn = "";
-            if (input.Length > 1) { cn = input.Substring(1).ToLower(); }
+            var arrayTmp = input.Split('_');
 
-            return c0 + cn;
+            var sb = new StringBuilder();
+            bool first = true;
+            foreach (var item in arrayTmp)
+            {
+                string c0 = "";
+                if (item.Length > 0) { c0 = item.Substring(0, 1).ToUpper(); }
+                string cn = "";
+                if (item.Length > 1) { cn = item.Substring(1).ToLower(); }
+
+                if (!first && keepUnderscores)
+                {
+                    sb.Append("_");
+                }
+                first = false;
+
+                sb.Append(c0 + cn);
+            }
+
+            return sb.ToString();
         }
     }
 }

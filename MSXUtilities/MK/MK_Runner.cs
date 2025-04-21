@@ -379,7 +379,7 @@ namespace MSXUtilities.MK
 
             mk.Run(
                 startX: 28 * 0, // x in bytes
-                startY: 256, // y in pixels
+                startY: 256, // y in pixels // first line of the second image
                 width: 28, // in bytes
                 height: 106, // in pixels,
                 megaROMpage: megaROMPage,
@@ -397,5 +397,475 @@ namespace MSXUtilities.MK
                 lastFrame: 8,
                 animationRepeatFrames: 3);
         }
+
+        public static void Make_Scorpion_Walking_Frames_0_to_8(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 28 * 0, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: 28 * 1, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: 28 * 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+            mk.Run(
+                startX: 28 * 3, // x in bytes
+                startY: 0, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 3
+                );
+
+
+
+            mk.Run(
+                startX: 28 * 0, // x in bytes
+                startY: 105, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 4
+                );
+
+            mk.Run(
+                startX: 28 * 1, // x in bytes
+                startY: 105, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 5
+                );
+
+            mk.Run(
+                startX: 28 * 2, // x in bytes
+                startY: 105, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 6
+                );
+
+            mk.Run(
+                startX: 28 * 3, // x in bytes
+                startY: 105, // y in pixels
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 7
+                );
+
+            mk.Run(
+                startX: 28 * 0, // x in bytes
+                startY: 256, // y in pixels  // first line of the second image
+                width: 28, // in bytes
+                height: 106, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 8
+                );
+
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 8,
+                animationRepeatFrames: 3);
+        }
+
+        public static void Make_Scorpion_Jumping_Up_Frames_0_to_2(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 0, // x in bytes
+                startY: 0, // y in pixels
+                width: 54 / 2, // in bytes
+                height: 108, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: (60 - 6) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 54 / 2, // in bytes
+                height: 108, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: (116 - 6) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 54 / 2, // in bytes
+                height: 108, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 2,
+                animationRepeatFrames: 3);
+        }
+
+        public static void Make_Scorpion_Jumping_Forward_Frames_0_to_7(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: 50 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: 96 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+            mk.Run(
+                startX: 144 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 3
+                );
+
+
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 4
+                );
+
+            mk.Run(
+                startX: 50/2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 5
+                );
+
+            mk.Run(
+                startX: 96/2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 6
+            );
+
+            mk.Run(
+                startX: 144 / 2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 7
+            );
+
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 7,
+                animationRepeatFrames: 3);
+        }
+
+        public static void Make_Subzero_Jumping_Up_Frames_0_to_2(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 0, // x in bytes
+                startY: 0, // y in pixels
+                width: 54 / 2, // in bytes
+                height: 108, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: (60 - 6) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 54 / 2, // in bytes
+                height: 108, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: (116 - 6) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 54 / 2, // in bytes
+                height: 108, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 2,
+                animationRepeatFrames: 3);
+        }
+
+        public static void Make_Subzero_Jumping_Forward_Frames_0_to_7(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: 50 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: 96 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+            mk.Run(
+                startX: 144 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 3
+                );
+
+
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 4
+                );
+
+            mk.Run(
+                startX: 50 / 2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 5
+                );
+
+            mk.Run(
+                startX: 96 / 2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 6
+            );
+
+            mk.Run(
+                startX: 144 / 2, // x in bytes
+                startY: 116, // y in pixels
+                width: 44 / 2, // in bytes
+                height: 52, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 7
+            );
+
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 7,
+                animationRepeatFrames: 3);
+        }
+
+
     }
 }

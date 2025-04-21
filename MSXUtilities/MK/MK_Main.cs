@@ -14,6 +14,7 @@ namespace MSXUtilities.MK
         IList<byte> outputDataBytesOptimized = new List<byte>();
         IList<byte> outputDataBytesAll = new List<byte>();
         int outputListTotalSize = 0;
+        int? dataOffset_AddFile = null; // used together with AddFile method
 
         #region constructors
 
@@ -28,8 +29,15 @@ namespace MSXUtilities.MK
             this.destinyFolder = _destinyFolder;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_inputFiles">Images must be 256x256</param>
+        /// <param name="_destinyFolder"></param>
         public MK_Main(string[] _inputFiles, string _destinyFolder)
         {
+            // Warning: Images must be 256x256
+
             List<byte> tempList = new List<byte>();
 
             foreach (var item in _inputFiles)
@@ -88,8 +96,8 @@ namespace MSXUtilities.MK
         {
             if ((startX + width) > 128) throw new ArgumentException("startX + width cannot be over 128 bytes (256 pixels)");
 
-            var frameFullName_underscores = String.Format("{0}_{1}_{2}_frame_{3}", characterName, position, side, frameNumber);
-            var frameFullName_underscores_pascalCase = String.Format("{0}_{1}_{2}_Frame_{3}", characterName.ToPascalCase(), position.ToPascalCase(), side.ToPascalCase(), frameNumber);
+            var frameFullName_underscores = String.Format("{0}_{1}_{2}_frame_{3}", characterName, position.Replace('-', '_'), side, frameNumber);
+            var frameFullName_underscores_pascalCase = String.Format("{0}_{1}_{2}_Frame_{3}", characterName.ToPascalCase(), position.Replace('-', '_').ToPascalCase(true), side.ToPascalCase(), frameNumber);
             
             Console.WriteLine("Starting frame " + frameFullName_underscores);
 
@@ -250,10 +258,12 @@ namespace MSXUtilities.MK
                                 firstListEntry = false;
                             }
 
+                            var temp = (dataOffset_AddFile == null) ? "" : " + " + dataOffset_AddFile;
+
                             outputList.AppendLine(String.Format("\tdb\t{0},\t{1}\tdw\t{2}",
                                 currentIncrement,
-                                currentSlice.Count, // TODO: low byte of address of unroleld OUTIs list 
-                                DATA_BASE_ADDRESS + " + "  + dataAddress));
+                                currentSlice.Count, // TODO: low byte of address of unrolled OUTIs list 
+                                DATA_BASE_ADDRESS + temp + " + "  + dataAddress));
 
                             slicesCount++;
                             totalSliceData += currentSlice.Count;
@@ -372,8 +382,9 @@ namespace MSXUtilities.MK
             }
             outputData.AppendLine();
 
+            var nameWithUnderscores = name.Replace('-', '_');
 
-            var data_fileName = destinyFolder + name.ToLower() + String.Format("_frames_{0}_to_{1}_data.s", firstFrame, lastFrame);
+            var data_fileName = destinyFolder + nameWithUnderscores.ToLower() + String.Format("_frames_{0}_to_{1}_data.s", firstFrame, lastFrame);
             File.WriteAllText(data_fileName, outputData.ToString());
 
             Console.WriteLine("Data saved to file: " + data_fileName);
@@ -385,35 +396,35 @@ namespace MSXUtilities.MK
             StringBuilder outputDataAndList = new StringBuilder();
             StringBuilder outputAnimation = new StringBuilder();
 
-            outputDataAndList.AppendLine(String.Format("{0}_Frames_{1}_to_{2}_Data:", name, firstFrame, lastFrame));
+            outputDataAndList.AppendLine(String.Format("{0}_Frames_{1}_to_{2}_Data:", nameWithUnderscores.ToPascalCase(true), firstFrame, lastFrame));
 
             var folderName = name.ToLower().Replace('_', '/');
 
-            outputDataAndList.AppendLine(String.Format("\tINCLUDE \"Data/{0}/{1}_frames_{2}_to_{3}_data.s\"", folderName, name.ToLower(), firstFrame, lastFrame));
+            outputDataAndList.AppendLine(String.Format("\tINCLUDE \"Data/{0}/{1}_frames_{2}_to_{3}_data.s\"", folderName, nameWithUnderscores.ToLower(), firstFrame, lastFrame));
 
             outputDataAndList.AppendLine("; ------------------------------------------------------------------------");
 
 
 
-            outputAnimation.AppendLine(String.Format("{0}_Animation_Headers:", name));
+            outputAnimation.AppendLine(String.Format("{0}_Animation_Headers:", nameWithUnderscores.ToPascalCase(true)));
 
 
 
             for (int i = firstFrame; i <= lastFrame; i++)
             {
-                outputHeaders.AppendLine(String.Format("{0}_Frame_{1}_Header:      INCLUDE \"Data/{2}/{3}_frame_{1}_header.s\"", name, i, folderName, name.ToLower()));
+                outputHeaders.AppendLine(String.Format("{0}_Frame_{1}_Header:      INCLUDE \"Data/{2}/{3}_frame_{1}_header.s\"", nameWithUnderscores.ToPascalCase(true), i, folderName, nameWithUnderscores.ToLower()));
                 outputHeaders.AppendLine();
 
-                outputDataAndList.AppendLine(String.Format("{0}_Frame_{1}:", name, i));
-                outputDataAndList.AppendLine(String.Format("\t\t.List:      INCLUDE \"Data/{0}/{1}_frame_{2}_list.s\"", folderName, name.ToLower(), i));
+                outputDataAndList.AppendLine(String.Format("{0}_Frame_{1}:", nameWithUnderscores.ToPascalCase(true), i));
+                outputDataAndList.AppendLine(String.Format("\t\t.List:      INCLUDE \"Data/{0}/{1}_frame_{2}_list.s\"", folderName, nameWithUnderscores.ToPascalCase(true).ToLower(), i));
                 outputDataAndList.AppendLine();
 
-                outputAnimation.Append(String.Format("\tdw {0}_Frame_{1}_Header", name, i));
+                outputAnimation.Append(String.Format("\tdw {0}_Frame_{1}_Header", nameWithUnderscores.ToPascalCase(true), i));
                 if (animationRepeatFrames > 1)
                 {
                     for (int j = 1; j < animationRepeatFrames; j++)
                     {
-                        outputAnimation.Append(String.Format(", {0}_Frame_{1}_Header", name, i));
+                        outputAnimation.Append(String.Format(", {0}_Frame_{1}_Header", nameWithUnderscores.ToPascalCase(true), i));
                     }
                 }
                 outputAnimation.AppendLine();
@@ -422,9 +433,9 @@ namespace MSXUtilities.MK
 
             outputAnimation.AppendLine("\tdw 0x0000 ; end of data");
 
-            var dataAndList_fileName = destinyFolder + name.ToLower() + String.Format("_frames_{0}_to_{1}_data_and_list.s", firstFrame, lastFrame);
-            var header_fileName = destinyFolder + name.ToLower() + "_frame_headers.s";
-            var animation_fileName = destinyFolder + name.ToLower() + "_animation.s";
+            var dataAndList_fileName = destinyFolder + nameWithUnderscores.ToLower() + String.Format("_frames_{0}_to_{1}_data_and_list.s", firstFrame, lastFrame);
+            var header_fileName = destinyFolder + nameWithUnderscores.ToLower() + "_frame_headers.s";
+            var animation_fileName = destinyFolder + nameWithUnderscores.ToLower() + "_animation.s";
 
             File.WriteAllText(dataAndList_fileName, outputDataAndList.ToString());
             File.WriteAllText(header_fileName, outputHeaders.ToString());
@@ -434,6 +445,28 @@ namespace MSXUtilities.MK
             Console.WriteLine("Headers saved to file: " + header_fileName);
             Console.WriteLine("Animation saved to file: " + animation_fileName);
             Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Add image, keeping current pointers (to add two or more source images going to separate animations, on the same MegaROM page)
+        /// </summary>
+        /// <param name="_inputFile"></param>
+        public void AddImage(string _inputFile)
+        {
+            this.inputFile = _inputFile;
+
+            this.file = File.ReadAllBytes(inputFile);
+
+            this.file = RemoveFileHeader(this.file);
+
+
+
+
+            this.dataOffset_AddFile = this.outputDataBytesAll.Count;
+
+            this.outputDataBytesAll.Clear();
+            this.outputDataBytesOptimized.Clear();
+
         }
     }
 }
