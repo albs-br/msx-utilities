@@ -13,7 +13,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: "scorpion_frame_0",
         //        );
         //    mk.Run(
@@ -21,7 +21,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: "scorpion_frame_1"
         //        );
         //    mk.Run(
@@ -29,7 +29,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: "scorpion_frame_2"
         //        );
         //    mk.Run(
@@ -37,7 +37,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: "scorpion_frame_3"
         //        );
         //    mk.Run(
@@ -45,7 +45,7 @@ namespace MSXUtilities.MK
         //        startY: (208 - 103) + 1, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: "scorpion_frame_4"
         //        );
         //    mk.Run(
@@ -53,7 +53,7 @@ namespace MSXUtilities.MK
         //        startY: (208 - 103) + 1, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name:  "scorpion_frame_5"
         //        );
         //    mk.Run(
@@ -61,7 +61,7 @@ namespace MSXUtilities.MK
         //        startY: (208 - 103) + 1, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: "scorpion_frame_6"
         //        );
 
@@ -74,7 +74,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: name + "_frame_0",
         //        mirror: mirror
         //        );
@@ -83,7 +83,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: name + "_frame_1",
         //        mirror: mirror
         //        );
@@ -92,7 +92,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: name + "_frame_2",
         //        mirror: mirror
         //        );
@@ -101,7 +101,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: name + "_frame_3",
         //        mirror: mirror
         //        );
@@ -110,7 +110,7 @@ namespace MSXUtilities.MK
         //        startY: (208 - 103) + 1, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: name + "_frame_4",
         //        mirror: mirror
         //        );
@@ -119,7 +119,7 @@ namespace MSXUtilities.MK
         //        startY: (208 - 103) + 1, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: name + "_frame_5",
         //        mirror: mirror
         //        );
@@ -128,7 +128,7 @@ namespace MSXUtilities.MK
         //        startY: (208 - 103) + 1, // y in pixels
         //        width: 28, // in bytes
         //        height: 104, // in pixels
-        //        megaROMpage: "MEGAROM_PAGE_SCORPION_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SCORPION_STANCE_LEFT_DATA_0",
         //        name: name + "_frame_6",
         //        mirror: mirror
         //        );
@@ -143,7 +143,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_0",
         //        mirror: mirror
         //        );
@@ -152,7 +152,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_1",
         //        mirror: mirror
         //        );
@@ -161,7 +161,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_2",
         //        mirror: mirror
         //        );
@@ -170,7 +170,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_3",
         //        mirror: mirror
         //        );
@@ -179,7 +179,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_4",
         //        mirror: mirror
         //        );
@@ -189,7 +189,7 @@ namespace MSXUtilities.MK
         //        startY: 110, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_5",
         //        mirror: mirror
         //        );
@@ -198,7 +198,7 @@ namespace MSXUtilities.MK
         //        startY: 110, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_6",
         //        mirror: mirror
         //        );
@@ -207,7 +207,7 @@ namespace MSXUtilities.MK
         //        startY: 110, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_7",
         //        mirror: mirror
         //        );
@@ -216,7 +216,7 @@ namespace MSXUtilities.MK
         //        startY: 110, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_0",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_0",
         //        name: name + "_frame_8",
         //        mirror: mirror
         //        );
@@ -235,7 +235,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_1",
         //        name: name + "_frame_9",
         //        mirror: mirror
         //        );
@@ -244,7 +244,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_1",
         //        name: name + "_frame_10",
         //        mirror: mirror
         //        );
@@ -253,7 +253,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_1",
         //        name: name + "_frame_11",
         //        mirror: mirror
         //        );
@@ -262,7 +262,7 @@ namespace MSXUtilities.MK
         //        startY: 0, // y in pixels
         //        width: 25, // in bytes
         //        height: 107, // in pixels,
-        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_DATA_1",
+        //        megaROMpage: "MEGAROM_PAGE_SUBZERO_STANCE_RIGHT_DATA_1",
         //        name: name + "_frame_12",
         //        mirror: mirror
         //        );
