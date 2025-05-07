@@ -74,15 +74,31 @@ namespace MSXUtilities
 
 
 
-            // --- two source images going to two separate animations, on the same MegaROM page:
-            var sourceImage_Subzero_Jumping_Up_Frames_0_to_2 = sourceImagePath + "subzero-jumping-up.sc5";
-            var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_Jumping_Up_Frames_0_to_2, destinyFolder);
-            MK.MK_Runner.Make_Subzero_Jumping_Up_Frames_0_to_2(mk_Subzero, "subzero", "jumping-up", "right");
+            //// --- two source images going to two separate animations, on the same MegaROM page:
+            //var sourceImage_Subzero_Jumping_Up_Frames_0_to_2 = sourceImagePath + "subzero-jumping-up.sc5";
+            //var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_Jumping_Up_Frames_0_to_2, destinyFolder);
+            //MK.MK_Runner.Make_Subzero_Jumping_Up_Frames_0_to_2(mk_Subzero, "subzero", "jumping-up", "right");
 
-            var sourceImage_Subzero_Jumping_Forward_Frames_0_to_7 = sourceImagePath + "subzero-jumping-forward.sc5";
-            mk_Subzero.AddImage(sourceImage_Subzero_Jumping_Forward_Frames_0_to_7);
-            MK.MK_Runner.Make_Subzero_Jumping_Forward_Frames_0_to_7(mk_Subzero, "subzero", "jumping-forward", "right");
+            //var sourceImage_Subzero_Jumping_Forward_Frames_0_to_7 = sourceImagePath + "subzero-jumping-forward.sc5";
+            //mk_Subzero.AddImage(sourceImage_Subzero_Jumping_Forward_Frames_0_to_7);
+            //MK.MK_Runner.Make_Subzero_Jumping_Forward_Frames_0_to_7(mk_Subzero, "subzero", "jumping-forward", "right");
 
+
+
+            /*
+            low kick frames seq:
+
+            0, 1, 3, 6, 3, 1, 0
+
+
+
+            high kick frames seq:
+
+            0, 1, 2, 3, 4, 5, 3, 2, 1, 0             
+            */
+            var sourceImage_Scorpion_Kick_Frames_0_to_6 = sourceImagePath + "scorpion-kick.sc5";
+            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Kick_Frames_0_to_6, destinyFolder);
+            MK.MK_Runner.Make_Scorpion_Kick_Frames(mk_Scorpion, "scorpion", "kick", "left");
             #endregion msx-mk
 
 

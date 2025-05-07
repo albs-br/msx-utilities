@@ -393,16 +393,17 @@ namespace MSXUtilities.MK
             //-------------------------------------------------------------
 
             StringBuilder outputHeaders = new StringBuilder();
-            StringBuilder outputDataAndList = new StringBuilder();
+            //StringBuilder outputData = new StringBuilder();
+            StringBuilder outputList = new StringBuilder();
             StringBuilder outputAnimation = new StringBuilder();
 
-            outputDataAndList.AppendLine(String.Format("{0}_Frames_{1}_to_{2}_Data:", nameWithUnderscores.ToPascalCase(true), firstFrame, lastFrame));
+            //outputData1.AppendLine(String.Format("{0}_Frames_{1}_to_{2}_Data:", nameWithUnderscores.ToPascalCase(true), firstFrame, lastFrame));
 
             var folderName = name.ToLower().Replace('_', '/');
 
-            outputDataAndList.AppendLine(String.Format("\tINCLUDE \"Data/{0}/{1}_frames_{2}_to_{3}_data.s\"", folderName, nameWithUnderscores.ToLower(), firstFrame, lastFrame));
+            //outputData1.AppendLine(String.Format("\tINCLUDE \"Data/{0}/{1}_frames_{2}_to_{3}_data.s\"", folderName, nameWithUnderscores.ToLower(), firstFrame, lastFrame));
 
-            outputDataAndList.AppendLine("; ------------------------------------------------------------------------");
+            //outputDataAndList.AppendLine("; ------------------------------------------------------------------------");
 
 
 
@@ -415,9 +416,9 @@ namespace MSXUtilities.MK
                 outputHeaders.AppendLine(String.Format("{0}_Frame_{1}_Header:      INCLUDE \"Data/{2}/{3}_frame_{1}_header.s\"", nameWithUnderscores.ToPascalCase(true), i, folderName, nameWithUnderscores.ToLower()));
                 outputHeaders.AppendLine();
 
-                outputDataAndList.AppendLine(String.Format("{0}_Frame_{1}:", nameWithUnderscores.ToPascalCase(true), i));
-                outputDataAndList.AppendLine(String.Format("\t\t.List:      INCLUDE \"Data/{0}/{1}_frame_{2}_list.s\"", folderName, nameWithUnderscores.ToPascalCase(true).ToLower(), i));
-                outputDataAndList.AppendLine();
+                outputList.AppendLine(String.Format("{0}_Frame_{1}:", nameWithUnderscores.ToPascalCase(true), i));
+                outputList.AppendLine(String.Format("\t\t.List:      INCLUDE \"Data/{0}/{1}_frame_{2}_list.s\"", folderName, nameWithUnderscores.ToPascalCase(true).ToLower(), i));
+                outputList.AppendLine();
 
                 outputAnimation.Append(String.Format("\tdw {0}_Frame_{1}_Header", nameWithUnderscores.ToPascalCase(true), i));
                 if (animationRepeatFrames > 1)
@@ -433,15 +434,15 @@ namespace MSXUtilities.MK
 
             outputAnimation.AppendLine("\tdw 0x0000 ; end of data");
 
-            var dataAndList_fileName = destinyFolder + nameWithUnderscores.ToLower() + String.Format("_frames_{0}_to_{1}_data_and_list.s", firstFrame, lastFrame);
+            var list_fileName = destinyFolder + nameWithUnderscores.ToLower() + String.Format("_frames_{0}_to_{1}_list.s", firstFrame, lastFrame);
             var header_fileName = destinyFolder + nameWithUnderscores.ToLower() + "_frame_headers.s";
             var animation_fileName = destinyFolder + nameWithUnderscores.ToLower() + "_animation.s";
 
-            File.WriteAllText(dataAndList_fileName, outputDataAndList.ToString());
+            File.WriteAllText(list_fileName, outputList.ToString());
             File.WriteAllText(header_fileName, outputHeaders.ToString());
             File.WriteAllText(animation_fileName, outputAnimation.ToString());
 
-            Console.WriteLine("Data and List saved to file: " + dataAndList_fileName);
+            Console.WriteLine("List saved to file: " + list_fileName);
             Console.WriteLine("Headers saved to file: " + header_fileName);
             Console.WriteLine("Animation saved to file: " + animation_fileName);
             Console.WriteLine();
