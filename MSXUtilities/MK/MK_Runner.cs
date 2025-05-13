@@ -938,9 +938,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 88 / 2, // x in bytes
+                startX: 86 / 2, // x in bytes
                 startY: 208 - 104, // y in pixels
-                width: (152-88) / 2, // in bytes
+                width: (156-86) / 2, // in bytes
                 height: 104, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,

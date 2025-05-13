@@ -260,6 +260,11 @@ namespace MSXUtilities.MK
 
                             var temp = (dataOffset_AddFile == null) ? "" : " + " + dataOffset_AddFile;
 
+                            if (currentSlice.Count > width)
+                            {
+                                throw new Exception("Warning: slice size greater than width");
+                            }
+
                             outputList.AppendLine(String.Format("\tdb\t{0},\t{1}\tdw\t{2}",
                                 currentIncrement,
                                 currentSlice.Count, // TODO: low byte of address of unrolled OUTIs list 
