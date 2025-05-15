@@ -971,5 +971,61 @@ namespace MSXUtilities.MK
                 lastFrame: 6,
                 animationRepeatFrames: 3);
         }
+
+
+        public static void Make_Scorpion_Block_Frames(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 50 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: 58 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: (100 - 58) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: 108 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: (150 - 108) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 2,
+                animationRepeatFrames: 3);
+        }
     }
 }

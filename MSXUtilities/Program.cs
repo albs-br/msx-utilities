@@ -85,20 +85,18 @@ namespace MSXUtilities
 
 
 
-            /*
-            low kick frames seq:
+            //// low kick frames seq:            0, 1, 3, 6, 3, 1, 0
+            //// high kick frames seq:           0, 1, 2, 3, 4, 5, 3, 2, 1, 0             
+            //var sourceImage_Scorpion_Kick_Frames_0_to_6 = sourceImagePath + "scorpion-kick.sc5";
+            //var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Kick_Frames_0_to_6, destinyFolder);
+            //MK.MK_Runner.Make_Scorpion_Kick_Frames(mk_Scorpion, "scorpion", "kick", "left");
 
-            0, 1, 3, 6, 3, 1, 0
 
 
+            var sourceImage_Scorpion_Block_Frames_0_to_2 = sourceImagePath + "scorpion-block-crouching.sc5";
+            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Block_Frames_0_to_2, destinyFolder);
+            MK.MK_Runner.Make_Scorpion_Block_Frames(mk_Scorpion, "scorpion", "block", "left");
 
-            high kick frames seq:
-
-            0, 1, 2, 3, 4, 5, 3, 2, 1, 0             
-            */
-            var sourceImage_Scorpion_Kick_Frames_0_to_6 = sourceImagePath + "scorpion-kick.sc5";
-            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Kick_Frames_0_to_6, destinyFolder);
-            MK.MK_Runner.Make_Scorpion_Kick_Frames(mk_Scorpion, "scorpion", "kick", "left");
             #endregion msx-mk
 
 
