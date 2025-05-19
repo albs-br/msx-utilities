@@ -985,7 +985,7 @@ namespace MSXUtilities.MK
             mk.Run(
                 startX: 0 / 2, // x in bytes
                 startY: 0, // y in pixels
-                width: 50 / 2, // in bytes
+                width: 60 / 2, // in bytes
                 height: 104, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -995,9 +995,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 58 / 2, // x in bytes
+                startX: 62 / 2, // x in bytes
                 startY: 0, // y in pixels
-                width: (100 - 58) / 2, // in bytes
+                width: (114 - 62) / 2, // in bytes
                 height: 104, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -1007,9 +1007,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: 108 / 2, // x in bytes
+                startX: 116 / 2, // x in bytes
                 startY: 0, // y in pixels
-                width: (150 - 108) / 2, // in bytes
+                width: (168 - 116) / 2, // in bytes
                 height: 104, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
