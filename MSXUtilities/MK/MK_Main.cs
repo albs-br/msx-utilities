@@ -11,7 +11,7 @@ namespace MSXUtilities.MK
         string inputFile;
         string destinyFolder;
         byte[] file;
-        IList<byte> outputDataBytesOptimized = new List<byte>();
+        //IList<byte> outputDataBytesOptimized = new List<byte>();
         IList<byte> outputDataBytesAll = new List<byte>();
         int outputListTotalSize = 0;
         int? dataOffset_AddFile = null; // used together with AddFile method
@@ -296,35 +296,35 @@ namespace MSXUtilities.MK
                             }
                             //outputData.AppendLine();
 
-                            // check if current slice is already in the data
-                            bool found = false;
-                            for (int i = 0; i < outputDataBytesOptimized.Count - currentSlice.Count; i++)
-                            {
-                                for (int j = 0; j < currentSlice.Count; j++)
-                                {
-                                    if (currentSlice[j] == outputDataBytesOptimized[i + j])
-                                    {
-                                        found = true;
-                                    }
-                                    else
-                                    {
-                                        found = false;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!found)
-                            {
-                                //Console.Write("-");
-                                for (int j = 0; j < currentSlice.Count; j++)
-                                {
-                                    outputDataBytesOptimized.Add(currentSlice[j]);
-                                }
-                            }
-                            else
-                            {
-                                //Console.Write("V");
-                            }
+                            //// check if current slice is already in the data
+                            //bool found = false;
+                            //for (int i = 0; i < outputDataBytesOptimized.Count - currentSlice.Count; i++)
+                            //{
+                            //    for (int j = 0; j < currentSlice.Count; j++)
+                            //    {
+                            //        if (currentSlice[j] == outputDataBytesOptimized[i + j])
+                            //        {
+                            //            found = true;
+                            //        }
+                            //        else
+                            //        {
+                            //            found = false;
+                            //            break;
+                            //        }
+                            //    }
+                            //}
+                            //if (!found)
+                            //{
+                            //    //Console.Write("-");
+                            //    for (int j = 0; j < currentSlice.Count; j++)
+                            //    {
+                            //        outputDataBytesOptimized.Add(currentSlice[j]);
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //Console.Write("V");
+                            //}
 
                             newSlice = true;
                             this.dataAddress += currentSlice.Count;
@@ -365,7 +365,7 @@ namespace MSXUtilities.MK
             Console.WriteLine("Average slice size: " + ((double)totalSliceData / (double)slicesCount));
 
             Console.WriteLine("--- Stats for all frames so far:");
-            Console.WriteLine("Data optimized size: " + outputDataBytesOptimized.Count + " bytes");
+            //Console.WriteLine("Data optimized size: " + outputDataBytesOptimized.Count + " bytes");
             Console.WriteLine("Data all size: " + outputDataBytesAll.Count + " bytes");
 
             Console.WriteLine("Total list size: " + outputListTotalSize + " bytes");
@@ -483,8 +483,7 @@ namespace MSXUtilities.MK
             this.dataOffset_AddFile = this.outputDataBytesAll.Count;
 
             this.outputDataBytesAll.Clear();
-            this.outputDataBytesOptimized.Clear();
-
+            //this.outputDataBytesOptimized.Clear();
         }
     }
 }
