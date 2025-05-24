@@ -15,6 +15,7 @@ namespace MSXUtilities.MK
         IList<byte> outputDataBytesAll = new List<byte>();
         int outputListTotalSize = 0;
         int? dataOffset_AddFile = null; // used together with AddFile method
+        int dataAddress = 0;
 
         #region constructors
 
@@ -91,7 +92,8 @@ namespace MSXUtilities.MK
             string characterName,
             string position,
             string side,
-            int frameNumber
+            int frameNumber,
+            bool clearDataFile = false
             )
         {
             if ((startX + width) > 128) throw new ArgumentException("startX + width cannot be over 128 bytes (256 pixels)");
@@ -141,9 +143,15 @@ namespace MSXUtilities.MK
             int currentIncrement = 0;
             int lastPosition = 0;
             //int dataAddress = 0;
-            int dataAddress = outputDataBytesAll.Count;
+            //int dataAddress = outputDataBytesAll.Count;
             bool newSlice = true;
             bool firstListEntry = true;
+
+            // when two or more positions come from the same image source, dataFile should be reset:
+            if (clearDataFile)
+            {
+                outputDataBytesAll.Clear();
+            }
 
             StringBuilder outputHeader = new StringBuilder();
             StringBuilder outputList = new StringBuilder();
@@ -268,12 +276,12 @@ namespace MSXUtilities.MK
                             outputList.AppendLine(String.Format("\tdb\t{0},\t{1}\tdw\t{2}",
                                 currentIncrement,
                                 currentSlice.Count, // TODO: low byte of address of unrolled OUTIs list 
-                                DATA_BASE_ADDRESS + temp + " + "  + dataAddress));
+                                DATA_BASE_ADDRESS + temp + " + "  + this.dataAddress));
 
                             slicesCount++;
                             totalSliceData += currentSlice.Count;
 
-                            outputListTotalSize += 4; //size of each list entry
+                            outputListTotalSize += 4; // 4 = size of each list entry
 
                             //outputData.Append("\tdb");
                             //var first = true;
@@ -319,7 +327,7 @@ namespace MSXUtilities.MK
                             }
 
                             newSlice = true;
-                            dataAddress += currentSlice.Count;
+                            this.dataAddress += currentSlice.Count;
                             currentSlice = new List<byte>();
                         }
                     }
@@ -327,6 +335,7 @@ namespace MSXUtilities.MK
             }
 
             outputList.AppendLine("\tdb  0 ; end of frame");
+            this.outputListTotalSize += 1;
 
             File.WriteAllText(destinyFolder + frameFullName_underscores + "_header.s", outputHeader.ToString());
             File.WriteAllText(destinyFolder + frameFullName_underscores + "_list.s", outputList.ToString());
@@ -360,15 +369,18 @@ namespace MSXUtilities.MK
             Console.WriteLine("Data all size: " + outputDataBytesAll.Count + " bytes");
 
             Console.WriteLine("Total list size: " + outputListTotalSize + " bytes");
-            Console.WriteLine("Space remaining on a MegaROM page: " + (16384 - (outputDataBytesAll.Count + outputListTotalSize)) + " bytes");
 
-            if ((outputDataBytesAll.Count + outputListTotalSize) > 16384)
+            var megaRomSize = this.dataAddress + this.outputListTotalSize;
+
+            Console.WriteLine("Space remaining on MegaROM page: " + (16384 - megaRomSize) + " bytes");
+
+            if (megaRomSize > 16384)
             {
                 throw new Exception("Data + list will not fit into a MegaROM page.");
             }
 
 
-            Console.WriteLine(characterName +  " done.");
+            Console.WriteLine("Done.");
             Console.WriteLine();
         }
 

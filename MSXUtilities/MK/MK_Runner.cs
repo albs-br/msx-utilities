@@ -1034,7 +1034,8 @@ namespace MSXUtilities.MK
             MK_Main mk,
             string characterName,
             string position,
-            string side
+            string side,
+            bool clearDataFile = false
             )
         {
             var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
@@ -1048,7 +1049,8 @@ namespace MSXUtilities.MK
                 characterName: characterName,
                 position: position,
                 side: side,
-                frameNumber: 0
+                frameNumber: 0,
+                clearDataFile: true
                 );
 
             mk.Run(
@@ -1084,5 +1086,39 @@ namespace MSXUtilities.MK
                 lastFrame: 2,
                 animationRepeatFrames: 3);
         }
+
+        public static void Make_Scorpion_Crouching_Block_Frame(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side,
+            bool clearDataFile = false
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: (200-12) / 2, // x in bytes
+                startY: 107, // y in pixels
+                width: 60 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0,
+                clearDataFile: true
+                );
+            
+            
+            
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 0,
+                animationRepeatFrames: 1);
+        }
+
     }
 }

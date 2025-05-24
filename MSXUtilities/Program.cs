@@ -94,12 +94,15 @@ namespace MSXUtilities
 
             
             // --- two positions from the same image source, on the same MegaROM page:
-            var sourceImage_Scorpion_Block_Frames_0_to_2 = sourceImagePath + "scorpion-block-crouching.sc5";
-            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Block_Frames_0_to_2, destinyFolder);
+            var sourceImage_Scorpion_Block_Crouching_Frames_0_to_2 = sourceImagePath + "scorpion-block-crouching.sc5";
+            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Block_Crouching_Frames_0_to_2, destinyFolder);
             MK.MK_Runner.Make_Scorpion_Block_Frames(mk_Scorpion, "scorpion", "block", "left");
 
-            MK.MK_Runner.Make_Scorpion_Crouching_Frames(mk_Scorpion, "scorpion", "crouching", "left");
+            // clear DATA file before adding new data
+            MK.MK_Runner.Make_Scorpion_Crouching_Frames(mk_Scorpion, "scorpion", "crouching", "left", clearDataFile: true);
 
+            // clear DATA file before adding new data
+            MK.MK_Runner.Make_Scorpion_Crouching_Block_Frame(mk_Scorpion, "scorpion", "crouching-block", "left", clearDataFile: true);
 
             #endregion msx-mk
 
