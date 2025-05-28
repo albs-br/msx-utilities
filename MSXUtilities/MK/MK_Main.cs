@@ -251,6 +251,12 @@ namespace MSXUtilities.MK
                                     )
                                 );
 
+                                // TODO:
+                                outputHeader.AppendLine();
+                                outputHeader.AppendLine("\t; 255 = ignore");
+                                outputHeader.AppendLine("\tdb  255, 255, 255, 255 ; HurtBox (X, Y, Width, Height)");
+                                outputHeader.AppendLine("\tdb  255, 255, 255, 255 ; HitBox (X, Y, Width, Height)");
+
                                 // get only 7 lower bits
                                 currentIncrement = 0b01111111 & currentIncrement;
                             }

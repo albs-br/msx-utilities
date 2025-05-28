@@ -925,6 +925,7 @@ namespace MSXUtilities.MK
 
 
 
+            // high kick
             mk.Run(
                 startX: 0 / 2, // x in bytes
                 startY: 208-104, // y in pixels
@@ -949,6 +950,7 @@ namespace MSXUtilities.MK
                 frameNumber: 5
                 );
 
+            // low kick
             mk.Run(
                 startX: 160 / 2, // x in bytes
                 startY: 208 - 104, // y in pixels
