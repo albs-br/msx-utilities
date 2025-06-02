@@ -1122,5 +1122,73 @@ namespace MSXUtilities.MK
                 animationRepeatFrames: 1);
         }
 
+        public static void Make_Subzero_Hurt_1_Frames(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side,
+            bool clearDataFile = false
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 50 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: (60 - 8) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: (104 - 52) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: (118 - 8) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: (170 - 110) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+            mk.Run(
+                startX: (184 - 8) / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: (236 - 176) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 3
+                );
+
+
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 3,
+                animationRepeatFrames: 3);
+        }
+
     }
 }

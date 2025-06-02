@@ -92,17 +92,25 @@ namespace MSXUtilities
             //MK.MK_Runner.Make_Scorpion_Kick_Frames(mk_Scorpion, "scorpion", "kick", "left");
 
 
-            
-            // --- two or more positions from the same image source, on the same MegaROM page:
-            var sourceImage_Scorpion_Block_Crouching_Frames_0_to_2 = sourceImagePath + "scorpion-block-crouching.sc5";
-            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Block_Crouching_Frames_0_to_2, destinyFolder);
-            MK.MK_Runner.Make_Scorpion_Block_Frames(mk_Scorpion, "scorpion", "block", "left");
 
-            // clear DATA file before adding new data
-            MK.MK_Runner.Make_Scorpion_Crouching_Frames(mk_Scorpion, "scorpion", "crouching", "left", clearDataFile: true);
+            //// --- two or more positions from the same image source, on the same MegaROM page:
+            //var sourceImage_Scorpion_Block_Crouching_Frames_0_to_2 = sourceImagePath + "scorpion-block-crouching.sc5";
+            //var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Block_Crouching_Frames_0_to_2, destinyFolder);
+            //MK.MK_Runner.Make_Scorpion_Block_Frames(mk_Scorpion, "scorpion", "block", "left");
 
-            // clear DATA file before adding new data
-            MK.MK_Runner.Make_Scorpion_Crouching_Block_Frame(mk_Scorpion, "scorpion", "crouching-block", "left", clearDataFile: true);
+            //// clear DATA file before adding new data
+            //MK.MK_Runner.Make_Scorpion_Crouching_Frames(mk_Scorpion, "scorpion", "crouching", "left", clearDataFile: true);
+
+            //// clear DATA file before adding new data
+            //MK.MK_Runner.Make_Scorpion_Crouching_Block_Frame(mk_Scorpion, "scorpion", "crouching-block", "left", clearDataFile: true);
+
+
+
+
+
+            var sourceImage_Subzero_Block_Crouching_Frames_0_to_3 = sourceImagePath + "subzero-hurt-1.sc5";
+            var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_Block_Crouching_Frames_0_to_3, destinyFolder);
+            MK.MK_Runner.Make_Subzero_Hurt_1_Frames(mk_Subzero, "subzero", "hurt-1", "right");
 
             #endregion msx-mk
 
