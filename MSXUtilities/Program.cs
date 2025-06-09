@@ -108,9 +108,18 @@ namespace MSXUtilities
 
 
 
-            var sourceImage_Subzero_Block_Crouching_Frames_0_to_3 = sourceImagePath + "subzero-hurt-1.sc5";
-            var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_Block_Crouching_Frames_0_to_3, destinyFolder);
-            MK.MK_Runner.Make_Subzero_Hurt_1_Frames(mk_Subzero, "subzero", "hurt-1", "right");
+            //var sourceImage_Subzero_Block_Crouching_Frames_0_to_3 = sourceImagePath + "subzero-hurt-1.sc5";
+            //var mk_Subzero = new MK.MK_Main(sourceImage_Subzero_Block_Crouching_Frames_0_to_3, destinyFolder);
+            //MK.MK_Runner.Make_Subzero_Hurt_1_Frames(mk_Subzero, "subzero", "hurt-1", "right");
+
+
+
+            var sourceImage_Scorpion_Uppercut_Frames_0_to_5 = sourceImagePath + "scorpion-uppercut.sc5";
+            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Uppercut_Frames_0_to_5, destinyFolder);
+            MK.MK_Runner.Make_Scorpion_Uppercut_Frames(mk_Scorpion, "scorpion", "uppercut", "left");
+
+
+
 
             #endregion msx-mk
 

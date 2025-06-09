@@ -372,9 +372,9 @@ namespace MSXUtilities.MK
 
             Console.WriteLine("--- Stats for all frames so far:");
             //Console.WriteLine("Data optimized size: " + outputDataBytesOptimized.Count + " bytes");
-            Console.WriteLine("Data all size: " + outputDataBytesAll.Count + " bytes");
-
+            Console.WriteLine("Total data size: " + outputDataBytesAll.Count + " bytes");
             Console.WriteLine("Total list size: " + outputListTotalSize + " bytes");
+            Console.WriteLine("Total data + list size: " + (outputDataBytesAll.Count + outputListTotalSize) + " bytes");
 
             var megaRomSize = this.dataAddress + this.outputListTotalSize;
 
