@@ -1213,9 +1213,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: (68 - 12) / 2, // x in bytes
+                startX: (70 - 12) / 2, // x in bytes
                 startY: 0, // y in pixels
-                width: (120 - 56) / 2, // in bytes
+                width: (122 - (70 - 12)) / 2, // in bytes
                 height: 107, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -1225,9 +1225,9 @@ namespace MSXUtilities.MK
                 );
 
             mk.Run(
-                startX: (128 - 12) / 2, // x in bytes
+                startX: (132 - 12) / 2, // x in bytes
                 startY: 0, // y in pixels
-                width: (198 - 116) / 2, // in bytes
+                width: (202 - (132 - 12)) / 2, // in bytes
                 height: 107, // in pixels,
                 megaROMpage: megaROMPage,
                 characterName: characterName,
@@ -1237,19 +1237,41 @@ namespace MSXUtilities.MK
                 );
 
 
-            // TODO: fix problem: frame is too tall!
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 108, // y in pixels
+                width: (52 - 0) / 2, // in bytes
+                height: 124, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 3
+                );
 
-            //mk.Run(
-            //    startX: (184 - 8) / 2, // x in bytes
-            //    startY: 0, // y in pixels
-            //    width: (236 - 176) / 2, // in bytes
-            //    height: 104, // in pixels,
-            //    megaROMpage: megaROMPage,
-            //    characterName: characterName,
-            //    position: position,
-            //    side: side,
-            //    frameNumber: 3
-            //    );
+            mk.Run(
+                startX: (65 - 12) / 2, // x in bytes
+                startY: 108, // y in pixels
+                width: (102 - (65 - 12)) / 2, // in bytes
+                height: 124, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 4
+                );
+
+            mk.Run(
+                startX: (114 - 12) / 2, // x in bytes
+                startY: 108, // y in pixels
+                width: (168 - (114 - 12)) / 2, // in bytes
+                height: 124, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 5
+                );
 
 
 
@@ -1257,7 +1279,7 @@ namespace MSXUtilities.MK
             mk.SaveReferenceFiles(
                 name: temp,
                 firstFrame: 0,
-                lastFrame: 3,
+                lastFrame: 5,
                 animationRepeatFrames: 3);
         }
 
