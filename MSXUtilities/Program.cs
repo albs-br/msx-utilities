@@ -114,11 +114,20 @@ namespace MSXUtilities
 
 
 
-            var sourceImage_Scorpion_Uppercut_Frames_0_to_5 = sourceImagePath + "scorpion-uppercut.sc5";
-            var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Uppercut_Frames_0_to_5, destinyFolder);
-            MK.MK_Runner.Make_Scorpion_Uppercut_Frames(mk_Scorpion, "scorpion", "uppercut", "left");
+            //var sourceImage_Scorpion_Uppercut_Frames_0_to_5 = sourceImagePath + "scorpion-uppercut.sc5";
+            //var mk_Scorpion = new MK.MK_Main(sourceImage_Scorpion_Uppercut_Frames_0_to_5, destinyFolder);
+            //MK.MK_Runner.Make_Scorpion_Uppercut_Frames(mk_Scorpion, "scorpion", "uppercut", "left");
 
 
+
+
+
+
+            // ---two source images going to the same animation:
+            var sourceImage_Subzero_Falling_Frames_0_to_5 = sourceImagePath + "subzero-falling-0-frames_0_to_5.sc5";
+            var sourceImage_Subzero_Falling_Frame_6_to_10 = sourceImagePath + "subzero-falling-1-frame_6_to_10.sc5";
+            var mk_Subzero = new MK.MK_Main(new string[] { sourceImage_Subzero_Falling_Frames_0_to_5, sourceImage_Subzero_Falling_Frame_6_to_10 }, destinyFolder);
+            MK.MK_Runner.Make_Subzero_Falling_Frames(mk_Subzero, "subzero", "falling", "right");
 
 
             #endregion msx-mk

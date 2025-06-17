@@ -377,6 +377,8 @@ namespace MSXUtilities.MK
                 frameNumber: 7
                 );
 
+
+            // here starts the second image (first y = 256)
             mk.Run(
                 startX: 28 * 0, // x in bytes
                 startY: 256, // y in pixels // first line of the second image
@@ -1280,6 +1282,100 @@ namespace MSXUtilities.MK
                 name: temp,
                 firstFrame: 0,
                 lastFrame: 5,
+                animationRepeatFrames: 3);
+        }
+
+        public static void Make_Subzero_Falling_Frames(
+            MK_Main mk,
+            string characterName,
+            string position,
+            string side,
+            bool clearDataFile = false
+            )
+        {
+            var megaROMPage = String.Format("MEGAROM_PAGE_{0}_{1}_{2}_DATA_0", characterName.ToUpper(), position.Replace('-', '_').ToUpper(), side.ToUpper());
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: 72 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 0
+                );
+
+            mk.Run(
+                startX: 78 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: (154 - 78) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 1
+                );
+
+            mk.Run(
+                startX: 160 / 2, // x in bytes
+                startY: 0, // y in pixels
+                width: (216 - 160) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 2
+                );
+
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 211 - 104, // y in pixels
+                width: 46 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 3
+                );
+
+            mk.Run(
+                startX: 52 / 2, // x in bytes
+                startY: 211 - 104, // y in pixels
+                width: (124 - 52) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 4
+                );
+
+            mk.Run(
+                startX: 132 / 2, // x in bytes
+                startY: 211 - 104, // y in pixels
+                width: (224 - 132) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 5
+                );
+
+            // here starts the second image (first y = 256)
+            // TODO: continue here
+
+            var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
+            mk.SaveReferenceFiles(
+                name: temp,
+                firstFrame: 0,
+                lastFrame: 10,
                 animationRepeatFrames: 3);
         }
 
