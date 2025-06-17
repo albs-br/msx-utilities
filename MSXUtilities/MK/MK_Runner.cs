@@ -1368,8 +1368,70 @@ namespace MSXUtilities.MK
                 frameNumber: 5
                 );
 
-            // here starts the second image (first y = 256)
-            // TODO: continue here
+            // --- here starts the second image (first y = 256)
+
+            mk.Run(
+                startX: 70 / 2, // x in bytes
+                startY: 256 + 152, // y in pixels
+                width: (130 - 70) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 6
+                );
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 256 + 152, // y in pixels
+                width: (64 - 0) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 7
+                );
+
+            mk.Run(
+                startX: 130 / 2, // x in bytes
+                startY: 256 + 0, // y in pixels
+                width: (194 - 130) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 8
+                );
+
+            mk.Run(
+                startX: 70 / 2, // x in bytes
+                startY: 256 + 0, // y in pixels
+                width: (124 - 70) / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 9
+                );
+
+            mk.Run(
+                startX: 0 / 2, // x in bytes
+                startY: 256 + 0, // y in pixels
+                width: 64 / 2, // in bytes
+                height: 104, // in pixels,
+                megaROMpage: megaROMPage,
+                characterName: characterName,
+                position: position,
+                side: side,
+                frameNumber: 10
+                );
+
+
+
 
             var temp = String.Format("{0}_{1}_{2}", characterName.ToPascalCase(), position.ToPascalCase(keepUnderscores: false), side.ToPascalCase());
             mk.SaveReferenceFiles(
