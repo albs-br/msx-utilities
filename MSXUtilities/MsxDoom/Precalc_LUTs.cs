@@ -7,6 +7,42 @@ namespace MSXUtilities.MsxDoom
 {
     public static class Precalc_LUTs
     {
+        public static void CreateAtan2Table()
+        {
+            double y2 = 100;
+            for (double x2 = 1; x2 <= 100; x2++)
+            {
+                PrintAtan2(x2, y2);
+            }
+            double x1 = 100;
+            for (double y1 = 100; y1 >= 1; y1--)
+            {
+                PrintAtan2(x1, y1);
+            }
+        }
+
+        private static void PrintAtan2(double x, double y)
+        {
+            var strFormat = "\tdw\t{0},\t{1}\t; atan2 of value {2}/{3} = {4}, in degrees = {1}";
+
+            var radians = Math.Atan2(x, y);
+
+            var degrees = radians * (180.0 / Math.PI); // convert radians to degrees
+
+            Console.WriteLine(
+                String.Format(
+                    strFormat,
+
+                    Math.Round((x / y) * 256, 0),
+                    Math.Round(degrees, 0),
+                    x,
+                    y,
+                    Math.Round(x / y, 4)
+                    )
+                );
+        }
+
+
         public static void CreateCosTable()
         {
             for (int i = 0; i < 360; i++)
