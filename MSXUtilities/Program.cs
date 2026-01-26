@@ -19,13 +19,16 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            MsxSliver.MsxSliver_Class.DoWork();
+            
+            return;
+
             //MsxDoom.Precalc_LUTs.CreateSinTable();
             //MsxDoom.Precalc_LUTs.CreateCosTable();
             //MsxDoom.Precalc_LUTs.CreatePowerOf2Table();
             //MsxDoom.Precalc_LUTs.CreateSquareRootTable();
-            MsxDoom.Precalc_LUTs.CreateAtan2Table();
+            //MsxDoom.Precalc_LUTs.CreateAtan2Table();
 
-            return;
 
 
             //SC11_Compressor.Method_2();
