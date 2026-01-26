@@ -10,12 +10,12 @@ namespace MSXUtilities.MsxDoom
         public static void CreateAtan2Table()
         {
             double y2 = 100;
-            for (double x2 = 1; x2 <= 100; x2++)
+            for (double x2 = 1; x2 <= 100; x2 += 2)
             {
                 PrintAtan2(x2, y2);
             }
             double x1 = 100;
-            for (double y1 = 100; y1 >= 1; y1--)
+            for (double y1 = 100; y1 >= 1; y1 -= 2)
             {
                 PrintAtan2(x1, y1);
             }
