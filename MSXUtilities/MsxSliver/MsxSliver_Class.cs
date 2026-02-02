@@ -169,32 +169,58 @@ namespace MSXUtilities.MsxSliver
 
         public static void CreateTiles()
         {
-            IList<string> tilePatterns_0 = new List<string>
-            {
-                "\tdb  10001000 b",
-                "\tdb  00100010 b",
-                "\tdb  10001000 b",
-                "\tdb  00100010 b",
-                "\tdb  10001000 b",
-                "\tdb  00100010 b",
-                "\tdb  10001000 b",
-                "\tdb  00100010 b",
+            IList<IList<string>> tilePatterns = new List<IList<string>> {
+                new List<string> {
+                    "\tdb  10001000 b",
+                    "\tdb  00100010 b",
+                    "\tdb  10001000 b",
+                    "\tdb  00100010 b",
+                    "\tdb  10001000 b",
+                    "\tdb  00100010 b",
+                    "\tdb  10001000 b",
+                    "\tdb  00100010 b",
+                },
+                new List<string> {
+                    "\tdb  10101010 b",
+                    "\tdb  01010101 b",
+                    "\tdb  10101010 b",
+                    "\tdb  01010101 b",
+                    "\tdb  10101010 b",
+                    "\tdb  01010101 b",
+                    "\tdb  10101010 b",
+                    "\tdb  01010101 b",
+                },
             };
 
-            for (int i = 1; i <= 8; i++)
+            var sbPatterns = new StringBuilder();
+            var sbColors = new StringBuilder();
+            int index = 0;
+
+            for (int tilePatternIndex = 0; tilePatternIndex < tilePatterns.Count; tilePatternIndex++)
             {
-                Console.WriteLine($"; Tile pattern #{0}, height: {i}");
-                for (int j = 8 - i; j > 0; j--)
+                sbPatterns.AppendLine($"; ----------------------- Tile pattern #{tilePatternIndex}");
+                sbPatterns.AppendLine();
+
+                for (int i = 1; i <= 8; i++)
                 {
-                    Console.WriteLine("\tdb  00000000 b");
-                }
-                for (int j = 8 - i; j < 8; j++)
-                {
-                    Console.WriteLine(tilePatterns_0[j]);
+                    sbPatterns.AppendLine($"; Tile pattern #{tilePatternIndex}, height: {i}, index: {index}");
+                    for (int j = 8 - i; j > 0; j--)
+                    {
+                        sbPatterns.AppendLine("\tdb  00000000 b");
+                    }
+                    for (int j = 8 - i; j < 8; j++)
+                    {
+                        sbPatterns.AppendLine(tilePatterns[tilePatternIndex][j]);
+                    }
+
+                    sbPatterns.AppendLine();
+
+                    index++;
                 }
 
-                Console.WriteLine();
             }
+
+            Console.Write(sbPatterns.ToString());
         }
     }
 }
