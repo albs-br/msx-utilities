@@ -10,7 +10,7 @@ namespace MSXUtilities.MsxSliver
 
     public class MsxSliver_Class
     {
-        public static void DoWork()
+        public static void CreatePrecalcData()
         {
             /*
 
@@ -69,9 +69,7 @@ namespace MSXUtilities.MsxSliver
                         double rayOrigin_X = (x * (TILE_SIZE / 1000));
                         double rayOrigin_Y = (y * (TILE_SIZE / 1000));
 
-                        Console.WriteLine($"\tdw\t{converted}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}");
-                        Console.WriteLine();
-
+                        string firstDistance = $"\tdw\t{converted}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}";
 
                         // save position of ray at edge of tile
                         double ray_edge_X = rayOrigin_X + ray_X;
@@ -141,7 +139,10 @@ namespace MSXUtilities.MsxSliver
                         Console.WriteLine();
 
                         Console.WriteLine($"\t; Distances:");
-                        //Console.Write($"\tdw\t" + String.Join(",\t", distances));
+
+                        Console.WriteLine(firstDistance);
+                        Console.WriteLine();
+
                         int counter = 1;
                         foreach (var d in distances)
                         {
@@ -151,7 +152,7 @@ namespace MSXUtilities.MsxSliver
                         Console.WriteLine();
                         Console.WriteLine();
 
-                        // TODO: which wall was hit (N/E, S/W), for differesnt shading
+                        // TODO: which wall was hit (N/E, S/W), for different shading
 
                         // TODO: point of impact into the wall, for texture mapping
                     }
@@ -163,6 +164,36 @@ namespace MSXUtilities.MsxSliver
             static int ConvertToFixedPoint_8_8(double value)
             {
                 return (int)Math.Round(value * 256, 15);
+            }
+        }
+
+        public static void CreateTiles()
+        {
+            IList<string> tilePatterns_0 = new List<string>
+            {
+                "\tdb  10001000 b",
+                "\tdb  00100010 b",
+                "\tdb  10001000 b",
+                "\tdb  00100010 b",
+                "\tdb  10001000 b",
+                "\tdb  00100010 b",
+                "\tdb  10001000 b",
+                "\tdb  00100010 b",
+            };
+
+            for (int i = 1; i <= 8; i++)
+            {
+                Console.WriteLine($"; Tile pattern #{0}, height: {i}");
+                for (int j = 8 - i; j > 0; j--)
+                {
+                    Console.WriteLine("\tdb  00000000 b");
+                }
+                for (int j = 8 - i; j < 8; j++)
+                {
+                    Console.WriteLine(tilePatterns_0[j]);
+                }
+
+                Console.WriteLine();
             }
         }
     }

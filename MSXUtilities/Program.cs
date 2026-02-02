@@ -19,7 +19,8 @@ namespace MSXUtilities
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            MsxSliver.MsxSliver_Class.DoWork();
+            //MsxSliver.MsxSliver_Class.CreatePrecalcData();
+            MsxSliver.MsxSliver_Class.CreateTiles();
             
             return;
 
