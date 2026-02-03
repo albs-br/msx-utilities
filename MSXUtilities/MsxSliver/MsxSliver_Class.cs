@@ -271,6 +271,34 @@ namespace MSXUtilities.MsxSliver
             File.WriteAllText(patternsFilePath, sbPatterns.ToString());
             File.WriteAllText(colorsFilePath, sbColors.ToString());
         }
+
+        public static void CreateColumns() 
+        {
+            // Considering only first part of screen (top)
+            // min height: 4px
+            // max height: 64x
+            // 
+
+            const int minHeight = 4;
+            const int maxHeight = 64;
+            const int tilesNumber = 160;
+            const double step = tilesNumber / (maxHeight - minHeight);
+
+            const int bgTile = 255;
+
+            // full tiles: 7, 15, 23 ...
+
+            // column examples:
+            // height       data
+            //   4          255 255 255 255 255 255 255 3           // second part of the screen is the reverse (3  255 255 255...)
+            //   5          255 255 255 255 255 255 255 4
+            //   6          255 255 255 255 255 255 255 5
+            //  ...
+            //   8          255 255 255 255 255 255 255 7
+
+            //   9          255 255 255 255 255 255 0   7
+            //   10         255 255 255 255 255 255 1   7
+        }
     }
 }
 
