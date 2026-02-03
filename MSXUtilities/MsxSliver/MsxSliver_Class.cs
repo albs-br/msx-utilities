@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -169,6 +170,9 @@ namespace MSXUtilities.MsxSliver
 
         public static void CreateTiles()
         {
+            const string patternsFilePath = @"TilePatterns.s";
+            const string colorsFilePath = @"TileColors.s";
+
             IList<IList<string>> tilePatterns = new List<IList<string>> {
                 new List<string> {
                     "\tdb  10001000 b",
@@ -190,37 +194,82 @@ namespace MSXUtilities.MsxSliver
                     "\tdb  10101010 b",
                     "\tdb  01010101 b",
                 },
+                new List<string> {
+                    "\tdb  01110111 b",
+                    "\tdb  11011101 b",
+                    "\tdb  01110111 b",
+                    "\tdb  11011101 b",
+                    "\tdb  01110111 b",
+                    "\tdb  11011101 b",
+                    "\tdb  01110111 b",
+                    "\tdb  11011101 b",
+                },
+                new List<string> {
+                    "\tdb  11111111 b",
+                    "\tdb  11111111 b",
+                    "\tdb  11111111 b",
+                    "\tdb  11111111 b",
+                    "\tdb  11111111 b",
+                    "\tdb  11111111 b",
+                    "\tdb  11111111 b",
+                    "\tdb  11111111 b",
+                },
             };
 
+            IList<string> colors = new List<string> { "0xba", "0xcb", "0xdc", "0xed", "0xfe" };
+
             var sbPatterns = new StringBuilder();
+            sbPatterns.AppendLine("Tile_Patterns:");
+
             var sbColors = new StringBuilder();
+            sbColors.AppendLine("Tile_Colors:");
+            
             int index = 0;
 
-            for (int tilePatternIndex = 0; tilePatternIndex < tilePatterns.Count; tilePatternIndex++)
+            var bgColor = "0x00"; // temp
+            //var color = colors.First(); // temp
+            foreach (var color in colors)
             {
-                sbPatterns.AppendLine($"; ----------------------- Tile pattern #{tilePatternIndex}");
-                sbPatterns.AppendLine();
-
-                for (int i = 1; i <= 8; i++)
+                for (int tilePatternIndex = 0; tilePatternIndex < tilePatterns.Count; tilePatternIndex++)
                 {
-                    sbPatterns.AppendLine($"; Tile pattern #{tilePatternIndex}, height: {i}, index: {index}");
-                    for (int j = 8 - i; j > 0; j--)
-                    {
-                        sbPatterns.AppendLine("\tdb  00000000 b");
-                    }
-                    for (int j = 8 - i; j < 8; j++)
-                    {
-                        sbPatterns.AppendLine(tilePatterns[tilePatternIndex][j]);
-                    }
-
+                    sbPatterns.AppendLine($"; ----------------------- Tile pattern #{tilePatternIndex}");
                     sbPatterns.AppendLine();
 
-                    index++;
-                }
+                    sbColors.AppendLine($"; ----------------------- Tile pattern #{tilePatternIndex}, color {color}");
+                    sbColors.AppendLine();
 
+                    for (int i = 1; i <= 8; i++)
+                    {
+                        sbPatterns.AppendLine($"; Tile pattern #{tilePatternIndex}, height: {i}, index: {index}");
+                        sbColors.AppendLine($"; Tile pattern #{tilePatternIndex}, height: {i}, index: {index}");
+
+                        for (int j = 8 - i; j > 0; j--)
+                        {
+                            sbPatterns.AppendLine("\tdb  00000000 b");
+                            sbColors.AppendLine("\tdb  " + bgColor);
+                        }
+                        for (int j = 8 - i; j < 8; j++)
+                        {
+                            sbPatterns.AppendLine(tilePatterns[tilePatternIndex][j]);
+                            sbColors.AppendLine("\tdb  " + color);
+                        }
+
+                        sbPatterns.AppendLine();
+                        sbColors.AppendLine();
+
+                        index++;
+                    }
+                }
             }
 
+            sbPatterns.AppendLine(".size: equ $ - Tile_Patterns");
+            sbColors.AppendLine(".size: equ $ - Tile_Colors");
+
             Console.Write(sbPatterns.ToString());
+            Console.Write(sbColors.ToString());
+
+            File.WriteAllText(patternsFilePath, sbPatterns.ToString());
+            File.WriteAllText(colorsFilePath, sbColors.ToString());
         }
     }
 }
