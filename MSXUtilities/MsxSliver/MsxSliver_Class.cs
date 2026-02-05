@@ -312,12 +312,20 @@ namespace MSXUtilities.MsxSliver
             var sb = new StringBuilder();
             for (int height = 4; height <= 8; height++)
             {
+                IList<string> bytes = new List<string>();
+
                 sb.Append("\tdb\t");
                 for (int i = 0; i < 7; i++)
                 {
-                    sb.Append("255,\t");
+                    //sb.Append("255,\t");
+                    bytes.Add("255");
                 }
-                sb.AppendLine(((fullTile - 7) + height - 1).ToString());
+                //sb.AppendLine(((fullTile - 7) + height - 1).ToString());
+                bytes.Add(((fullTile - 7) + height - 1).ToString());
+
+                ((List<string>)bytes).AddRange(bytes.Reverse());
+
+                sb.AppendLine(String.Join(",\t", bytes));
 
                 counter += step;
 
@@ -332,17 +340,28 @@ namespace MSXUtilities.MsxSliver
                 sb.AppendLine("; -------");
                 for (int height = 1; height <= 8; height++)
                 {
+                    IList<string> bytes = new List<string>();
+
                     sb.Append("\tdb\t");
                     for (int i = 0; i < 6-j; i++)
                     {
-                        sb.Append("255,\t");
+                        //sb.Append("255,\t");
+                        bytes.Add("255");
                     }
-                    sb.Append(((fullTile - 7) + height - 1).ToString());
+                    
+                    //sb.Append(((fullTile - 7) + height - 1).ToString());
+                    bytes.Add(((fullTile - 7) + height - 1).ToString());
+
                     for (int i = 6-j; i < 7; i++)
                     {
-                        sb.Append(",\t" + fullTile);
+                        //sb.Append(",\t" + fullTile);
+                        bytes.Add(fullTile.ToString());
                     }
-                    sb.AppendLine();
+
+                    ((List<string>)bytes).AddRange(bytes.Reverse());
+
+                    //sb.AppendLine();
+                    sb.AppendLine(String.Join(",\t", bytes));
 
                     counter += step;
 
