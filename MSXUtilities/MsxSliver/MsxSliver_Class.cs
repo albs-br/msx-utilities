@@ -243,14 +243,18 @@ namespace MSXUtilities.MsxSliver
                         sbPatterns.AppendLine($"; Tile pattern #{tilePatternIndex}, height: {i}, index: {index}");
                         sbColors.AppendLine($"; Tile pattern #{tilePatternIndex}, height: {i}, index: {index}");
 
+                        for (int j = 0; j < 8; j++)
+                        {
+                            sbPatterns.AppendLine(tilePatterns[tilePatternIndex][j]);
+                        }
                         for (int j = 8 - i; j > 0; j--)
                         {
-                            sbPatterns.AppendLine("\tdb  00000000 b");
+                            //sbPatterns.AppendLine("\tdb  00000000 b");
                             sbColors.AppendLine("\tdb  " + bgColor);
                         }
                         for (int j = 8 - i; j < 8; j++)
                         {
-                            sbPatterns.AppendLine(tilePatterns[tilePatternIndex][j]);
+                            //sbPatterns.AppendLine(tilePatterns[tilePatternIndex][j]);
                             sbColors.AppendLine("\tdb  " + color);
                         }
 

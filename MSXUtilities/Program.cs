@@ -20,8 +20,8 @@ namespace MSXUtilities
         static void Main(string[] args)
         {
             //MsxSliver.MsxSliver_Class.CreatePrecalcData();
-            //MsxSliver.MsxSliver_Class.CreateTiles();
-            MsxSliver.MsxSliver_Class.CreateColumns();
+            MsxSliver.MsxSliver_Class.CreateTiles();
+            //MsxSliver.MsxSliver_Class.CreateColumns();
 
             return;
 
