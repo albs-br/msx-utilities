@@ -316,6 +316,29 @@ namespace MSXUtilities.MsxSliver
                 sb.AppendLine((height - 1).ToString());
             }
 
+
+
+            int fullTile = 7;
+            for (int j = 0; j < 7; j++)
+            //int j = 6;
+            {
+                sb.AppendLine("; -------");
+                for (int height = 1; height <= 8; height++)
+                {
+                    sb.Append("\tdb\t");
+                    for (int i = 0; i < 6-j; i++)
+                    {
+                        sb.Append("255,\t");
+                    }
+                    sb.Append((height - 1).ToString());
+                    for (int i = 6-j; i < 7; i++)
+                    {
+                        sb.Append(",\t" + fullTile);
+                    }
+                    sb.AppendLine();
+                }
+            }
+
             Console.WriteLine(sb.ToString());
         }
     }
