@@ -282,7 +282,7 @@ namespace MSXUtilities.MsxSliver
             const int minHeight = 4;
             const int maxHeight = 64;
             const int tilesNumber = 160;
-            const double step = tilesNumber / (maxHeight - minHeight);
+            const double step = (double)tilesNumber / (double)(maxHeight - minHeight);
 
             const int bgTile = 255;
 
@@ -305,6 +305,10 @@ namespace MSXUtilities.MsxSliver
             //   15         255 255 255 255 255 255 6   7
             //   16         255 255 255 255 255 255 7   7
 
+            double counter = 0;
+
+            int baseFullTile = 7;
+            int fullTile = 7;
             var sb = new StringBuilder();
             for (int height = 4; height <= 8; height++)
             {
@@ -313,12 +317,15 @@ namespace MSXUtilities.MsxSliver
                 {
                     sb.Append("255,\t");
                 }
-                sb.AppendLine((height - 1).ToString());
+                sb.AppendLine(((fullTile - 7) + height - 1).ToString());
+
+                counter += step;
+
+                fullTile = baseFullTile + (8 * ((int)Math.Floor(counter / 8)));
             }
 
 
 
-            int fullTile = 7;
             for (int j = 0; j < 7; j++)
             //int j = 6;
             {
@@ -330,12 +337,16 @@ namespace MSXUtilities.MsxSliver
                     {
                         sb.Append("255,\t");
                     }
-                    sb.Append((height - 1).ToString());
+                    sb.Append(((fullTile - 7) + height - 1).ToString());
                     for (int i = 6-j; i < 7; i++)
                     {
                         sb.Append(",\t" + fullTile);
                     }
                     sb.AppendLine();
+
+                    counter += step;
+
+                    fullTile = baseFullTile + (8 * ((int)Math.Floor(counter / 8)));
                 }
             }
 
