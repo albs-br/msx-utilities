@@ -20,11 +20,11 @@ namespace MSXUtilities
         static void Main(string[] args)
         {
             // --- MSX Sliver
-            //MsxSliver.MsxSliver_Class.CreatePrecalcData();
+            MsxSliver.MsxSliver_Class.CreatePrecalcData();
             //MsxSliver.MsxSliver_Class.CreateTiles();
             //MsxSliver.MsxSliver_Class.CreateColumns();
             //MsxDoom.Precalc_LUTs.CreateSinTable(true);
-            MsxDoom.Precalc_LUTs.CreateCosTable(true);
+            //MsxDoom.Precalc_LUTs.CreateCosTable(true);
 
             return;
 

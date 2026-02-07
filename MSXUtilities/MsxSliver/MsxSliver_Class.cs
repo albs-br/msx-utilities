@@ -36,7 +36,17 @@ namespace MSXUtilities.MsxSliver
 
             const int MAX_TILES = 20;
 
-            //const int ANGLE_STEP = 2; // Angle step in degrees
+
+            const int MEGAROM_PAGE_SIZE = 16 * 1024;
+            int counter = 0;
+
+            const int FIRST_MEGAROM_PAGE = 2;
+
+            const int BLOCK_SIZE = 64; // 64 bytes per block
+
+            const int ANGLE_STEP = 2; // Angle step in degrees
+
+            double maxDistance = 0; // debug
 
             //for (int y = 0; y < TILE_SIZE; y++)
             int y = 8;
@@ -44,9 +54,25 @@ namespace MSXUtilities.MsxSliver
                 //for (int x = 0; x < TILE_SIZE; x++)
                 int x = 8;
                 {
-                    //for (double angle = 0; angle < 360; angle += ANGLE_STEP)
-                    double angle = 180 + 30;
+                    for (double angle = 0; angle < 360; angle += ANGLE_STEP)
+                    //double angle = 180 + 30;
+                    //double angle = 180 - 30;
+                    //double angle = 360 - 30;
+                    //double angle = 30;
                     {
+                        if ((counter % 256) == 0)
+                        {
+                            int megaromPageNumber = ((counter * BLOCK_SIZE) / MEGAROM_PAGE_SIZE) + FIRST_MEGAROM_PAGE;
+                            Console.WriteLine("; ---------------------------- MegaROM Page " + megaromPageNumber);
+                            Console.WriteLine("\torg	0x8000, 0xBFFF");
+                            Console.WriteLine();
+                            Console.WriteLine();
+                        }
+                        //Console.WriteLine("Counter: " + counter_1);
+                        //Console.WriteLine("Is new megarom page: " + ((counter_1 % 256) == 0));
+                        //Console.WriteLine("Megarom page: " + ((counter_1 * BLOCK_SIZE) / (MEGAROM_PAGE_SIZE)));
+
+
                         Console.WriteLine($"; ---- Data for position ({x}, {y}), angle {angle}");
                         Console.WriteLine();
 
@@ -55,6 +81,7 @@ namespace MSXUtilities.MsxSliver
 
                         double step_X = Math.Cos(angle_rad) * (TILE_SIZE) / 1000;
                         double step_Y = Math.Sin(angle_rad) * (TILE_SIZE) / 1000;
+
 
                         double ray_X = x;
                         double ray_Y = y;
@@ -65,27 +92,35 @@ namespace MSXUtilities.MsxSliver
                         }
 
 
+                        double side_X = ray_X - x;
+                        double side_Y = ray_Y - y;
+
                         // calc hypotenuse
-                        double dist = Math.Sqrt(Math.Pow(ray_X - x, 2) + Math.Pow(ray_Y - y, 2));
+                        double dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
 
                         int converted = ConvertToFixedPoint_8_8(dist); // convert to fixed point 8.8
 
-                        double rayOrigin_X = (x * (TILE_SIZE / 1000));
-                        double rayOrigin_Y = (y * (TILE_SIZE / 1000));
-
                         string firstDistance = $"\tdw\t{converted}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}";
 
-                        // save position of ray at edge of tile
-                        double ray_edge_X = rayOrigin_X + ray_X;
-                        double ray_edge_Y = rayOrigin_Y + ray_Y;
+
+
+
+
+                        //double rayOrigin_X = (x * ((double)TILE_SIZE / 1000));
+                        //double rayOrigin_Y = (y * ((double)TILE_SIZE / 1000));
+
+
+                        //// save position of ray at edge of tile
+                        //double ray_edge_X = rayOrigin_X + ray_X;
+                        //double ray_edge_Y = rayOrigin_Y + ray_Y;
 
                         // ------ first tile
 
 
                         // calc tile relative to tile origin
-                        int tile_X = (int)Math.Floor(ray_edge_X / (TILE_SIZE));
-                        int tile_Y = (int)Math.Floor(ray_edge_Y / (TILE_SIZE));
+                        int tile_X = (int)Math.Floor(ray_X / (TILE_SIZE));
+                        int tile_Y = (int)Math.Floor(ray_Y / (TILE_SIZE));
 
                         int tileLinear = (tile_Y * MAP_WIDTH) + tile_X;
 
@@ -107,8 +142,8 @@ namespace MSXUtilities.MsxSliver
                             ray_Y += step_Y;
 
                             // calc tile relative to tile origin
-                            tile_X = (int)Math.Floor(rayOrigin_X + ray_X / (TILE_SIZE));
-                            tile_Y = (int)Math.Floor(rayOrigin_Y + ray_Y / (TILE_SIZE));
+                            tile_X = (int)Math.Floor(ray_X / (TILE_SIZE));
+                            tile_Y = (int)Math.Floor(ray_Y / (TILE_SIZE));
 
                             tileLinear = (tile_Y * MAP_WIDTH) + tile_X;
 
@@ -118,7 +153,16 @@ namespace MSXUtilities.MsxSliver
                                 tilesTouched.Add(tileLinear);
                                 tilesNumber++;
 
-                                distances.Add(Math.Sqrt(Math.Pow(ray_X - rayOrigin_X, 2) + Math.Pow(ray_Y - rayOrigin_Y, 2)));
+                                side_X = ray_X - x;
+                                side_Y = ray_Y - y;
+
+                                // calc hypotenuse
+                                dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
+
+                                // TODO: cap max distance to 255
+                                //if (dist > 255) dist = 255;
+
+                                distances.Add(dist);
 
                                 if (tilesNumber == MAX_TILES)
                                 {
@@ -148,11 +192,14 @@ namespace MSXUtilities.MsxSliver
                         Console.WriteLine(firstDistance);
                         Console.WriteLine();
 
-                        int counter = 1;
+
+                        int distanceCounter = 1;
                         foreach (var d in distances)
                         {
-                            Console.WriteLine($"\tdw\t{ConvertToFixedPoint_8_8(d)}\t; distance for tile #{counter}, fixed point 8.8, decimal value: {d}");
-                            counter++;
+                            if (d > maxDistance) maxDistance = d; // debug
+
+                            Console.WriteLine($"\tdw\t{ConvertToFixedPoint_8_8(d)}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
+                            distanceCounter++;
                         }
 
                         Console.WriteLine();
@@ -161,12 +208,30 @@ namespace MSXUtilities.MsxSliver
                         Console.WriteLine();
                         Console.WriteLine();
 
+                        // debug
+                        if (distances[0] > distances[1])
+                        {
+                            Console.WriteLine("[ERROR] Distance 1 > distance 0");
+                        }
+
+
                         // TODO: which wall was hit (N/E, S/W), for different shading
 
                         // TODO: point of impact into the wall, for texture mapping
+
+
+                        // Not really necessary, as data fits exactly the 16 kb
+                        if ((counter % 256) == 0)
+                        {
+                            Console.WriteLine("\tds PageSize - ($ - 0x8000), 255");
+                        }
+
+                        counter++;
                     }
                 }
             }
+
+            Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
 
             Console.ReadLine();
 
