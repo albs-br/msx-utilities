@@ -14,6 +14,10 @@ namespace MSXUtilities.MsxSliver
         public static void CreatePrecalcData()
         {
             /*
+            
+            QIII | QIY
+            -----+-----
+            QII  | QI
 
             Quadrant 	x-coordinate	y-coordinate
             I (QI)	    Positive (+)	Positive (+)
@@ -135,7 +139,7 @@ namespace MSXUtilities.MsxSliver
 
 
                         Console.WriteLine($"\t; Tiles touched deltas");
-                        Console.Write($"\tdb\t" + String.Join(",\t", tilesTouchedDelta)); //TODO: convert to fixed point 8.8
+                        Console.Write($"\tdb\t" + String.Join(",\t", tilesTouchedDelta));
                         Console.WriteLine();
                         Console.WriteLine();
 
@@ -150,6 +154,10 @@ namespace MSXUtilities.MsxSliver
                             Console.WriteLine($"\tdw\t{ConvertToFixedPoint_8_8(d)}\t; distance for tile #{counter}, fixed point 8.8, decimal value: {d}");
                             counter++;
                         }
+
+                        Console.WriteLine();
+                        Console.WriteLine($"\tdb\t0,\t0 ; not used (Data to fill 64 bytes)"); // Data to fill 64 bytes
+
                         Console.WriteLine();
                         Console.WriteLine();
 
@@ -314,7 +322,7 @@ namespace MSXUtilities.MsxSliver
             int baseFullTile = 7;
             int fullTile = 7;
             var sb = new StringBuilder();
-            for (int height = 4; height <= 8; height++)
+            for (int height = minHeight + 1; height <= 8; height++)
             {
                 IList<string> bytes = new List<string>();
 

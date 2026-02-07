@@ -43,13 +43,16 @@ namespace MSXUtilities.MsxDoom
         }
 
 
-        public static void CreateCosTable()
+        public static void CreateCosTable(bool clockwise = false)
         {
             for (int i = 0; i < 360; i++)
             {
+                int angle = i;
+                if (clockwise) angle = 360 - i;
+
                 var strFormat = "\tdw {0} b\t; cos of {1} degrees = {2}";
 
-                var cos = Math.Cos(i * Math.PI / 180.0);
+                var cos = Math.Cos(angle * Math.PI / 180.0);
 
                 var cosFixedPoint = Convert.ToInt16(cos / (1 / Math.Pow(2, 8))); // convert cos value to binary fixed point 8.8
 
@@ -66,13 +69,16 @@ namespace MSXUtilities.MsxDoom
             }
         }
 
-        public static void CreateSinTable()
+        public static void CreateSinTable(bool clockwise = false)
         {
             for (int i = 0; i < 360; i++)
             {
+                int angle = i;
+                if (clockwise) angle = 360 - i;
+
                 var strFormat = "\tdw {0} b\t; sin of {1} degrees = {2}";
 
-                var sin = Math.Sin(i * Math.PI / 180.0) * (-1);  // * (-1) because coordinate system of screen is on fourth quadrant (Y grows from top to bottom)
+                var sin = Math.Sin(angle * Math.PI / 180.0) * (-1);  // * (-1) because coordinate system of screen is on fourth quadrant (Y grows from top to bottom)
 
                 var sinFixedPoint = Convert.ToInt16(sin / (1 / Math.Pow(2, 8))); // convert sin value to binary fixed point 8.8
 
