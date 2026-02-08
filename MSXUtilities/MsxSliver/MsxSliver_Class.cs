@@ -13,6 +13,8 @@ namespace MSXUtilities.MsxSliver
     {
         public static void CreatePrecalcData()
         {
+            const string preCalcDataFilePath = @"PreCalcData.s";
+
             /*
             
             QIII | QIY
@@ -48,11 +50,15 @@ namespace MSXUtilities.MsxSliver
 
             double maxDistance = 0; // debug
 
-            //for (int y = 0; y < TILE_SIZE; y++)
-            int y = 8;
+
+
+            var sb = new StringBuilder();
+
+            for (int y = 0; y < TILE_SIZE; y++)
+            //int y = 8;
             {
-                //for (int x = 0; x < TILE_SIZE; x++)
-                int x = 8;
+                for (int x = 0; x < TILE_SIZE; x++)
+                //int x = 8;
                 {
                     for (double angle = 0; angle < 360; angle += ANGLE_STEP)
                     //double angle = 180 + 30;
@@ -63,18 +69,18 @@ namespace MSXUtilities.MsxSliver
                         if ((counter % 256) == 0)
                         {
                             int megaromPageNumber = ((counter * BLOCK_SIZE) / MEGAROM_PAGE_SIZE) + FIRST_MEGAROM_PAGE;
-                            Console.WriteLine("; ---------------------------- MegaROM Page " + megaromPageNumber);
-                            Console.WriteLine("\torg	0x8000, 0xBFFF");
-                            Console.WriteLine();
-                            Console.WriteLine();
+                            sb.AppendLine("; ---------------------------- MegaROM Page " + megaromPageNumber);
+                            sb.AppendLine("\torg	0x8000, 0xBFFF");
+                            sb.AppendLine();
+                            sb.AppendLine();
                         }
                         //Console.WriteLine("Counter: " + counter_1);
                         //Console.WriteLine("Is new megarom page: " + ((counter_1 % 256) == 0));
                         //Console.WriteLine("Megarom page: " + ((counter_1 * BLOCK_SIZE) / (MEGAROM_PAGE_SIZE)));
 
 
-                        Console.WriteLine($"; ---- Data for position ({x}, {y}), angle {angle}");
-                        Console.WriteLine();
+                        sb.AppendLine($"; ---- Data for position ({x}, {y}), angle {angle}");
+                        sb.AppendLine();
 
                         double angle_rad = Helpers.MathHelpers.DegreesToRadians(angle);
 
@@ -167,8 +173,8 @@ namespace MSXUtilities.MsxSliver
                                 if (tilesNumber == MAX_TILES)
                                 {
                                     // max tile x and y
-                                    Console.WriteLine($"\tdb\t{tile_X},\t{tile_Y} ; Max tiles: x: {tile_X}, y: {tile_Y}");
-                                    Console.WriteLine();
+                                    sb.AppendLine($"\tdb\t{tile_X},\t{tile_Y} ; Max tiles: x: {tile_X}, y: {tile_Y}");
+                                    sb.AppendLine();
                                 }
                             }
 
@@ -182,15 +188,14 @@ namespace MSXUtilities.MsxSliver
                         }
 
 
-                        Console.WriteLine($"\t; Tiles touched deltas");
-                        Console.Write($"\tdb\t" + String.Join(",\t", tilesTouchedDelta));
-                        Console.WriteLine();
-                        Console.WriteLine();
+                        sb.AppendLine($"\t; Tiles touched deltas");
+                        sb.AppendLine($"\tdb\t" + String.Join(",\t", tilesTouchedDelta));
+                        sb.AppendLine();
 
-                        Console.WriteLine($"\t; Distances:");
+                        sb.AppendLine($"\t; Distances:");
 
-                        Console.WriteLine(firstDistance);
-                        Console.WriteLine();
+                        sb.AppendLine(firstDistance);
+                        sb.AppendLine();
 
 
                         int distanceCounter = 1;
@@ -198,20 +203,22 @@ namespace MSXUtilities.MsxSliver
                         {
                             if (d > maxDistance) maxDistance = d; // debug
 
-                            Console.WriteLine($"\tdw\t{ConvertToFixedPoint_8_8(d)}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
+                            sb.AppendLine($"\tdw\t{ConvertToFixedPoint_8_8(d)}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
                             distanceCounter++;
                         }
 
-                        Console.WriteLine();
-                        Console.WriteLine($"\tdb\t0,\t0 ; not used (Data to fill 64 bytes)"); // Data to fill 64 bytes
+                        sb.AppendLine();
+                        sb.AppendLine($"\tdb\t0,\t0 ; not used (Data to fill 64 bytes)"); // Data to fill 64 bytes
 
-                        Console.WriteLine();
-                        Console.WriteLine();
+                        sb.AppendLine();
+                        sb.AppendLine();
 
                         // debug
                         if (distances[0] > distances[1])
                         {
-                            Console.WriteLine("[ERROR] Distance 1 > distance 0");
+                            var error = "[ERROR] Distance 1 > distance 0";
+                            sb.AppendLine(error);
+                            Console.WriteLine(error);
                         }
 
 
@@ -223,7 +230,7 @@ namespace MSXUtilities.MsxSliver
                         // Not really necessary, as data fits exactly the 16 kb
                         if ((counter % 256) == 0)
                         {
-                            Console.WriteLine("\tds PageSize - ($ - 0x8000), 255");
+                            sb.AppendLine("\tds PageSize - ($ - 0x8000), 255");
                         }
 
                         counter++;
@@ -231,8 +238,15 @@ namespace MSXUtilities.MsxSliver
                 }
             }
 
-            Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
+            //Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
 
+
+            //Console.Write(sb.ToString());
+            File.WriteAllText(preCalcDataFilePath, sb.ToString());
+
+
+
+            Console.Write("Done.");
             Console.ReadLine();
 
             static int ConvertToFixedPoint_8_8(double value)
