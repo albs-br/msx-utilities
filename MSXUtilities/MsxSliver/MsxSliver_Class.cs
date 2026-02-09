@@ -55,16 +55,16 @@ namespace MSXUtilities.MsxSliver
             var sb = new StringBuilder();
 
             for (int y = 0; y < TILE_SIZE; y++)
-            //int y = 8;
+            //int y = 0;
             {
                 for (int x = 0; x < TILE_SIZE; x++)
-                //int x = 8;
+                //int x = 0;
                 {
                     for (double angle = 0; angle < 360; angle += ANGLE_STEP)
                     //double angle = 180 + 30;
                     //double angle = 180 - 30;
                     //double angle = 360 - 30;
-                    //double angle = 30;
+                    //double angle = 28;
                     {
                         if ((counter % 256) == 0)
                         {
@@ -91,7 +91,7 @@ namespace MSXUtilities.MsxSliver
 
                         double ray_X = x;
                         double ray_Y = y;
-                        while (ray_X > 0 && ray_X < TILE_SIZE && ray_Y > 0 && ray_Y < TILE_SIZE) // check tile bounds
+                        while (ray_X >= 0 && ray_X < TILE_SIZE && ray_Y >= 0 && ray_Y < TILE_SIZE) // check tile bounds
                         {
                             ray_X += step_X;
                             ray_Y += step_Y;
@@ -132,7 +132,10 @@ namespace MSXUtilities.MsxSliver
 
                         //Console.WriteLine($"\tdb\t{tileLinear}\t; tile X: {tile_X}, Y: {tile_Y}");
 
-
+                        if (tileLinear == 0)
+                        {
+                            Console.WriteLine("[ERROR] first tile delta = 0");
+                        }
 
                         // ----------------------------------- 
 
@@ -165,8 +168,8 @@ namespace MSXUtilities.MsxSliver
                                 // calc hypotenuse
                                 dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
-                                // TODO: cap max distance to 255
-                                //if (dist > 255) dist = 255;
+                                // cap max distance to 255
+                                if (dist > 255) dist = 255;
 
                                 distances.Add(dist);
 
@@ -238,7 +241,7 @@ namespace MSXUtilities.MsxSliver
                 }
             }
 
-            //Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
+            Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
 
 
             //Console.Write(sb.ToString());
