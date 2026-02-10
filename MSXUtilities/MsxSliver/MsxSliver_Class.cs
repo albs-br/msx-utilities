@@ -64,7 +64,7 @@ namespace MSXUtilities.MsxSliver
                     //double angle = 180 + 30;
                     //double angle = 180 - 30;
                     //double angle = 360 - 30;
-                    //double angle = 28;
+                    //double angle = 44;
                     {
                         if ((counter % 256) == 0)
                         {
@@ -104,10 +104,15 @@ namespace MSXUtilities.MsxSliver
                         // calc hypotenuse
                         double dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
+                        // normalize dist to range 0-59
+                        dist = (dist * 59) / 320;
 
-                        int converted = ConvertToFixedPoint_8_8(dist); // convert to fixed point 8.8
+                        string addr = $"Columns + ({Math.Round(dist)} * 16)"; // TODO: should I use Math.Round?
 
-                        string firstDistance = $"\tdw\t{converted}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}";
+
+                        //int converted = ConvertToFixedPoint_8_8(dist); // convert to fixed point 8.8
+
+                        string firstDistance = $"\tdw\t{addr}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}";
 
 
 
@@ -217,9 +222,9 @@ namespace MSXUtilities.MsxSliver
                         {
                             if (d > maxDistance) maxDistance = d; // debug
 
-                            string addr = $"Columns + ({Math.Floor(d)} * 16)";
+                            string addr_1 = $"Columns + ({Math.Round(d)} * 16)";
 
-                            sb.AppendLine($"\tdw\t{addr}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
+                            sb.AppendLine($"\tdw\t{addr_1}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
                             distanceCounter++;
                         }
 
@@ -254,7 +259,7 @@ namespace MSXUtilities.MsxSliver
                 }
             }
 
-            Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
+            //Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
 
 
             //Console.Write(sb.ToString());
@@ -417,46 +422,49 @@ namespace MSXUtilities.MsxSliver
             int baseFullTile = 7;
             int fullTile = 7;
             var sb = new StringBuilder();
+
+
+
             for (int height = minHeight + 1; height <= 8; height++)
+            //for (int height = 8; height >= minHeight + 1; height--)
             {
                 IList<string> bytes = new List<string>();
 
                 sb.Append("\tdb\t");
                 for (int i = 0; i < 7; i++)
                 {
-                    //sb.Append("255,\t");
                     bytes.Add("255");
                 }
-                //sb.AppendLine(((fullTile - 7) + height - 1).ToString());
                 bytes.Add(((fullTile - 7) + height - 1).ToString());
 
                 ((List<string>)bytes).AddRange(bytes.Reverse());
 
-                sb.AppendLine(String.Join(",\t", bytes));
+                sb.AppendLine(String.Join(",\t", bytes) + $" ; column height: {(height) * 2} pixels");
 
                 counter += step;
 
                 fullTile = baseFullTile + (8 * ((int)Math.Floor(counter / 8)));
             }
+            sb.AppendLine("; -------");
 
 
 
             for (int j = 0; j < 7; j++)
+            //for (int j = 6; j >= 0; j--)
             //int j = 6;
             {
-                sb.AppendLine("; -------");
                 for (int height = 1; height <= 8; height++)
                 {
+                    int colHeight = 16 + (((j * 8) + height) * 2); // column height in pixels
+
                     IList<string> bytes = new List<string>();
 
                     sb.Append("\tdb\t");
                     for (int i = 0; i < 6-j; i++)
                     {
-                        //sb.Append("255,\t");
                         bytes.Add("255");
                     }
                     
-                    //sb.Append(((fullTile - 7) + height - 1).ToString());
                     bytes.Add(((fullTile - 7) + height - 1).ToString());
 
                     for (int i = 6-j; i < 7; i++)
@@ -468,15 +476,39 @@ namespace MSXUtilities.MsxSliver
                     ((List<string>)bytes).AddRange(bytes.Reverse());
 
                     //sb.AppendLine();
-                    sb.AppendLine(String.Join(",\t", bytes));
+                    sb.AppendLine(String.Join(",\t", bytes) + $" ; column height: {colHeight} pixels");
 
                     counter += step;
 
                     fullTile = baseFullTile + (8 * ((int)Math.Floor(counter / 8)));
                 }
+                sb.AppendLine("; -------");
             }
 
-            Console.WriteLine(sb.ToString());
+            var output = ReverseLinesInStringBuilder(sb);
+            
+            Console.WriteLine(output);
+        }
+
+        private static string ReverseLinesInStringBuilder(StringBuilder sb)
+        {
+            // Convert StringBuilder to string
+            string content = sb.ToString();
+
+            // Split the content into lines, handling different newlines
+            string[] lines = content.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+            // Reverse the order of the lines
+            var reversedLines = lines.Reverse();
+
+            // Join the reversed lines back into a single string using the system's new line separator
+            string result = string.Join(Environment.NewLine, reversedLines);
+
+            // You can optionally update the original StringBuilder
+            // sb.Clear();
+            // sb.Append(result);
+
+            return result;
         }
     }
 }
