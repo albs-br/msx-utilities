@@ -168,8 +168,11 @@ namespace MSXUtilities.MsxSliver
                                 // calc hypotenuse
                                 dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
-                                // cap max distance to 255
-                                if (dist > 255) dist = 255;
+                                // cap max distance to 320
+                                if (dist > 320) dist = 320;
+
+                                // normalize dist to range 0-59
+                                dist = (dist * 59) / 320;
 
                                 distances.Add(dist);
 
@@ -190,6 +193,14 @@ namespace MSXUtilities.MsxSliver
                             tilesTouchedDelta.Add(tilesTouched[i] - tilesTouched[i - 1]);
                         }
 
+                        int[] validValues = { -65, -64, -63, 1, 65, 64, 63, -1 };
+                        foreach (var item in tilesTouchedDelta)
+                        {
+                            if (!validValues.Contains(item))
+                            {
+                                Console.WriteLine("[ERROR] Invalid tile delta: " + item);
+                            }
+                        }
 
                         sb.AppendLine($"\t; Tiles touched deltas");
                         sb.AppendLine($"\tdb\t" + String.Join(",\t", tilesTouchedDelta));
@@ -206,7 +217,9 @@ namespace MSXUtilities.MsxSliver
                         {
                             if (d > maxDistance) maxDistance = d; // debug
 
-                            sb.AppendLine($"\tdw\t{ConvertToFixedPoint_8_8(d)}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
+                            string addr = $"Columns + ({Math.Floor(d)} * 16)";
+
+                            sb.AppendLine($"\tdw\t{addr}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
                             distanceCounter++;
                         }
 
@@ -230,11 +243,11 @@ namespace MSXUtilities.MsxSliver
                         // TODO: point of impact into the wall, for texture mapping
 
 
-                        // Not really necessary, as data fits exactly the 16 kb
-                        if ((counter % 256) == 0)
-                        {
-                            sb.AppendLine("\tds PageSize - ($ - 0x8000), 255");
-                        }
+                        //// Not really necessary, as data fits exactly the 16 kb
+                        //if ((counter % 256) == 0)
+                        //{
+                        //    sb.AppendLine("\tds PageSize - ($ - 0x8000), 255");
+                        //}
 
                         counter++;
                     }
