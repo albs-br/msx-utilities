@@ -38,6 +38,7 @@ namespace MSXUtilities.MsxSliver
 
             const int MAX_TILES = 20;
 
+            const double RAY_MAX_DISTANCE = 240; // max ray distance for angle = 44 (all angles max distance is 320)
 
             const int MEGAROM_PAGE_SIZE = 16 * 1024;
             int counter = 0;
@@ -64,7 +65,7 @@ namespace MSXUtilities.MsxSliver
                     //double angle = 180 + 30;
                     //double angle = 180 - 30;
                     //double angle = 360 - 30;
-                    //double angle = 44;
+                    //double angle = 0;
                     {
                         if ((counter % 256) == 0)
                         {
@@ -105,7 +106,7 @@ namespace MSXUtilities.MsxSliver
                         double dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
                         // normalize dist to range 0-59
-                        dist = (dist * 59) / 320;
+                        dist = (dist * 59) / RAY_MAX_DISTANCE;
 
                         string addr = $"Columns + ({Math.Round(dist)} * 16)"; // TODO: should I use Math.Round?
 
@@ -149,6 +150,7 @@ namespace MSXUtilities.MsxSliver
                         int tilesNumber = 1;
 
                         IList<double> distances = new List<double>();
+                        IList<double> distancesNormalized = new List<double>();
 
                         while (tilesNumber < MAX_TILES)
                         {
@@ -173,13 +175,10 @@ namespace MSXUtilities.MsxSliver
                                 // calc hypotenuse
                                 dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
-                                // cap max distance to 320
-                                if (dist > 320) dist = 320;
-
-                                // normalize dist to range 0-59
-                                dist = (dist * 59) / 320;
 
                                 distances.Add(dist);
+
+
 
                                 if (tilesNumber == MAX_TILES)
                                 {
@@ -207,6 +206,31 @@ namespace MSXUtilities.MsxSliver
                             }
                         }
 
+                        
+                        
+                        foreach (var d in distances)
+                        {
+                            if (d > maxDistance) maxDistance = d; // debug
+                        }
+
+                        // cap max distance and normalize it
+                        for (int i = 0; i < 19; i++)
+                        {
+                            if (distances[i] > RAY_MAX_DISTANCE)
+                            {
+                                tilesTouchedDelta[i + 1] = 0; // tilesTouchedDelta has 20 items, distances has only 19 as it skips the first tile
+                                distances[i] = RAY_MAX_DISTANCE;
+                            }
+
+                            // normalize dist to range 0-59
+                            double distNormalized = (distances[i] * 59) / RAY_MAX_DISTANCE;
+
+                            distancesNormalized.Add(distNormalized);
+                        }
+
+
+
+
                         sb.AppendLine($"\t; Tiles touched deltas");
                         sb.AppendLine($"\tdb\t" + String.Join(",\t", tilesTouchedDelta));
                         sb.AppendLine();
@@ -217,11 +241,11 @@ namespace MSXUtilities.MsxSliver
                         sb.AppendLine();
 
 
-                        int distanceCounter = 1;
-                        foreach (var d in distances)
-                        {
-                            if (d > maxDistance) maxDistance = d; // debug
 
+
+                        int distanceCounter = 1;
+                        foreach (var d in distancesNormalized)
+                        {
                             string addr_1 = $"Columns + ({Math.Round(d)} * 16)";
 
                             sb.AppendLine($"\tdw\t{addr_1}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
@@ -237,7 +261,7 @@ namespace MSXUtilities.MsxSliver
                         // debug
                         if (distances[0] > distances[1])
                         {
-                            var error = "[ERROR] Distance 1 > distance 0";
+                            var error = "[ERROR] Distance 0 > distance 1";
                             sb.AppendLine(error);
                             Console.WriteLine(error);
                         }
@@ -259,7 +283,7 @@ namespace MSXUtilities.MsxSliver
                 }
             }
 
-            //Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
+            Console.WriteLine("[debug] maxDistance: " + maxDistance); // debug
 
 
             //Console.Write(sb.ToString());
@@ -270,10 +294,10 @@ namespace MSXUtilities.MsxSliver
             Console.Write("Done.");
             Console.ReadLine();
 
-            static int ConvertToFixedPoint_8_8(double value)
-            {
-                return (int)Math.Round(value * 256, 15);
-            }
+            //static int ConvertToFixedPoint_8_8(double value)
+            //{
+            //    return (int)Math.Round(value * 256, 15);
+            //}
         }
 
         public static void CreateTiles()
