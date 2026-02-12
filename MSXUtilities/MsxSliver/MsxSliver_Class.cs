@@ -534,6 +534,34 @@ namespace MSXUtilities.MsxSliver
 
             return result;
         }
+
+        public static void CreateFixFishEyeTable()
+        {
+            var sb = new StringBuilder();
+
+            //int colCounter = 0; //debug
+            for (int columnHeight = 5; columnHeight <= 64; columnHeight++)
+            {
+                sb.AppendLine($"; ----- Column original height: {columnHeight}");
+
+                for (int angle = -32; angle < 32; angle += 2)
+                {
+                    int adjustedHeight = (int)Math.Round(columnHeight * Math.Cos(Helpers.MathHelpers.DegreesToRadians(angle)));
+
+                    if (adjustedHeight < 5) adjustedHeight = 5;
+
+                    string addr = $"Columns + ({adjustedHeight - 5} * 16)";
+
+                    sb.AppendLine($"\tdw\t{addr}\t; original height: {columnHeight}, ajusted height: {adjustedHeight} fixed for angle: {angle}");
+                }
+
+                sb.AppendLine();
+
+                //colCounter++;
+            }
+
+            Console.Write(sb.ToString());
+        }
     }
 }
 
