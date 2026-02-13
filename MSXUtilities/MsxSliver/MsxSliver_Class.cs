@@ -13,7 +13,7 @@ namespace MSXUtilities.MsxSliver
     {
         public static void CreatePrecalcData()
         {
-            const string preCalcDataFilePath = @"PreCalcData.s";
+            //const string preCalcDataFilePath = @"PreCalcData.s";
 
             /*
             
@@ -108,13 +108,12 @@ namespace MSXUtilities.MsxSliver
                         // normalize dist to range 0-59
                         dist = (dist * 59) / RAY_MAX_DISTANCE;
 
-                        string addr = $"Columns + ({Math.Round(dist)} * 16)"; // TODO: should I use Math.Round?
+                        string addr = $"FixFishEyeTable + ({Math.Round(dist)} * 64)"; // TODO: should I use Math.Round?
 
 
                         //int converted = ConvertToFixedPoint_8_8(dist); // convert to fixed point 8.8
 
                         string firstDistance = $"\tdw\t{addr}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}";
-
 
 
 
@@ -190,15 +189,15 @@ namespace MSXUtilities.MsxSliver
 
                         }
 
-                        IList<int> tilesTouchedDelta = new List<int>();
-                        tilesTouchedDelta.Add(tilesTouched.First());
+                        IList<int> tilesTouchedDeltas = new List<int>();
+                        tilesTouchedDeltas.Add(tilesTouched.First());
                         for (int i = 1; i < tilesTouched.Count; i++)
                         {
-                            tilesTouchedDelta.Add(tilesTouched[i] - tilesTouched[i - 1]);
+                            tilesTouchedDeltas.Add(tilesTouched[i] - tilesTouched[i - 1]);
                         }
 
                         int[] validValues = { -65, -64, -63, 1, 65, 64, 63, -1 };
-                        foreach (var item in tilesTouchedDelta)
+                        foreach (var item in tilesTouchedDeltas)
                         {
                             if (!validValues.Contains(item))
                             {
@@ -218,7 +217,7 @@ namespace MSXUtilities.MsxSliver
                         {
                             if (distances[i] > RAY_MAX_DISTANCE)
                             {
-                                tilesTouchedDelta[i + 1] = 0; // tilesTouchedDelta has 20 items, distances has only 19 as it skips the first tile
+                                tilesTouchedDeltas[i + 1] = 0; // tilesTouchedDelta has 20 items, distances has only 19 as it skips the first tile
                                 distances[i] = RAY_MAX_DISTANCE;
                             }
 
@@ -232,7 +231,7 @@ namespace MSXUtilities.MsxSliver
 
 
                         sb.AppendLine($"\t; Tiles touched deltas");
-                        sb.AppendLine($"\tdb\t" + String.Join(",\t", tilesTouchedDelta));
+                        sb.AppendLine($"\tdb\t" + String.Join(",\t", tilesTouchedDeltas));
                         sb.AppendLine();
 
                         sb.AppendLine($"\t; Distances:");
@@ -246,7 +245,7 @@ namespace MSXUtilities.MsxSliver
                         int distanceCounter = 1;
                         foreach (var d in distancesNormalized)
                         {
-                            string addr_1 = $"Columns + ({Math.Round(d)} * 16)";
+                            string addr_1 = $"FixFishEyeTable + ({Math.Round(d)} * 64)";
 
                             sb.AppendLine($"\tdw\t{addr_1}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
                             distanceCounter++;
@@ -287,7 +286,21 @@ namespace MSXUtilities.MsxSliver
 
 
             //Console.Write(sb.ToString());
-            File.WriteAllText(preCalcDataFilePath, sb.ToString());
+            // File.WriteAllText(preCalcDataFilePath, sb.ToString());
+            var sbTemp = new StringBuilder();
+            int outputFileCounter = 0;
+            foreach (var line in sb.ToString().Split(Environment.NewLine))
+            {
+                if (line == "; ---------------------------- MegaROM Page 90")
+                {
+                    File.WriteAllText($"PreCalcData_part_{outputFileCounter}.s", sbTemp.ToString());
+                    outputFileCounter++;
+                    sbTemp.Clear();
+                }
+                
+                sbTemp.AppendLine(line);
+            }
+            File.WriteAllText($"PreCalcData_part_{outputFileCounter}.s", sbTemp.ToString());
 
 
 
@@ -420,7 +433,7 @@ namespace MSXUtilities.MsxSliver
             const int tilesNumber = 160;
             const double step = (double)tilesNumber / (double)(maxHeight - minHeight);
 
-            const int bgTile = 255;
+            const byte bgTile = 255;
 
             // full tiles: 7, 15, 23 ...
 
@@ -457,7 +470,7 @@ namespace MSXUtilities.MsxSliver
                 sb.Append("\tdb\t");
                 for (int i = 0; i < 7; i++)
                 {
-                    bytes.Add("255");
+                    bytes.Add(bgTile.ToString()); // 255
                 }
                 bytes.Add(((fullTile - 7) + height - 1).ToString());
 
@@ -486,7 +499,7 @@ namespace MSXUtilities.MsxSliver
                     sb.Append("\tdb\t");
                     for (int i = 0; i < 6-j; i++)
                     {
-                        bytes.Add("255");
+                        bytes.Add(bgTile.ToString()); // 255
                     }
                     
                     bytes.Add(((fullTile - 7) + height - 1).ToString());
@@ -552,7 +565,7 @@ namespace MSXUtilities.MsxSliver
 
                     string addr = $"Columns + ({adjustedHeight - 5} * 16)";
 
-                    sb.AppendLine($"\tdw\t{addr}\t; original height: {columnHeight}, ajusted height: {adjustedHeight} fixed for angle: {angle}");
+                    sb.AppendLine($"\tdw\t{addr}\t; original height: {columnHeight}, ajusted height: {adjustedHeight}, fixed for angle: {angle}");
                 }
 
                 sb.AppendLine();
