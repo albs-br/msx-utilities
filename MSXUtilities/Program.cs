@@ -26,6 +26,7 @@ namespace MSXUtilities
             //MsxDoom.Precalc_LUTs.CreateSinTable(true);
             //MsxDoom.Precalc_LUTs.CreateCosTable(true);
             //MsxSliver.MsxSliver_Class.CreateFixFishEyeTable();
+            //MsxSliver.MsxSliver_Class.CreateCosTable_32();
 
             return;
 

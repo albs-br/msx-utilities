@@ -35,10 +35,16 @@ namespace MSXUtilities.MsxSliver
             //const int MAP_HEIGHT = 64;
 
             const int TILE_SIZE = 16;  // Size of each tile in units, in both width and height
+            
+            const double RAY_STEP = ((double)TILE_SIZE) / 1000;
+
+            const int DISTANCE_PLAYER_TO_SCREEN = 16;
 
             const int MAX_TILES = 20;
 
             const double RAY_MAX_DISTANCE = 240; // max ray distance for angle = 44 (all angles max distance is 320)
+
+            const double MAX_DISTANCE_ADJUSTED = (TILE_SIZE * DISTANCE_PLAYER_TO_SCREEN) / RAY_STEP;
 
             const int MEGAROM_PAGE_SIZE = 16 * 1024;
             int counter = 0;
@@ -65,7 +71,7 @@ namespace MSXUtilities.MsxSliver
                     //double angle = 180 + 30;
                     //double angle = 180 - 30;
                     //double angle = 360 - 30;
-                    //double angle = 0;
+                    //double angle = 44;
                     {
                         if ((counter % 256) == 0)
                         {
@@ -86,34 +92,41 @@ namespace MSXUtilities.MsxSliver
                         double angle_rad = Helpers.MathHelpers.DegreesToRadians(angle);
 
 
-                        double step_X = Math.Cos(angle_rad) * (TILE_SIZE) / 1000;
-                        double step_Y = Math.Sin(angle_rad) * (TILE_SIZE) / 1000;
+                        double step_X = Math.Cos(angle_rad) * RAY_STEP;
+                        double step_Y = Math.Sin(angle_rad) * RAY_STEP;
 
 
                         double ray_X = x;
                         double ray_Y = y;
-                        while (ray_X >= 0 && ray_X < TILE_SIZE && ray_Y >= 0 && ray_Y < TILE_SIZE) // check tile bounds
-                        {
-                            ray_X += step_X;
-                            ray_Y += step_Y;
-                        }
+                        
+                        //while (ray_X >= 0 && ray_X < TILE_SIZE && ray_Y >= 0 && ray_Y < TILE_SIZE) // check tile bounds
+                        //{
+                        //    ray_X += step_X;
+                        //    ray_Y += step_Y;
+                        //}
 
 
-                        double side_X = ray_X - x;
-                        double side_Y = ray_Y - y;
+                        //double side_X = ray_X - x;
+                        //double side_Y = ray_Y - y;
 
-                        // calc hypotenuse
-                        double dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
+                        //// calc hypotenuse
+                        //double dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
-                        // normalize dist to range 0-59
-                        dist = (dist * 59) / RAY_MAX_DISTANCE;
 
-                        string addr = $"FixFishEyeTable + ({Math.Round(dist)} * 64)"; // TODO: should I use Math.Round?
+                        ////// adjust (project wall into an screen in front of player)
+                        ////dist = (TILE_SIZE * DISTANCE_PLAYER_TO_SCREEN) / dist;
+
+
+                        //// normalize dist to range 0-59
+                        //dist = (dist * 59) / RAY_MAX_DISTANCE;
+                        ////dist = (dist * 59) / MAX_DISTANCE_ADJUSTED;
+
+                        //string addr = $"FixFishEyeTable + ({Math.Round(dist)} * 64)";
 
 
                         //int converted = ConvertToFixedPoint_8_8(dist); // convert to fixed point 8.8
 
-                        string firstDistance = $"\tdw\t{addr}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}";
+                        //string firstDistance = $"\tdw\t{addr}\t; distance to edge of first tile (fixed point 8.8), decimal value: {dist}";
 
 
 
@@ -130,26 +143,33 @@ namespace MSXUtilities.MsxSliver
 
 
                         // calc tile relative to tile origin
-                        int tile_X = (int)Math.Floor(ray_X / (TILE_SIZE));
-                        int tile_Y = (int)Math.Floor(ray_Y / (TILE_SIZE));
+                        //int tile_X = (int)Math.Floor(ray_X / (TILE_SIZE));
+                        //int tile_Y = (int)Math.Floor(ray_Y / (TILE_SIZE));
 
-                        int tileLinear = (tile_Y * MAP_WIDTH) + tile_X;
+                        //int tileLinear = (tile_Y * MAP_WIDTH) + tile_X;
 
                         //Console.WriteLine($"\tdb\t{tileLinear}\t; tile X: {tile_X}, Y: {tile_Y}");
 
-                        if (tileLinear == 0)
-                        {
-                            Console.WriteLine("[ERROR] first tile delta = 0");
-                        }
+                        //if (tileLinear == 0)
+                        //{
+                        //    Console.WriteLine("[ERROR] first tile delta = 0");
+                        //}
 
                         // ----------------------------------- 
 
                         IList<int> tilesTouched = new List<int>();
-                        tilesTouched.Add(tileLinear); // first tile
-                        int tilesNumber = 1;
+                        //tilesTouched.Add(tileLinear); // first tile
+                        int tilesNumber = 0;
 
                         IList<double> distances = new List<double>();
+                        IList<double> realDistances = new List<double>();
                         IList<double> distancesNormalized = new List<double>();
+
+                        // calc tile linear of origin
+                        int originTile_X = (int)Math.Floor((double)x / (TILE_SIZE));
+                        int originTile_Y = (int)Math.Floor((double)y / (TILE_SIZE));
+
+                        int originTileLinear = (originTile_Y * MAP_WIDTH) + originTile_X;
 
                         while (tilesNumber < MAX_TILES)
                         {
@@ -157,23 +177,24 @@ namespace MSXUtilities.MsxSliver
                             ray_Y += step_Y;
 
                             // calc tile relative to tile origin
-                            tile_X = (int)Math.Floor(ray_X / (TILE_SIZE));
-                            tile_Y = (int)Math.Floor(ray_Y / (TILE_SIZE));
+                            int tile_X = (int)Math.Floor(ray_X / (TILE_SIZE));
+                            int tile_Y = (int)Math.Floor(ray_Y / (TILE_SIZE));
 
-                            tileLinear = (tile_Y * MAP_WIDTH) + tile_X;
+                            int tileLinear = (tile_Y * MAP_WIDTH) + tile_X;
 
-                            if (tileLinear != tilesTouched.Last())
+                            if ((tilesTouched.Count == 0 && tileLinear != originTileLinear ) || (tilesTouched.Count > 0 && tileLinear != tilesTouched.Last()))
                             {
                                 // new tile, add it
                                 tilesTouched.Add(tileLinear);
                                 tilesNumber++;
 
-                                side_X = ray_X - x;
-                                side_Y = ray_Y - y;
+                                double side_X = ray_X - x;
+                                double side_Y = ray_Y - y;
 
                                 // calc hypotenuse
-                                dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
+                                double dist = Math.Sqrt(Math.Pow(side_X, 2) + Math.Pow(side_Y, 2));
 
+                                realDistances.Add(dist);
 
                                 distances.Add(dist);
 
@@ -213,16 +234,22 @@ namespace MSXUtilities.MsxSliver
                         }
 
                         // cap max distance and normalize it
-                        for (int i = 0; i < 19; i++)
+                        for (int i = 0; i < MAX_TILES; i++)
                         {
                             if (distances[i] > RAY_MAX_DISTANCE)
                             {
-                                tilesTouchedDeltas[i + 1] = 0; // tilesTouchedDelta has 20 items, distances has only 19 as it skips the first tile
+                                tilesTouchedDeltas[i] = 0;
                                 distances[i] = RAY_MAX_DISTANCE;
                             }
 
+
+                            //// adjust (project wall into an screen in front of player)
+                            //distances[i] = (TILE_SIZE * DISTANCE_PLAYER_TO_SCREEN) / distances[i];
+
+
                             // normalize dist to range 0-59
                             double distNormalized = (distances[i] * 59) / RAY_MAX_DISTANCE;
+                            //double distNormalized = (distances[i] * 59) / MAX_DISTANCE_ADJUSTED;
 
                             distancesNormalized.Add(distNormalized);
                         }
@@ -236,16 +263,18 @@ namespace MSXUtilities.MsxSliver
 
                         sb.AppendLine($"\t; Distances:");
 
-                        sb.AppendLine(firstDistance);
-                        sb.AppendLine();
+                        //sb.AppendLine(firstDistance);
+                        //sb.AppendLine();
 
 
 
 
-                        int distanceCounter = 1;
+                        int distanceCounter = 0;
                         foreach (var d in distancesNormalized)
                         {
                             string addr_1 = $"FixFishEyeTable + ({Math.Round(d)} * 64)";
+
+                            //int converted_1 = ConvertToFixedPoint_8_8(d); // convert to fixed point 8.8
 
                             sb.AppendLine($"\tdw\t{addr_1}\t; distance for tile #{distanceCounter}, fixed point 8.8, decimal value: {d}");
                             distanceCounter++;
@@ -286,7 +315,7 @@ namespace MSXUtilities.MsxSliver
 
 
             //Console.Write(sb.ToString());
-            // File.WriteAllText(preCalcDataFilePath, sb.ToString());
+
             var sbTemp = new StringBuilder();
             int outputFileCounter = 0;
             foreach (var line in sb.ToString().Split(Environment.NewLine))
@@ -307,10 +336,6 @@ namespace MSXUtilities.MsxSliver
             Console.Write("Done.");
             Console.ReadLine();
 
-            //static int ConvertToFixedPoint_8_8(double value)
-            //{
-            //    return (int)Math.Round(value * 256, 15);
-            //}
         }
 
         public static void CreateTiles()
@@ -548,6 +573,11 @@ namespace MSXUtilities.MsxSliver
             return result;
         }
 
+        private static int ConvertToFixedPoint_8_8(double value)
+        {
+            return (int)Math.Round(value * 256, 15);
+        }
+
         public static void CreateFixFishEyeTable()
         {
             var sb = new StringBuilder();
@@ -571,6 +601,23 @@ namespace MSXUtilities.MsxSliver
                 sb.AppendLine();
 
                 //colCounter++;
+            }
+
+            Console.Write(sb.ToString());
+        }
+
+        /// <summary>
+        /// Cos table for angles -32 to 30, for fisheye effect fix
+        /// </summary>
+        public static void CreateCosTable_32()
+        {
+            var sb = new StringBuilder();
+
+            for (int angle = -32; angle < 32; angle += 2)
+            {
+                double cos = Math.Cos(Helpers.MathHelpers.DegreesToRadians(angle));
+
+                sb.AppendLine($"\tdw\t{ConvertToFixedPoint_8_8(cos)}\t; cosine for angle: {angle} = {cos}");
             }
 
             Console.Write(sb.ToString());
